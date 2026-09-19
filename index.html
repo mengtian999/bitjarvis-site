@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title data-i18n="title">Bit Jarvis — 同一个贾维斯，不同的Agent</title>
+<meta name="description" data-i18n-desc="desc" content="替你干活，也替你把人连起来。剩下的时间，还给你。一个有多端、有记忆、有性格的 AI 助理。">
+<link rel="icon" href="bitjarvis.png" type="image/png">
+<script>
+// Anti-theme-flash: set data-theme before first paint, based on localStorage or OS preference.
+(function(){
+  try{
+    var t=localStorage.getItem('bitjarvis_theme');
+    if(!t||t!=='light'&&t!=='dark'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+    }
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark');}
+})();
+</script>
+<script src="locale.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#0a0a0f;--bg-soft:#111118;--bg-card:#161620;--bg-elev:#1c1c2a;--bg-elev2:#222233;
+  --text:#e8e8f0;--text-dim:#8e8ea0;--text-faint:#4a4a5c;
+  --accent:#6c5ce7;--accent-soft:#a29bfe;--accent-glow:rgba(108,92,231,.12);
+  --warm:#fd79a8;--warm-soft:#fab1a0;
+  --green:#00b894;--green-soft:#55efc4;
+  --blue:#0984e3;--blue-soft:#74b9ff;
+  --amber:#e17055;--amber-soft:#fab1a0;
+  --coral:#ff7675;--coral-soft:#ffa502;
+  --border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.14);
+  --nav-bg:rgba(10,10,15,.72);--nav-bg-s:rgba(10,10,15,.88);
+  --r:16px;--r-lg:24px;--max:1180px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;
+}
+html[data-theme="light"]{
+  --bg:#fafbfc;--bg-soft:#ffffff;--bg-card:#ffffff;--bg-elev:#f4f5f7;--bg-elev2:#ececee;
+  --text:#1a1a1e;--text-dim:#55555f;--text-faint:#8e8ea0;
+  --border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.16);
+  --accent-glow:rgba(108,92,231,.18);
+  --nav-bg:rgba(255,255,255,.72);--nav-bg-s:rgba(255,255,255,.92);
+}
+
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+/* Nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-in{max-width:var(--max);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.nav-brand img{width:30px;height:30px;border-radius:8px;object-fit:cover}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:14px;color:var(--text-dim);transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{padding:8px 16px;background:var(--accent);border-radius:8px;color:#fff!important;font-weight:600;font-size:14px;transition:all .2s}
+.nav-cta:hover{background:var(--accent-soft);transform:translateY(-1px)}
+.nav-actions{display:flex;align-items:center;gap:10px}
+@media(max-width:900px){.nav-links a:not(.nav-cta):not(.theme-toggle):not(.lang-btn){display:none}}
+@media(max-width:768px){.nav-links a:not(.nav-cta){display:none}}
+
+/* Theme toggle */
+.theme-toggle{position:relative;width:44px;height:24px;background:var(--bg-elev2);border:1px solid var(--border-h);border-radius:100px;cursor:pointer;transition:background .2s}
+.theme-toggle .tt-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .2s;color:#fff}
+.theme-toggle .tt-knob::before{content:'🌙';}
+html[data-theme="light"] .theme-toggle .tt-knob{transform:translateX(20px);background:#fdcb6e;color:#5a4000}
+html[data-theme="light"] .theme-toggle .tt-knob::before{content:'☀️'}
+html[data-theme="dark"] .theme-toggle .tt-knob{background:var(--accent-soft);color:#fff}
+
+/* Language dropdown */
+.lang-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.lang-btn:hover{border-color:var(--border-h);color:var(--text)}
+.lang-btn .lb-arrow{font-size:8px;transition:transform .2s}
+.lang-menu{opacity:0;visibility:hidden;transform:translateY(-4px);transition:all .2s;position:absolute;top:calc(100% + 6px);right:0;min-width:150px;background:var(--bg-card);border:1px solid var(--border-h);border-radius:10px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.lang-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;font-size:13px;color:var(--text-dim);border-radius:8px;cursor:pointer;transition:all .15s}
+.lang-option:hover{background:var(--bg-elev);color:var(--text)}
+.lang-option.active{color:var(--accent-soft);font-weight:600}
+.lang-option .lo-check{font-size:11px}
+.lang-wrap{position:relative}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 70%);top:10%;left:50%;transform:translateX(-50%);filter:blur(80px)}
+.hero-bg::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(253,121,168,.06),transparent 70%);bottom:0;right:15%;filter:blur(100px)}
+.hero-c{position:relative;z-index:1;padding:0 24px;max-width:920px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;font-size:13px;color:var(--text-dim);margin-bottom:36px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-logo{width:84px;height:84px;border-radius:20px;margin:0 auto 28px;box-shadow:0 0 60px var(--accent-glow);object-fit:cover}
+.hero h1{font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
+.hero-sub{font-size:clamp(15px,2.2vw,19px);color:var(--text-dim);max-width:480px;margin:0 auto 36px;line-height:1.6}
+.hero-dots{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:36px}
+.hero-dots .dot{width:8px;height:8px;border-radius:50%;background:var(--text-faint)}
+.hero-dots .dot:nth-child(1){background:#fab1a0}
+.hero-dots .dot:nth-child(3){background:#74b9ff}
+.hero-dots .dot:nth-child(5){background:#a29bfe}
+.hero-dots .line{width:32px;height:2px;background:var(--border-h)}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-p{padding:12px 28px;background:var(--accent);color:#fff;border-radius:10px;font-weight:600;font-size:15px;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.btn-p:hover{background:var(--accent-soft);transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+.btn-g{padding:12px 28px;border:1px solid var(--border-h);color:var(--text);border-radius:10px;font-weight:600;font-size:15px;transition:all .25s}
+.btn-g:hover{border-color:var(--accent-soft);background:var(--bg-card)}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-faint);display:flex;flex-direction:column;align-items:center;gap:6px}
+.hero-scroll .ar{animation:bnc 2s infinite}
+@keyframes bnc{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* Sections */
+.sec{padding:100px 0;position:relative}
+.sec-tag{font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px}
+.sec-title{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:14px}
+.sec-sub{font-size:17px;color:var(--text-dim);max-width:560px;line-height:1.6}
+
+/* Agent Cards */
+.layer-label{display:flex;align-items:center;gap:14px;margin-bottom:40px}
+.layer-label .ll-line{flex:1;height:1px;background:var(--border)}
+.layer-label .ll-text{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+@media(max-width:560px){.cards{grid-template-columns:1fr}}
+.card{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);transition:all .3s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);border-color:var(--border-h);box-shadow:0 16px 50px rgba(0,0,0,.25)}
+.card-top{padding:28px 24px 20px}
+.card-top .ci{font-size:28px;margin-bottom:14px}
+.card-top h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.card-top .entry{font-size:15px;color:var(--text-dim);line-height:1.55;margin-bottom:10px}
+.card-top .entry .em{color:var(--text);font-weight:600}
+.card-top .tail{font-size:12px;color:var(--text-faint);margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.card-mock{flex:1;padding:16px 20px 20px;display:flex;flex-direction:column;gap:8px;min-height:200px}
+
+.card-family{background:linear-gradient(180deg,rgba(225,112,85,.06),var(--bg-card))}
+.card-family .card-top{background:rgba(225,112,85,.04)}
+.card-personal{background:linear-gradient(180deg,rgba(253,121,168,.06),var(--bg-card))}
+.card-personal .card-top{background:rgba(253,121,168,.04)}
+.card-tablet{background:linear-gradient(180deg,rgba(253,203,110,.06),var(--bg-card))}
+.card-tablet .card-top{background:rgba(253,203,110,.04)}
+.card-work{background:linear-gradient(180deg,rgba(9,132,223,.06),var(--bg-card))}
+.card-work .card-top{background:rgba(9,132,223,.04)}
+.card-server{background:linear-gradient(180deg,rgba(0,184,148,.05),var(--bg-card))}
+.card-server .card-top{background:rgba(0,184,148,.03)}
+
+.mk-msg{max-width:85%;padding:8px 12px;border-radius:10px;font-size:13px;line-height:1.45}
+.mk-msg.me{background:var(--accent);align-self:flex-end;color:#fff}
+.mk-msg.them{background:var(--bg-elev);align-self:flex-start}
+.mk-card-s{background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:12px;align-self:flex-start;max-width:90%}
+.mk-card-s .t{font-size:11px;font-weight:600;color:var(--text-faint);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.mk-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mk-item{background:var(--bg-soft);border-radius:8px;padding:8px}
+.mk-item .l{font-size:10px;color:var(--text-faint);margin-bottom:2px}
+.mk-item .v{font-weight:600;font-size:12px}
+.mk-status{font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px}
+.mk-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+
+/* IM Band */
+.im-band{margin-top:20px;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);background:linear-gradient(135deg,rgba(255,118,117,.05),rgba(253,121,168,.04),var(--bg-card));position:relative}
+.im-band::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,165,80,.04),transparent 60%);pointer-events:none}
+.im-band-in{padding:40px 36px;position:relative;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:768px){.im-band-in{grid-template-columns:1fr;padding:32px 24px;gap:28px}}
+.im-text .entry{font-size:16px;font-weight:600;color:var(--text-dim);line-height:1.4;margin-bottom:14px}
+.im-text .sub{font-size:15px;color:var(--text-dim);line-height:1.6;margin-bottom:20px}
+.im-privacy-main{font-size:21px;line-height:1.5;margin-bottom:4px;color:var(--text-dim)}
+.im-privacy-kick{color:var(--text);font-weight:700}
+.im-privacy{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.im-privacy .chip{font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid var(--border-h);color:var(--text-dim);background:var(--bg-elev)}
+.im-crossbar{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);font-size:14px;color:var(--text-dim)}
+.im-crossbar .em{color:var(--text);font-weight:600}
+.im-visual{background:var(--bg-elev);border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.im-visual-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.im-visual-header .ava{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--coral),var(--warm));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.im-visual-header .nm{font-weight:600;font-size:14px}
+.im-visual-header .badge{margin-left:auto;font-size:10px;padding:2px 8px;border-radius:100px;background:var(--bg-soft);color:var(--text-faint)}
+.im-visual-body{padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.im-dm{display:flex;align-items:center;gap:10px;padding:6px 0}
+.im-dm .ava{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.im-dm .ava.a{background:rgba(108,92,231,.2);color:var(--accent-soft)}
+.im-dm .ava.f{background:rgba(0,184,148,.2);color:var(--green-soft)}
+.im-dm .ava.h{background:rgba(255,118,117,.2);color:var(--coral-soft)}
+.im-dm .prev{flex:1;font-size:12px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.im-dm .nm-row{font-size:13px;font-weight:600;margin-bottom:2px}
+.im-dm .top-row{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.im-dm .info{flex:1;min-width:0}
+.im-dm .tm{font-size:10px;color:var(--text-faint);flex-shrink:0}
+.im-space-label{font-size:13px;font-weight:600;color:var(--text-dim);padding:8px 0 4px;display:flex;align-items:center;gap:6px}
+
+/* Relay */
+.relay{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+@media(max-width:900px){.relay{grid-template-columns:1fr}}
+.act{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);background:var(--bg-card)}
+.act-top{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
+.act-time{font-size:13px;font-weight:600;color:var(--accent-soft);margin-bottom:8px}
+.act-title{font-size:17px;font-weight:700;line-height:1.3}
+.act-body{padding:16px 20px 20px;display:flex;flex-direction:column;gap:8px;min-height:180px}
+.act-body .mk-msg{font-size:13px}
+.act-tag{font-size:11px;color:var(--text-faint);margin-top:auto;padding-top:8px}
+.act.morning .act-top{background:rgba(253,121,168,.04)}
+.act.day .act-top{background:rgba(108,92,231,.04)}
+.act.night .act-top{background:rgba(255,118,117,.04)}
+
+/* Collaboration */
+.collab{background:var(--bg-soft);border-radius:var(--r-lg);padding:48px 40px;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:768px){.collab{grid-template-columns:1fr;padding:32px 24px}}
+.collab-text h2{font-size:32px;font-weight:800;line-height:1.2;margin-bottom:16px}
+.collab-text p{font-size:16px;color:var(--text-dim);line-height:1.6;margin-bottom:16px}
+.collab-visual{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.collab-channel{font-size:13px;color:var(--text-dim);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.collab-channel .h{color:var(--accent-soft)}
+.collab-msg{display:flex;gap:10px;margin-bottom:12px}
+.collab-msg .ava{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.collab-msg .ct{font-size:13px;line-height:1.5}
+.collab-msg .ct .nm{font-weight:600;margin-bottom:2px}
+.collab-msg .ct .nm.j{color:var(--accent-soft)}
+.collab-msg .ct .nm.l{color:var(--warm-soft)}
+.collab-msg .ct .nm.m{color:var(--green-soft)}
+.collab-msg .ct .nm.s{color:var(--blue-soft)}
+.collab-msg .ct .tx{color:var(--text-dim)}
+
+/* Security */
+.sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px}
+@media(max-width:768px){.sec-grid{grid-template-columns:1fr}}
+.sec-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px}
+.sec-item .si{font-size:22px;margin-bottom:12px}
+.sec-item h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.sec-item p{font-size:14px;color:var(--text-dim);line-height:1.6}
+
+/* CTA */
+.cta{text-align:center;padding:100px 0}
+.cta h2{font-size:clamp(32px,4.5vw,44px);font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-.5px}
+.cta p{font-size:17px;color:var(--text-dim);max-width:480px;margin:0 auto 36px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta-plats{display:flex;gap:20px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.cta-plats span{font-size:13px;color:var(--text-faint)}
+
+/* Footer */
+.foot{border-top:1px solid var(--border);padding:40px 0}
+.foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot-brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.foot-brand img{width:26px;height:26px;border-radius:8px;object-fit:cover}
+.foot-links{display:flex;gap:20px}
+.foot-links a{font-size:13px;color:var(--text-dim);transition:color .2s}
+.foot-links a:hover{color:var(--text)}
+.foot-copy{font-size:12px;color:var(--text-faint);text-align:center;margin-top:20px;line-height:1.7}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a href="#" class="nav-brand"><img src="bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</a>
+    <div class="nav-links">
+      <a href="#agent" data-i18n="nav.1">能力</a>
+      <a href="#relay" data-i18n="nav.2">一天</a>
+      <a href="#collab" data-i18n="nav.3">协作</a>
+      <a href="#security" data-i18n="nav.4">安全</a>
+      <div class="nav-actions">
+        <div class="lang-wrap">
+          <button class="lang-btn" id="langBtn" aria-label="选择语言">
+            <span id="langLabel">中</span>
+            <span class="lb-arrow">▼</span>
+          </button>
+          <div class="lang-menu" id="langMenu">
+            <div class="lang-option active" data-code="zh-CN"><span>简体中文</span><span class="lo-check">✓</span></div>
+            <div class="lang-option" data-code="zh-TW"><span>繁體中文</span><span class="lo-check"></span></div>
+            <div class="lang-option" data-code="en"><span>English</span><span class="lo-check"></span></div>
+            <div class="lang-option" data-code="ja"><span>日本語</span><span class="lo-check"></span></div>
+            <div class="lang-option" data-code="ko"><span>한국어</span><span class="lo-check"></span></div>
+          </div>
+        </div>
+        <div class="theme-toggle" id="themeToggle" aria-label="切换明暗模式">
+          <div class="tt-knob" id="ttKnob"></div>
+        </div>
+        <a href="download.html" class="nav-cta" data-i18n="nav.5">下载</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-c">
+    <div class="hero-badge"><span class="dot"></span><span data-i18n="hero.badge">多端多角色 Agent + 端到端加密IM 深度集成 · 免费且开源</span></div>
+    <img src="bitjarvis.png" alt="Bit Jarvis" class="hero-logo">
+    <h1 data-i18n="hero.title">同一个贾维斯，不同的Agent。</h1>
+    <p class="hero-sub" data-i18n="hero.sub">内置多个免费模型，办公、编程、生图、视频、语音全免费，安装即用，助你 0 成本玩转 AI。</p>
+    <p class="hero-sub" data-i18n="hero.sub2" style="margin-top:-24px;font-size:15px;color:var(--text-faint)">替你干活，也替你把人连起来。剩下的时间，还给你。</p>
+    <div class="hero-dots">
+      <span class="dot"></span><span class="line"></span>
+      <span class="dot"></span><span class="line"></span>
+      <span class="dot"></span>
+    </div>
+    <div class="hero-cta">
+      <a href="download.html" class="btn-p" data-i18n="hero.btn1">免费下载 →</a>
+      <a href="#relay" class="btn-g" data-i18n="hero.btn2">看看Ta跟着你的一天</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span data-i18n="hero.scroll">向下</span><span class="ar">↓</span></div>
+</section>
+
+<!-- Layer 1: Agent -->
+<section class="sec" id="agent">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="agent.tag">替你干活</div>
+      <h2 class="sec-title" data-i18n="agent.title">各管一摊</h2>
+      <p class="sec-sub" data-i18n="agent.sub">Ta住在你生活里的每个角落。家里的事、随身的事、成长的事、工作的事、后台跑着的事，各有各的Ta。每个Ta有名字、有记忆、有性格。</p>
+    </div>
+
+    <div class="layer-label rv">
+      <span class="ll-text" data-i18n="agent.layer">Agent 层</span>
+      <span class="ll-line"></span>
+    </div>
+
+    <div class="cards">
+      <div class="card card-family rv">
+        <div class="card-top">
+          <div class="ci">🏠</div>
+          <h3 data-i18n="card1.title">家里</h3>
+          <p class="entry" data-i18n="card1.entry">你不在家，Ta替你看着。<span class="em">你到了，家已经舒服了。</span></p>
+          <p class="tail" data-i18n="card1.tail">→ 手机 · 桌面</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card1.m1">把空调开了，客厅灯也开一下</div>
+          <div class="mk-msg them" data-i18n="card1.m2">收到，空调 26° 已经开了，客厅灯亮了。</div>
+          <div class="mk-msg them" data-i18n="card1.m3">热水器也开了，到家就能洗澡。我让健康助理也记一下你的睡眠。</div>
+          <div class="mk-status" data-i18n="card1.status">家庭管家 · 已执行</div>
+        </div>
+      </div>
+
+      <div class="card card-personal rv">
+        <div class="card-top">
+          <div class="ci">📱</div>
+          <h3 data-i18n="card2.title">随身</h3>
+          <p class="entry" data-i18n="card2.entry">跟着你走的那个Ta。<span class="em">无论是通勤路上，还是旅行途中，帮你把一天理清楚。</span></p>
+          <p class="tail" data-i18n="card2.tail">→ 手机</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card2.m1">今天有什么安排？</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card2.cardTitle">📅 今日</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l" data-i18n="card2.l1">上午</div><div class="v" data-i18n="card2.v1">产品评审 10:00</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card2.l2">下午</div><div class="v" data-i18n="card2.v2">API 评审 14:00</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card2.l3">提醒</div><div class="v" data-i18n="card2.v3">下午有雨，带伞</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card2.l4">天气</div><div class="v" data-i18n="card2.v4">18-24° 转 雨</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-tablet rv">
+        <div class="card-top">
+          <div class="ci">📖</div>
+          <h3 data-i18n="card3.title">成长</h3>
+          <p class="entry" data-i18n="card3.entry">沙发上的那个Ta。<span class="em">帮你把知识嚼碎，把想法画出来。</span></p>
+          <p class="tail" data-i18n="card3.tail">→ 平板</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card3.m1">帮我讲讲什么是注意力机制</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card3.cardTitle">🧠 知识卡片</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l" data-i18n="card3.l1">核心</div><div class="v" data-i18n="card3.v1">每个词决定看哪些词</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card3.l2">类比</div><div class="v" data-i18n="card3.v2">像眼睛自动跳关键词</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card3.l3">用在哪</div><div class="v" data-i18n="card3.v3">GPT、翻译、摘要</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card3.l4">延伸</div><div class="v" data-i18n="card3.v4">想深入我可以继续</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="card3.m2">绘画助手画了张示意图，比文字直观。学习助手也帮你存了，随时复习。</div>
+        </div>
+      </div>
+
+      <div class="card card-work rv">
+        <div class="card-top">
+          <div class="ci">💼</div>
+          <h3 data-i18n="card4.title">工作</h3>
+          <p class="entry" data-i18n="card4.entry">你一周没打开，Ta记得你上次说到哪了。<span class="em">报表钉成卡片，随手操作。</span></p>
+          <p class="tail" data-i18n="card4.tail">→ 桌面</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card4.m1">这周 Bug 列表拉出来，排一下</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card4.cardTitle">🐛 Bug 看板</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l">P0</div><div class="v" data-i18n="card4.v1">沙盒逃逸</div></div>
+              <div class="mk-item"><div class="l">P1</div><div class="v" data-i18n="card4.v2">记忆编译</div></div>
+              <div class="mk-item"><div class="l">P2</div><div class="v" data-i18n="card4.v3">CSP 阻断</div></div>
+              <div class="mk-item"><div class="l">P3</div><div class="v" data-i18n="card4.v4">图标模糊</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="card4.m2">钉在桌面了，随时拖过来看。这个我让数据分析师也看一下。</div>
+        </div>
+      </div>
+
+      <div class="card card-server rv">
+        <div class="card-top">
+          <div class="ci">🖥</div>
+          <h3 data-i18n="card5.title">后台</h3>
+          <p class="entry" data-i18n="card5.entry">你睡了，Ta还在跑。<span class="em">监控、爬虫、自动任务 7×24。</span></p>
+          <p class="tail" data-i18n="card5.tail">→ 远程后台</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-status" data-i18n="card5.status">监控Bot · 运行中</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card5.cardTitle">📊 VPS 状态</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l">CPU</div><div class="v" data-i18n="card5.v1">12%</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card5.l2">内存</div><div class="v" data-i18n="card5.v2">38%</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card5.l3">磁盘</div><div class="v" data-i18n="card5.v3">61%</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card5.l4">在线</div><div class="v" data-i18n="card5.v4">99.8%</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="card5.m1">CPU 恢复正常，不用管了。有异常我直接推给你和管家。</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:32px;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;font-size:14px;color:var(--text-dim);line-height:1.6" data-i18n="agent.note">你有多个面，你的Agent也各有不同，各管各的不串台，你也可以把Ta们拉进一个群，一起讨论和协作。</p>
+
+    <div class="layer-label rv" style="margin-top:40px">
+      <span class="ll-text" data-i18n="agent.imLayer">IM 层 · 替你把人连起来</span>
+      <span class="ll-line"></span>
+    </div>
+
+    <div class="im-band rv">
+      <div class="im-band-in">
+        <div class="im-text">
+          <p class="entry" data-i18n="im.entry">贾维斯在这里，你的朋友也在这里。说事，说心，一个应用。</p>
+          <p class="sub" data-i18n="im.sub">贾维斯帮你分担工作，处理生活琐事，你多出来的那些时间，去见人，去看海，去经历那些未知，去过本该属于你的生活。</p>
+          <p class="im-privacy-main" data-i18n="im.privacyMain">和重要的人聊天，你们的对话，只有你们能读。<span class="im-privacy-kick">没有第三双眼睛。</span></p>
+          <div class="im-privacy">
+            <span class="chip" data-i18n="im.chip1">🔒 端到端加密</span>
+            <span class="chip" data-i18n="im.chip2">🌐 去中心化</span>
+            <span class="chip" data-i18n="im.chip3">🚶 不用手机号，起个名就能用</span>
+            <span class="chip" data-i18n="im.chip4">↩️ 消息随时可撤回</span>
+          </div>
+          <div class="im-crossbar" data-i18n="im.crossbar">无论你在哪、用什么聊，<span class="em">叫Ta一声就行。</span></div>
+        </div>
+        <div class="im-visual">
+          <div class="im-visual-header">
+            <div class="ava">消</div>
+            <div class="nm" data-i18n="im.message">消息</div>
+          </div>
+          <div class="im-visual-body">
+            <div class="im-space-label" data-i18n="im.pc">💻 家庭电脑</div>
+            <div class="im-dm" style="padding-left:20px">
+              <div class="ava a">管</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm1">管家</span><span class="tm">17:20</span></div>
+                <div class="prev" data-i18n="im.dm1p">热水器开了，回去就能洗</div>
+              </div>
+            </div>
+            <div class="im-dm" style="padding-left:20px">
+              <div class="ava a">助</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm2">助理</span><span class="tm">15:30</span></div>
+                <div class="prev" data-i18n="im.dm2p">今日项目汇报已整理好</div>
+              </div>
+            </div>
+            <div class="im-dm">
+              <div class="ava" style="background:rgba(255,255,255,.08);color:var(--text-dim)">👩</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm3">老妈</span><span class="tm">12:08</span></div>
+                <div class="prev" data-i18n="im.dm3p">今晚回来吃饭吗</div>
+              </div>
+            </div>
+            <div class="im-dm">
+              <div class="ava" style="background:rgba(255,255,255,.08);color:var(--text-dim)">👭</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm4">闺蜜群</span><span class="tm">13:12</span></div>
+                <div class="prev" data-i18n="im.dm4p">周末去新开的那家店！</div>
+              </div>
+            </div>
+            <div class="im-dm">
+              <div class="ava" style="background:rgba(255,255,255,.08);color:var(--text-dim)">🧑</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm5">赵阳</span><span class="tm">11:45</span></div>
+                <div class="prev" data-i18n="im.dm5p">晚上一起看电影？</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Relay -->
+<section class="sec" id="relay" style="background:var(--bg-soft)">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="relay.tag">Ta跟着你过了一天</div>
+      <h2 class="sec-title" data-i18n="relay.title">不同的Ta，从早到晚</h2>
+      <p class="sec-sub" data-i18n="relay.sub">不同的Ta，做着不同的事，Ta们是你独立的片段，Ta们并不知道其他的存在，却真实的串起你一天。</p>
+    </div>
+    <div class="relay">
+      <div class="act morning rv">
+        <div class="act-top">
+          <div class="act-time" data-i18n="relay.t1">07:30 · 早晨通勤</div>
+          <div class="act-title" data-i18n="relay.t1t">手机里问一句，Ta读过日历和天气</div>
+        </div>
+        <div class="act-body">
+          <div class="mk-msg me" data-i18n="relay.a1m1">今天有什么安排？</div>
+          <div class="mk-msg them" data-i18n="relay.a1m2">上午产品评审 10 点，下午 API 评审 14 点。</div>
+          <div class="mk-msg them" data-i18n="relay.a1m3">下午有雨，记得带伞。</div>
+          <div class="act-tag" data-i18n="relay.a1tag">📱 随身助理 · 手机</div>
+        </div>
+      </div>
+      <div class="act day rv">
+        <div class="act-top">
+          <div class="act-time" data-i18n="relay.t2">10:30 · 白天工作</div>
+          <div class="act-title" data-i18n="relay.t2t">坐到电脑前，Ta把报表钉在桌面上</div>
+        </div>
+        <div class="act-body">
+          <div class="mk-msg me" data-i18n="relay.a2m1">这周的 Bug 拉出来排一下</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="relay.a2card">🐛 Bug 看板</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l">P0</div><div class="v" data-i18n="relay.a2v1">沙盒逃逸</div></div>
+              <div class="mk-item"><div class="l">P1</div><div class="v" data-i18n="relay.a2v2">记忆编译</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="relay.a2m2">钉在桌面了，数据也查好了。</div>
+          <div class="act-tag" data-i18n="relay.a2tag">💼 工作助手 · 桌面</div>
+        </div>
+      </div>
+      <div class="act night rv">
+        <div class="act-top">
+          <div class="act-time" data-i18n="relay.t3">22:00 · 晚上沙发</div>
+          <div class="act-title" data-i18n="relay.t3t">聊天里说一句，Ta记住了，明天桌面上见</div>
+        </div>
+        <div class="act-body">
+          <div class="mk-msg me" data-i18n="relay.a3m1">明天那份方案帮我把语气改软点</div>
+          <div class="mk-msg them" data-i18n="relay.a3m2">改好了，请过目，还有哪里要修改的么？</div>
+          <div class="mk-msg them" data-i18n="relay.a3m3">没改的我先存，明天你来了直接取。</div>
+          <div class="act-tag" data-i18n="relay.a3tag">💬 IM · 发给桌面Agent</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Collaboration -->
+<section class="sec" id="collab">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:48px">
+      <div class="sec-tag" data-i18n="collab.tag1">跨端接力</div>
+      <h2 class="sec-title" data-i18n="collab.title1">人出门了，活不会断</h2>
+      <p class="sec-sub" data-i18n="collab.sub1">你正在电脑上干活，突然要出门。手机打个命令，把活儿递过去，Ta继续跑，你随时看，随时改。</p>
+    </div>
+    <div class="collab rv" style="margin-bottom:48px">
+      <div class="collab-text">
+        <p data-i18n="collab.c1p1">不用等回家再继续。手机打个命令，桌面上的 Agent 就交到你手里。</p>
+        <p data-i18n="collab.c1p2">Ta在电脑上写到一半的报告、查到一半的数据、跑着一半的任务，原封不动接着来。</p>
+      </div>
+      <div class="collab-visual">
+        <div class="collab-channel" data-i18n="collab.channel1">💻 桌面端 → 📱 手机</div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">管</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n1">管家 · 桌面</div>
+            <div class="tx" data-i18n="collab.tx1">报告我写着，你忙你的，有什么随时和我说。</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">梦</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n2">你 · 手机</div>
+            <div class="tx" data-i18n="collab.tx2">/rc 接管桌面</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">管</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n3">管家 · 手机</div>
+            <div class="tx" data-i18n="collab.tx3">拿到你的任务了。报告继续写，数据也在查。</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#00b894,#55efc4)">健</div>
+          <div class="ct">
+            <div class="nm m" data-i18n="collab.n4">健康助理 · 同设备</div>
+            <div class="tx" data-i18n="collab.tx4">你今天步数还差 2000，要不要走路去地铁站？</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv" style="margin-bottom:48px">
+      <div class="sec-tag" data-i18n="collab.tag2">拉群协作</div>
+      <h2 class="sec-title" data-i18n="collab.title2">有贾维斯，你也能组一支队伍</h2>
+      <p class="sec-sub" data-i18n="collab.sub2">不是一个助手在干活，是一群。创建多个 Agent，各有独立记忆和人格。拉一个群，Ta们自己分工。</p>
+    </div>
+    <div class="collab rv">
+      <div class="collab-text">
+        <p data-i18n="collab.c2p1">你负责下指令，Ta们负责拆解和执行。不同角色的 Agent 在同一个群里协作，还能跨团队，跨设备接力。</p>
+        <p data-i18n="collab.c2p2">从"一个Ta"开始，慢慢长出"一支队伍"。</p>
+      </div>
+      <div class="collab-visual">
+        <div class="collab-channel" data-i18n="collab.channel2"><span class="h">#</span> 官网打磨</div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#fd79a8,#fab1a0)">梦</div>
+          <div class="ct">
+            <div class="nm l" data-i18n="collab.n5">梦天</div>
+            <div class="tx" data-i18n="collab.tx5">IM 卡还得打磨下，只和 Agent 对话了，没有和真人对话的场景</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#0984e3,#74b9ff)">叙</div>
+          <div class="ct">
+            <div class="nm s" data-i18n="collab.n6">林叙</div>
+            <div class="tx" data-i18n="collab.tx6">入口先讲关系不先讲安全，画面要跟上</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">简</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n7">苏简</div>
+            <div class="tx" data-i18n="collab.tx7">主句加"没有第三双眼睛"，标签排成一排胶囊</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#00b894,#55efc4)">莫</div>
+          <div class="ct">
+            <div class="nm m" data-i18n="collab.n8">老莫</div>
+            <div class="tx" data-i18n="collab.tx8">同步不是问题，先把权限边界定清楚。</div>
+          </div>
+        </div>
+        <div class="collab-msg" style="margin-left:16px;padding:10px;background:var(--bg-elev);border-radius:10px;border-left:3px solid var(--accent-soft)">
+          <div class="ct"><div class="tx" data-i18n="collab.tx9">六个人，一个群，一下午磨出一页。</div></div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:32px;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;font-size:14px;color:var(--text-dim);line-height:1.6" data-i18n="collab.note">🔊 给每个助手配上不同的声音，消息自动播放，Ta们在群聊，你都不用看，听就知道是谁在说话。</p>
+  </div>
+</section>
+
+<!-- Security -->
+<section class="sec" id="security" style="background:var(--bg-soft)">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="security.tag">安全</div>
+      <h2 class="sec-title" data-i18n="security.title">你的数据，只属于你</h2>
+      <p class="sec-sub" data-i18n="security.sub">Agent 能操作你的电脑，意味着你需要在任何时候掌控Ta的权限。每一层都替你挡着，每一步敏感操作都要你点头。</p>
+    </div>
+    <div class="sec-grid">
+      <div class="sec-item rv">
+        <div class="si">🛡</div>
+        <h3 data-i18n="security.s1t">双层沙盒</h3>
+        <p data-i18n="security.s1">应用层 PathGuard 四级访问控制 + 操作系统级沙盒（macOS Seatbelt / Linux Bubblewrap / Windows restricted token）。Agent 的权限在你的掌控之中。</p>
+      </div>
+      <div class="sec-item rv">
+        <div class="si">🔒</div>
+        <h3 data-i18n="security.s2t">本地优先</h3>
+        <p data-i18n="security.s2">数据存在你本机，不依赖云。可以选择纯本地运行，无惧任何隐私风险。你的记忆、你的对话、你的文件，都在你手里。</p>
+      </div>
+      <div class="sec-item rv">
+        <div class="si">✅</div>
+        <h3 data-i18n="security.s3t">敏感操作确认</h3>
+        <p data-i18n="security.s3">写文件、执行命令、网络请求，每一步都要你点头。平时只读访问系统文件，写入和删除限制在工作目录与受控数据目录。</p>
+      </div>
+      <div class="sec-item rv">
+        <div class="si">📖</div>
+        <h3 data-i18n="security.s4t">完全开源</h3>
+        <p data-i18n="security.s4">桌面端 Apache 2.0，移动端 GPL v3，IM AGPL 3.0。代码可审计，社区可监督。你不放心可以自己看每一行代码。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec cta" id="download">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="cta.tag">开始</div>
+      <h2 data-i18n="cta.title">让一个真正属于你的<br>AI 助手住进你的生活</h2>
+      <p data-i18n="cta.sub">免费，开源，跨平台。你的数据在你本机，你的 Agent 有自己的名字和记忆。</p>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:15px" data-i18n="cta.sub2">拥有一个贾维斯，无论从手机、平板，还是电脑开始。</p>
+      <div class="cta-btns">
+        <a href="download.html" class="btn-p" data-i18n="cta.btn1">下载桌面端 →</a>
+        <a href="download.html" class="btn-g" data-i18n="cta.btn2">获取移动端</a>
+      </div>
+      <div class="cta-plats">
+        <span>🍎 macOS</span><span>🪟 Windows</span><span>🐧 Linux</span><span>📱 iOS</span><span>🤖 Android</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-brand"><img src="bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</div>
+      <div class="foot-links">
+        <a href="https://github.com/mengtian999/Bitjarvis" data-i18n="foot.github">GitHub</a>
+        <a href="download.html" data-i18n="foot.download">下载</a>
+      </div>
+    </div>
+    <div class="foot-copy" data-i18n="foot.copy">Apache 2.0 (桌面端) · GPL v3 (移动端) · AGPL 3.0 (IM)<br>© 2026 Bit Jarvis · Made with care.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  if(typeof window.__translations==='undefined'||!window.__translations){
+    console.warn('[i18n] translations missing');
+    return;
+  }
+  var translations=window.__translations;
+  var LANGS=['zh-CN','zh-TW','en','ja','ko'];
+  var LANG_SHORT={'zh-CN':'中','zh-TW':'繁','en':'EN','ja':'日','ko':'한'};
+
+  function detectLang(){
+    try{
+      var stored=localStorage.getItem('bitjarvis_lang');
+      if(stored&&LANGS.indexOf(stored)>=0) return stored;
+      var nav=(navigator.language||'zh-CN').split('-')[0];
+      if(nav==='zh') return 'zh-CN';
+      if(nav==='en') return 'en';
+      if(nav==='ja') return 'ja';
+      if(nav==='ko') return 'ko';
+    }catch(e){}
+    return 'zh-CN';
+  }
+  function detectTheme(){
+    try{
+      var s=localStorage.getItem('bitjarvis_theme');
+      if(s==='light'||s==='dark') return s;
+      if(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
+    }catch(e){}
+    return 'dark';
+  }
+  function applyLang(lang){
+    var dict=translations[lang]||translations['zh-CN']||{};
+    document.documentElement.lang=lang;
+    document.documentElement.setAttribute('data-lang',lang);
+    var nodes=document.querySelectorAll('[data-i18n]');
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i];
+      var key=n.getAttribute('data-i18n');
+      var v=dict[key];
+      if(v!=null) n.innerHTML=v;
+    }
+    var meta=document.querySelector('meta[name="description"]');
+    if(meta&&dict['desc']) meta.setAttribute('content',dict['desc']);
+    if(dict['title']) document.title=dict['title'];
+    var ll=document.getElementById('langLabel');
+    if(ll) ll.textContent=LANG_SHORT[lang]||'中';
+    var opts=document.querySelectorAll('.lang-option');
+    for(var j=0;j<opts.length;j++){
+      var code=opts[j].getAttribute('data-code');
+      var chk=opts[j].querySelector('.lo-check');
+      if(code===lang){opts[j].classList.add('active');if(chk)chk.textContent='✓';}
+      else{opts[j].classList.remove('active');if(chk)chk.textContent='';}
+    }
+    try{localStorage.setItem('bitjarvis_lang',lang);}catch(e){}
+  }
+  function setTheme(theme){
+    document.documentElement.setAttribute('data-theme',theme);
+  }
+  function applyTheme(theme){
+    setTheme(theme);
+    try{localStorage.setItem('bitjarvis_theme',theme);}catch(e){}
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    var l0=detectLang();
+    applyLang(l0);
+
+    // lang dropdown
+    var lb=document.getElementById('langBtn');
+    var lm=document.getElementById('langMenu');
+    if(lb&&lm){
+      lb.addEventListener('click',function(e){e.stopPropagation();lm.classList.toggle('open');});
+      var ops=lm.querySelectorAll('.lang-option');
+      for(var i=0;i<ops.length;i++){
+        ops[i].addEventListener('click',function(){
+          var code=this.getAttribute('data-code');
+          applyLang(code);lm.classList.remove('open');
+        });
+      }
+      document.addEventListener('click',function(e){
+        if(!lb.contains(e.target)&&!lm.contains(e.target)) lm.classList.remove('open');
+      });
+    }
+    // theme toggle
+    var tt=document.getElementById('themeToggle');
+    if(tt) tt.addEventListener('click',function(){
+      var cur=document.documentElement.getAttribute('data-theme')||'dark';
+      applyTheme(cur==='dark'?'light':'dark');
+    });
+    // follow system theme live (only when user hasn't manually chosen)
+    var mq=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');
+    if(mq&&mq.addEventListener){
+      mq.addEventListener('change',function(e){
+        try{if(!localStorage.getItem('bitjarvis_theme')) setTheme(e.matches?'light':'dark');}catch(err){}
+      });
+    }
+  });
+
+  // Scroll reveal
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});
+  },{threshold:.1});
+  document.querySelectorAll('.rv').forEach(function(el){obs.observe(el);});
+
+  // Nav bg
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){
+    if(!nav) return;
+    var cur=document.documentElement.getAttribute('data-theme')||'dark';
+    var sc=window.scrollY>40;
+    if(cur==='dark') nav.style.background=sc?'rgba(10,10,15,.88)':'rgba(10,10,15,.72)';
+    else nav.style.background=sc?'rgba(255,255,255,.92)':'rgba(255,255,255,.72)';
+  });
+})();
+</script>
+</body>
+</html>
