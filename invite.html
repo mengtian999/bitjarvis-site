@@ -6,7 +6,7 @@
 <title data-i18n="title">Bit Jarvis — 邀请</title>
 <meta name="description" data-i18n-desc="desc" content="你被邀请加入 Bit Jarvis">
 <meta name="theme-color" content="#0a0a0f">
-<link rel="icon" href="bitjarvis.png" type="image/png">
+<link rel="icon" href="https://www.bitjarvis.chat/bitjarvis.png" type="image/png">
 <script>
 // Anti-theme-flash: set data-theme before first paint, based on localStorage or OS preference.
 (function(){
@@ -46,10 +46,11 @@ var I18N={
     dl_cta:'下载',
     dl_visit:'访问',
     noapp_t:'没找到 Bit Jarvis？',
-    noapp_d:'如果刚才弹窗让你「在浏览器打开」，或者 App 没反应，先点上面的下载按钮装一下。装好了回来，粘贴这条 scheme 到浏览器地址栏就能唤起：',
+    noapp_d:'如果刚才弹窗让你「在浏览器打开」，或者 App 没反应，先点上面的下载按钮安装。安装完成后点击下方按钮重新唤起，或复制链接：',
+    retry_cta:'重新尝试唤起',
     qr_hint:'用 Bit Jarvis 扫码，直接加好友',
     copy:'复制',
-    copied:'已复制 · 粘贴到浏览器地址栏打开',
+    copied:'已复制唤起链接',
     copyManual:'长按复制上方链接',
     web_t:'还没装 App？',
     web_d:'先用浏览器登录，聊几句熟悉一下',
@@ -83,10 +84,11 @@ var I18N={
     dl_cta:'下載',
     dl_visit:'訪問',
     noapp_t:'沒找到 Bit Jarvis？',
-    noapp_d:'如果剛剛彈窗讓你「在瀏覽器打開」，或者 App 沒反應，先點上面的下載按鈕裝一下。裝好了回來，粘貼這條 scheme 到瀏覽器位址列就能喚起：',
+    noapp_d:'如果剛剛彈窗讓你「在瀏覽器打開」，或者 App 沒反應，先點上面的下載按鈕安裝。安裝完成後點擊下方按鈕重新喚起，或複製連結：',
+    retry_cta:'重新嘗試喚起',
     qr_hint:'用 Bit Jarvis 掃碼，直接加好友',
     copy:'複製',
-    copied:'已複製 · 粘貼到瀏覽器位址列打開',
+    copied:'已複製喚起連結',
     copyManual:'長按複製上方連結',
     web_t:'還沒裝 App？',
     web_d:'先用瀏覽器登入，聊幾句熟悉一下',
@@ -120,10 +122,11 @@ var I18N={
     dl_cta:'Download',
     dl_visit:'Visit',
     noapp_t:"Can't find Bit Jarvis?",
-    noapp_d:'If the popup asked you to "open in browser" or the app didn\'t respond, install the app first. Then paste this scheme into your browser address bar:',
+    noapp_d:'If the popup asked you to "open in browser" or the app didn\'t respond, install the app first. After installing, click below to launch or copy the link:',
+    retry_cta:'Try Opening Again',
     qr_hint:'Scan with Bit Jarvis to add as friend',
     copy:'Copy',
-    copied:'Copied · Paste into browser address bar',
+    copied:'Link copied',
     copyManual:'Long-press to copy the link above',
     web_t:'No app yet?',
     web_d:'Sign in with your browser first',
@@ -157,10 +160,11 @@ var I18N={
     dl_cta:'ダウンロード',
     dl_visit:'訪問',
     noapp_t:'Bit Jarvis が見つかりません？',
-    noapp_d:'ポップアップで「ブラウザで開く」が表示された場合や App が反応しない場合は、まずインストールしてください。その後、この scheme をブラウザのアドレスバーに貼り付けると起動できます：',
+    noapp_d:'ポップアップで「ブラウザで開く」が表示された場合や App が反応しない場合は、まずインストールしてください。インストール後、以下をクリックして起動するかリンクをコピーしてください：',
+    retry_cta:'もう一度起動する',
     qr_hint:'Bit Jarvis でスキャンして直接友達追加',
     copy:'コピー',
-    copied:'コピー済み · ブラウザのアドレスバーに貼り付けて開く',
+    copied:'リンクをコピーしました',
     copyManual:'上部のリンクを長押ししてコピー',
     web_t:'まだ App が無い？',
     web_d:'まずブラウザでログインしてみましょう',
@@ -194,10 +198,11 @@ var I18N={
     dl_cta:'다운로드',
     dl_visit:'방문',
     noapp_t:'Bit Jarvis를 찾을 수 없나요?',
-    noapp_d:'팝업에서 "브라우저에서 열기"가 표시되거나 App이 반응하지 않으면 먼저 설치하세요. 그런 다음 이 scheme을 브라우저 주소창에 붙여넣으면 시작됩니다:',
+    noapp_d:'팝업에서 "브라우저에서 열기"가 표시되거나 App이 반응하지 않으면 먼저 설치하세요. 설치 후 아래를 클릭하여 실행하거나 링크를 복사하세요:',
+    retry_cta:'다시 실행 시도',
     qr_hint:'Bit Jarvis로 스캔하여 바로 친구 추가',
     copy:'복사',
-    copied:'복사됨 · 브라우저 주소창에 붙여넣어 열기',
+    copied:'링크가 복사되었습니다',
     copyManual:'위 링크를 길게 눌러 복사',
     web_t:'아직 App이 없나요?',
     web_d:'먼저 브라우저로 로그인해 보세요',
@@ -351,10 +356,10 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
 .copy-btn:hover{border-color:var(--accent-soft);color:var(--accent-soft)}
 
 /* QR code section */
-.qr-section{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:20px;margin-top:20px;border-top:1px solid var(--border);width:100%}
-.qr-card{padding:12px;background:var(--bg-elev);border-radius:12px;display:flex;align-items:center;justify-content:center}
-.qr-img{display:block;width:min(120px,32%);height:auto;aspect-ratio:1;image-rendering:pixelated;image-rendering:crisp-edges}
-.qr-hint{font-size:12px;color:var(--text-faint);text-align:center;max-width:280px;line-height:1.5}
+.qr-section{display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:24px;margin-top:24px;border-top:1px solid var(--border);width:100%}
+.qr-card{padding:16px;background:#ffffff;border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.qr-img{display:block;width:200px;max-width:80vw;height:auto;aspect-ratio:1;image-rendering:pixelated;image-rendering:crisp-edges}
+.qr-hint{font-size:13px;color:var(--text-dim);text-align:center;max-width:320px;line-height:1.6}
 
 /* Web alternate */
 .web-alt{max-width:640px;margin:0 auto;padding:0 24px}
@@ -402,7 +407,7 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
 <!-- Nav -->
 <nav class="nav">
   <div class="nav-in">
-    <a href="/" class="nav-brand"><img src="bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</a>
+    <a href="/" class="nav-brand"><img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</a>
     <div class="nav-actions">
       <div class="lang-wrap">
         <button class="lang-btn" id="langBtn" aria-label="Select language">
@@ -430,7 +435,7 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
   <div class="hero-bg"></div>
   <div class="hero-c">
     <div class="hero-badge"><span class="dot"></span><span data-i18n="badge">Bit Jarvis 邀请</span></div>
-    <img src="bitjarvis.png" alt="Bit Jarvis" class="hero-logo">
+    <img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis" class="hero-logo">
     <h1><span data-i18n="title1">打开 Bit Jarvis，</span><span class="accent" data-i18n="title2">继续对话</span></h1>
     <p class="hero-sub" data-i18n="sub">你收到一条来自 Bit Jarvis 的邀请。装好了直接打开 App，没装先看看下面。</p>
   </div>
@@ -517,7 +522,13 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
         <svg class="svg-ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span data-i18n="noapp_t">没找到 Bit Jarvis？</span>
       </div>
-      <p class="noapp-body" data-i18n="noapp_d">如果刚才弹窗让你「在浏览器打开」，或者 App 没反应，先点上面的下载按钮装一下。装好了回来，粘贴这条 scheme 到浏览器地址栏就能唤起：</p>
+      <p class="noapp-body" data-i18n="noapp_d">如果刚才弹窗让你「在浏览器打开」，或者 App 没反应，先点上面的下载按钮安装。安装完成后点击下方按钮重新唤起，或复制链接：</p>
+      <div class="copy-row" style="margin-bottom: 12px;">
+        <button id="retryOpenBtn" class="btn-p" style="width:100%;padding:12px 20px;">
+          <svg class="svg-ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span id="retryOpenText" data-i18n="retry_cta">重新尝试唤起</span>
+        </button>
+      </div>
       <div class="copy-row">
         <input id="copyInput" class="copy-input" readonly>
         <button id="copyBtn" class="copy-btn">
@@ -537,7 +548,7 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
 <footer class="foot">
   <div class="wrap foot-in">
     <div class="foot-brand">
-      <img src="bitjarvis.png" alt="Bit Jarvis">
+      <img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis">
       <span>Bit Jarvis</span>
     </div>
     <div class="foot-links">
@@ -555,8 +566,13 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
 (function(){
   var lang=document.documentElement.getAttribute('data-lang')||'zh-CN';
   if(!I18N[lang]) lang='zh-CN';
-  var SCHEME='im.bitjarvis://chat/';
+  var isDesktop = !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var SCHEME_MOBILE = 'im.bitjarvis://chat/';
+  var SCHEME_DESKTOP = 'jarvis://im/';
+  var SCHEME = isDesktop ? SCHEME_DESKTOP : SCHEME_MOBILE;
+  var WEB = 'https://bitjarvis.chat/im/';
   var schemeUrl='';
+  var webUrl='';
 
   // Theme
   function setTheme(t){
@@ -700,12 +716,13 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
   }
 
   schemeUrl=SCHEME+id;
+  webUrl=WEB+id;
   document.getElementById('copyInput').value=schemeUrl;
   try{
     var qr=qrcode(0,'M');
-    qr.addData(schemeUrl);
+    qr.addData(webUrl);
     qr.make();
-    document.getElementById('qrImg').src=qr.createDataURL(3,8);
+    document.getElementById('qrImg').src=qr.createDataURL(6,2);
   }catch(e){console.error('QR init failed',e);}
   document.getElementById('userAvatar').textContent=initialOfId(id);
   document.getElementById('userName').textContent=displayId(id);
@@ -713,6 +730,8 @@ html[data-theme="light"] .noapp-card{background:rgba(253,203,110,.08)}
 
   btn.addEventListener('click',tryOpenApp);
   document.getElementById('copyBtn').addEventListener('click',tryCopy);
+  var retryBtn = document.getElementById('retryOpenBtn');
+  if (retryBtn) retryBtn.addEventListener('click', tryOpenApp);
 
   // 1.2s auto-try (desktop only makes sense; mobile will fallback)
   setTimeout(function(){
