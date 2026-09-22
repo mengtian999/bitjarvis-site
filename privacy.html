@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title data-i18n="title">Bit Jarvis — 隐私</title>
+<meta name="description" data-i18n-desc="desc" content="你的数据，只在你设备上。">
+<meta name="theme-color" content="#0a0a0f">
+<link rel="icon" href="https://www.bitjarvis.chat/bitjarvis.png" type="image/png">
+<script>
+(function(){try{var t=localStorage.getItem('bitjarvis_theme');if(!t||t!=='light'&&t!=='dark'){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg-soft:#111118;--bg-card:#161620;--bg-elev:#1c1c2a;--bg-elev2:#222233;--text:#e8e8f0;--text-dim:#8e8ea0;--text-faint:#4a4a5c;--accent:#6c5ce7;--accent-soft:#a29bfe;--accent-glow:rgba(108,92,231,.12);--warm:#fd79a8;--warm-soft:#fab1a0;--green:#00b894;--green-soft:#55efc4;--blue:#0984e3;--blue-soft:#74b9ff;--amber:#e17055;--amber-soft:#fab1a0;--coral:#ff7675;--coral-soft:#ffa502;--border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.14);--nav-bg:rgba(10,10,15,.72);--r:16px;--r-lg:24px;--max:1180px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+html[data-theme="light"]{--bg:#fafbfc;--bg-soft:#ffffff;--bg-card:#ffffff;--bg-elev:#f4f5f7;--bg-elev2:#ececee;--text:#1a1a1e;--text-dim:#55555f;--text-faint:#8e8ea0;--border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.16);--accent-glow:rgba(108,92,231,.18);--nav-bg:rgba(255,255,255,.72)}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-in{max-width:var(--max);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.nav-brand img{width:30px;height:30px;border-radius:8px;object-fit:cover}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.theme-toggle{position:relative;width:44px;height:24px;background:var(--bg-elev2);border:1px solid var(--border-h);border-radius:100px;cursor:pointer;transition:background .2s}
+.theme-toggle .tt-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .2s;color:#fff}
+.theme-toggle .tt-knob::before{content:'🌙'}
+html[data-theme="light"] .theme-toggle .tt-knob{transform:translateX(20px);background:#fdcb6e;color:#5a4000}
+html[data-theme="light"] .theme-toggle .tt-knob::before{content:'☀️'}
+html[data-theme="dark"] .theme-toggle .tt-knob{background:var(--accent-soft);color:#fff}
+.lang-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.lang-btn:hover{border-color:var(--border-h);color:var(--text)}
+.lang-btn .lb-arrow{font-size:8px;transition:transform .2s}
+.lang-menu{opacity:0;visibility:hidden;transform:translateY(-4px);transition:all .2s;position:absolute;top:calc(100% + 6px);right:0;min-width:150px;background:var(--bg-card);border:1px solid var(--border-h);border-radius:10px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.lang-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;font-size:13px;color:var(--text-dim);border-radius:8px;cursor:pointer;transition:all .15s}
+.lang-option:hover{background:var(--bg-elev);color:var(--text)}
+.lang-option.active{color:var(--accent-soft);font-weight:600}
+.lang-option .lo-check{font-size:11px}
+.lang-wrap{position:relative}
+.nav-back{padding:6px 14px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text-dim);transition:all .2s}
+.nav-back:hover{border-color:var(--border-h);color:var(--text)}
+.hero{padding:140px 0 60px;position:relative;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 70%);top:10%;left:50%;transform:translateX(-50%);filter:blur(80px)}
+.hero-bg::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(253,121,168,.06),transparent 70%);bottom:0;right:15%;filter:blur(100px)}
+.hero-c{position:relative;z-index:1;padding:0 24px;max-width:820px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;font-size:13px;color:var(--text-dim);margin-bottom:28px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-logo{width:64px;height:64px;border-radius:18px;margin:0 auto 24px;box-shadow:0 0 60px var(--accent-glow);object-fit:cover}
+.hero h1{font-size:clamp(32px,5.5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.15;margin-bottom:20px;text-wrap:balance}
+.hero h1 .accent{background:linear-gradient(135deg,var(--accent-soft),var(--warm-soft));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--text-dim);max-width:600px;margin:0 auto;line-height:1.7}
+.sec{padding:56px 0;position:relative}
+.sec-tag{font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;text-align:center}
+.sec-title{font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:-.5px;text-align:center;margin-bottom:12px}
+.sec-desc{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 40px;text-align:center;line-height:1.7}
+.commit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1080px;margin:0 auto;padding:0 24px}
+.commit{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;position:relative;overflow:hidden;transition:all .3s}
+.commit:hover{border-color:var(--border-h);transform:translateY(-3px)}
+.commit::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--warm))}
+.commit-num{font-family:var(--mono);font-size:11px;color:var(--accent-soft);letter-spacing:1.5px;margin-bottom:14px}
+.commit-ic{width:44px;height:44px;border-radius:12px;background:rgba(108,92,231,.15);color:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.commit h3{font-size:19px;font-weight:700;margin-bottom:10px}
+.commit p{font-size:14px;color:var(--text-dim);line-height:1.7;margin:0}
+.dev-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1080px;margin:0 auto;padding:0 24px}
+.dev-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px}
+.dev-head{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.dev-ic{width:36px;height:36px;border-radius:10px;background:var(--bg-elev);display:flex;align-items:center;justify-content:center;font-size:16px}
+.dev-title{font-size:18px;font-weight:700}
+.info-row{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:10px 0;border-bottom:1px dashed var(--border);font-size:13px;line-height:1.6}
+.info-row:last-child{border-bottom:0}
+.info-k{font-family:var(--mono);font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.08em;padding-top:2px}
+.info-v{color:var(--text-dim)}
+.info-v code{font-family:var(--mono);font-size:12px;background:var(--bg-elev);padding:1px 6px;border-radius:4px;color:var(--text)}
+.neg-list{list-style:none;margin:0 auto;padding:0 24px;max-width:820px;display:flex;flex-direction:column;gap:10px}
+.neg-list li{padding:14px 20px 14px 46px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;font-size:14px;color:var(--text);line-height:1.6;position:relative;transition:all .2s}
+.neg-list li:hover{border-color:var(--border-h)}
+.neg-list li::before{content:'✕';position:absolute;left:16px;top:14px;color:var(--coral);font-weight:700;font-family:var(--mono)}
+.tp-list{display:flex;flex-direction:column;gap:0;max-width:960px;margin:0 auto;padding:0 24px;border-top:1px solid var(--border)}
+.tp{display:grid;grid-template-columns:200px 180px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--border);align-items:baseline}
+.tp-name{font-size:15px;font-weight:600;color:var(--text)}
+.tp-what{font-family:var(--mono);font-size:11px;color:var(--accent-soft);text-transform:uppercase;letter-spacing:.08em}
+.tp-why{color:var(--text-dim);font-size:13px;line-height:1.7}
+.security-card{max-width:820px;margin:0 auto;padding:0 24px}
+.security-body{background:linear-gradient(180deg,rgba(108,92,231,.04),var(--bg-card));border:1px solid var(--border-h);border-radius:var(--r-lg);padding:32px}
+.security-body p{font-size:15px;color:var(--text-dim);line-height:1.85;margin-bottom:16px}
+.security-body p:last-child{margin-bottom:0}
+.security-body p em{color:var(--text);font-style:normal;font-weight:600}
+.security-body p code{font-family:var(--mono);font-size:13px;background:var(--bg-elev);padding:1px 6px;border-radius:4px;color:var(--text)}
+.contact-card{max-width:720px;margin:0 auto;padding:0 24px;text-align:center}
+.contact-body{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:36px}
+.contact-body p{font-size:14px;color:var(--text-dim);line-height:1.75;margin-bottom:18px}
+.contact-links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px}
+.contact-links a{padding:10px 20px;background:var(--bg-elev);border:1px solid var(--border-h);border-radius:10px;font-size:13px;color:var(--text);font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.contact-links a:hover{border-color:var(--accent-soft);color:var(--accent-soft);transform:translateY(-2px)}
+.foot{border-top:1px solid var(--border);padding:40px 0;margin-top:80px}
+.foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.foot-brand img{width:24px;height:24px;border-radius:6px;object-fit:cover}
+.foot-links{display:flex;gap:20px;flex-wrap:wrap}
+.foot-links a{font-size:13px;color:var(--text-dim);transition:color .2s}
+.foot-links a:hover{color:var(--text)}
+.foot-copy{font-size:12px;color:var(--text-faint);text-align:center;margin-top:20px;line-height:1.7}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+.svg-ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;display:inline-block;vertical-align:-.15em}
+@media(max-width:900px){.commit-grid{grid-template-columns:1fr}.dev-grid{grid-template-columns:1fr}.tp{grid-template-columns:1fr;gap:6px}.tp-what{margin:2px 0}}
+@media(max-width:560px){.nav{padding:0 12px}.nav-in{padding:0 12px}.nav-back{display:none}.hero{padding:120px 0 40px}.hero h1{font-size:32px}.sec{padding:40px 0}.commit{padding:24px}.dev-panel{padding:22px}.security-body{padding:24px}.contact-body{padding:24px}.foot-in{flex-direction:column;align-items:center;text-align:center}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+<script>
+var I18N={
+  'zh-CN':{
+    title:'Bit Jarvis — 隐私',
+    desc:'你的数据，只在你设备上。',
+    nav_back:'返回官网',
+    badge:'隐私政策 · 写给每一个把 Jarvis 打开的人',
+    hero_t1:'你的数据，',
+    hero_t2:'只在你设备上。',
+    hero_sub:'这份说明写给每一个把 Jarvis 打开的人。它不是一份为合规写就的官样文章——它是我们和模型提供商之间，能替你守住的那条线，以及这条线之外你还能自己决定什么。',
+    s1_tag:'承诺',
+    s1_title:'三条我们不会动摇的事',
+    s1_desc:'如果下面这三条任何一条不成立，这份政策就不成立。',
+    c1_t:'本地优先',
+    c1_d:'对话、记忆、文件、截图、脚本输出——都留在你自己的机器上。默认纯本地运行，不依赖任何云服务，也没有「注册账号」这步。',
+    c2_t:'自带 + BYOK',
+    c2_d:'装完就能用——我们自建的模型网关内置了几组免费模型，不需要你提供任何 key。也支持你自己的 API key（Anthropic / OpenAI / Google / Ollama / 任何 OpenAI 兼容端点），走 BYOK 时流量直达 provider，不经网关。',
+    c3_t:'明文开源',
+    c3_d:'桌面端 Apache 2.0，移动端 GPLv3。你可以一行一行看我们写了什么、读了什么、传了什么——审计的权利在你手上。',
+    s2_tag:'数据在哪里',
+    s2_title:'桌面 · 手机',
+    s2_desc:'数据不是「存在云端某个角落」，是落在你明确知道的位置。',
+    d_t:'桌面端',
+    d_k1:'数据目录',d_v1:'<code>~/.jarvis</code>（Windows 上为用户目录下的默认位置）',
+    d_k2:'凭据存储',d_v2:'明文文件，Owner-only 权限（macOS / Linux 生效；Windows 依赖 NTFS ACL，应用不做权限修改）',
+    d_k3:'沙盒',d_v3:'PathGuard 四级访问控制 + 操作系统级沙盒（Seatbelt / Bubblewrap / Restricted Token）',
+    d_k4:'备份',d_v4:'仅在数据迁移期间生成，超过 90 天自动清理，清理前校验主目录可读',
+    d_k5:'网络出口',d_v5:'内置的模型网关（含免费模型）+ 你配置的模型提供商端点（BYOK 模式）+ 可选的 IM homeserver',
+    m_t:'手机端',
+    m_k1:'数据目录',m_v1:'iOS / Android 各自的 App 沙盒内，卸载即消失',
+    m_k2:'CloudKit',m_v2:'仅同步「角色」元数据（名字 / 头像 / 说话风格）；不含会话、不含记忆、不含工具调用记录',
+    m_k3:'沙盒',m_v3:'沙盒化 Alpine Linux（iOS: iSH / Android: PRoot）——Agent 能装包、跑脚本、操作真实文件，都在容器里',
+    m_k4:'设备集成',m_v4:'健康、日历、提醒、联系人、HomeKit、蓝牙等；权限由操作系统逐条授权，随时可收回',
+    m_k5:'凭据存储',m_v5:'iOS Keychain / Android Keystore，OS 级加密',
+    s3_tag:'不做的事',
+    s3_title:'五条我们主动放弃的事',
+    s3_desc:'写「我们不做」比写「我们做」更难。因为前者意味着真的什么都不做。',
+    n1:'不埋点、不采集使用数据、不上传任何日志或崩溃报告',
+    n2:'不把对话内容作为训练数据（模型提供商的默认政策仍以其自身条款为准）',
+    n4:'不追踪位置、通讯录、相册——除非你在操作系统里主动给了权限',
+    n5:'不接广告 SDK、不做数据交易、不卖给任何第三方',
+    n6:'不设置强制注册、不索要邮箱、不发送推送营销邮件',
+    s4_tag:'第三方',
+    s4_title:'我们不得不依赖的第三方',
+    s4_desc:'每一项都标了「传什么」和「为什么不传更多」。',
+    tp0_n:'Jarvis 模型网关（自建）',tp0_w:'免费模型的 prompt 与对话',tp0_d:'内置的免费模型走自建网关。你无需提供任何 key；网关在服务器端持有对应供应商的凭据并做路由。BYOK 模式下你的 prompt 直达你配置的 provider，不经过这个网关。',
+    tp1_n:'模型提供商',tp1_w:'你的 prompt 与对话',tp1_d:'你配置的 provider（Anthropic / OpenAI / Google / Ollama / 其他 OpenAI 兼容端点）。key 是你自己的，流量直达，我们不经手；Ollama 走 127.0.0.1 本机回环。',
+    tp2_n:'Jarvis IM（可选）',tp2_w:'IM 消息',tp2_d:'跨端接力时启用，走自建 Matrix homeserver（bitjarvis.chat）。协议与代码完全开源（AGPL-3.0）。不启用即不启用。',
+    tp3_n:'CloudKit',tp3_w:'角色元数据',tp3_d:'仅在 iOS 上，用于跨设备同步角色（名字 / 头像 / 说话风格）。不含会话内容、不含记忆、不含工具调用记录。关闭 iCloud 同步即停用。',
+    tp4_n:'操作系统原生服务',tp4_w:'你显式授权的资源',tp4_d:'健康、日历、联系人、HomeKit、蓝牙等。每一项访问都遵循操作系统的授权弹窗；权限收回即刻失效。',
+    tp5_n:'GitHub / TestFlight',tp5_w:'下载与 beta 分发的元数据',tp5_d:'仅在你主动 clone / 下载安装包时产生，不参与运行时数据流。',
+    s5_tag:'沙盒与安全',
+    s5_title:'Agent 是工具，不是神',
+    sp1:'<em>Agent 是工具，不是神。</em>所以每一步敏感操作都设计成「先问你」——写文件、执行命令、网络请求、访问私域，都要你点头。这个「先问」的机制，是隐私承诺能被真正执行的前提。',
+    sp2:'桌面端有两层：应用层的 <code>PathGuard</code> 四级访问控制 + 操作系统级沙盒（macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token）。移动端有一层：沙盒化的 Alpine Linux（iOS iSH / Android PRoot），Agent 装包跑脚本都在容器里，不越出 App 边界。',
+    sp3:'已知边界写在桌面端 SECURITY.md 里——比如 Windows 上无法用 POSIX 权限位、凭据以明文存储、同一用户账号下的其他程序仍能读。这些是我们主动告知、而非藏起来的。',
+    s6_tag:'变更与联系',
+    s6_title:'这份政策什么时候改',
+    sp4:'只在真的发生变化时改：新增了必须传出的数据类型、更换了默认的模型提供商或 IM homeserver、沙盒结构发生调整。改动会在 GitHub release notes 中标注，不做静默更新。',
+    contact_t:'有疑问？',
+    contact_sub:'我们没设置邮箱表单——因为一份好的隐私政策，应该像一份好的代码，可以直接对着仓库追问。',
+    l1:'桌面端 Issues',l2:'移动端 Issues',l3:'安全漏洞报告',
+    contact_note:'安全问题请走 private vulnerability report，72 小时内响应。',
+    footer:'© 2026 Bit Jarvis · Made with care.',
+    foot_github:'GitHub',foot_privacy:'隐私',foot_faq:'常见问题',foot_home:'首页'
+  },
+  'zh-TW':{
+    title:'Bit Jarvis — 隱私',desc:'你的資料，只在你裝置上。',
+    nav_back:'返回官網',badge:'隱私政策 · 寫給每一個把 Jarvis 開啟的人',
+    hero_t1:'你的資料，',hero_t2:'只在你裝置上。',
+    hero_sub:'這份說明寫給每一個把 Jarvis 開啟的人。它不是一份為合規寫就的官樣文章——它是我們和模型提供商之間，能替你守住的這條線，以及這條線之外你還能自己決定什麼。',
+    s1_tag:'承諾',s1_title:'三條我們不會動搖的事',s1_desc:'如果下面這三條任何一條不成立，這份政策就不成立。',
+    c1_t:'本地優先',c1_d:'對話、記憶、檔案、截圖、腳本輸出——都留在你自己的機器上。預設純本地運行，不依賴任何雲服務，也沒有「註冊帳號」這步。',
+    c2_t:'內建 + BYOK',c2_d:'裝完就能用——我們自建的模型網關內建了幾組免費模型，不需要你提供任何 key。也支援你自己的 API key（Anthropic / OpenAI / Google / Ollama / 任何 OpenAI 相容端點），走 BYOK 時流量直達 provider，不經網關。',
+    c3_t:'明文開源',c3_d:'桌面端 Apache 2.0，行動端 GPLv3。你可以一行一行看我們寫了什麼、讀了什麼、傳了什麼——審計的權利在你手上。',
+    s2_tag:'資料在哪裡',s2_title:'桌面 · 手機',s2_desc:'資料不是「存在雲端某個角落」，是落在你明確知道的位置。',
+    d_t:'桌面端',d_k1:'資料目錄',d_v1:'<code>~/.jarvis</code>（Windows 上為使用者目錄下的預設位置）',d_k2:'憑證儲存',d_v2:'明文檔案，Owner-only 權限（macOS / Linux 生效；Windows 依賴 NTFS ACL，應用不做權限修改）',d_k3:'沙盒',d_v3:'PathGuard 四級訪問控制 + 作業系統級沙盒（Seatbelt / Bubblewrap / Restricted Token）',d_k4:'備份',d_v4:'僅在資料遷移期間產生，超過 90 天自動清理，清理前校驗主目錄可讀',d_k5:'網路出口',d_v5:'內建的模型網關（含免費模型）+ 你設定的模型提供商端點（BYOK 模式）+ 可選的 IM homeserver',
+    m_t:'手機端',m_k1:'資料目錄',m_v1:'iOS / Android 各自的 App 沙盒內，卸載即消失',m_k2:'CloudKit',m_v2:'僅同步「角色」元數據（名字 / 頭像 / 說話風格）；不含對話、不含記憶、不含工具調用記錄',m_k3:'沙盒',m_v3:'沙盒化 Alpine Linux（iOS: iSH / Android: PRoot）——Agent 能裝包、跑腳本、操作真實檔案，都在容器裡',m_k4:'裝置整合',m_v4:'健康、日曆、提醒、聯絡人、HomeKit、藍牙等；權限由作業系統逐條授權，隨時可收回',m_k5:'憑證儲存',m_v5:'iOS Keychain / Android Keystore，OS 級加密',
+    s3_tag:'不做的事',s3_title:'五條我們主動放棄的事',s3_desc:'寫「我們不做」比寫「我們做」更難。因為前者意味著真的什麼都不做。',
+    n1:'不埋點、不採集使用資料、不上傳任何日誌或崩潰報告',n2:'不把對話內容作為訓練資料（模型提供商的預設政策仍以自身條款為準）',n4:'不追蹤位置、通訊錄、相簿——除非你在作業系統裡主動給了權限',n5:'不接廣告 SDK、不做資料交易、不賣給任何第三方',n6:'不設置強制註冊、不索要郵箱、不發送推送行銷郵件',
+    s4_tag:'第三方',s4_title:'我們不得不依賴的第三方',s4_desc:'每一項都標了「傳什麼」和「為什麼不傳更多」。',
+    tp0_n:'Jarvis 模型網關（自建）',tp0_w:'免費模型的 prompt 與對話',tp0_d:'內建的免費模型走自建網關。你無需提供任何 key；網關在伺服器端持有對應供應商的憑證並做路由。BYOK 模式下你的 prompt 直達你設定的 provider，不經過這個網關。',
+    tp1_n:'模型提供商',tp1_w:'你的 prompt 與對話',tp1_d:'你設定的 provider（Anthropic / OpenAI / Google / Ollama / 其他 OpenAI 相容端點）。key 是你自己的，流量直達，我們不經手；Ollama 走 127.0.0.1 本機回環。',
+    tp2_n:'Jarvis IM（可選）',tp2_w:'IM 訊息',tp2_d:'跨端接力時啟用，走自建 Matrix homeserver（bitjarvis.chat）。協議與代碼完全開源（AGPL-3.0）。不啟用即不启用。',
+    tp3_n:'CloudKit',tp3_w:'角色元數據',tp3_d:'僅在 iOS 上，用於跨裝置同步角色（名字 / 頭像 / 說話風格）。不含對話內容、不含記憶、不含工具調用記錄。關閉 iCloud 同步即停用。',
+    tp4_n:'作業系統原生服務',tp4_w:'你顯式授權的資源',tp4_d:'健康、日曆、聯絡人、HomeKit、藍牙等。每一項訪問都遵循作業系統的授權彈窗；權限收回即刻失效。',
+    tp5_n:'GitHub / TestFlight',tp5_w:'下載與 beta 分發的元數據',tp5_d:'僅在你主動 clone / 安裝套件時產生，不參與運行時資料流。',
+    s5_tag:'沙盒與安全',s5_title:'Agent 是工具，不是神',
+    sp1:'<em>Agent 是工具，不是神。</em>所以每一步敏感操作都設計成「先問你」——寫檔案、執行命令、網路請求、訪問私域，都要你點頭。這個「先問」的機制，是隱私承諾能被真正執行的前提。',
+    sp2:'桌面端有兩層：應用層的 <code>PathGuard</code> 四級訪問控制 + 作業系統級沙盒（macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token）。手機端有一層：沙盒化的 Alpine Linux（iOS iSH / Android PRoot），Agent 裝包跑腳本都在容器裡，不越出 App 邊界。',
+    sp3:'已知邊界寫在桌面端 SECURITY.md 裡——比如 Windows 上無法用 POSIX 權限位、憑證以明文儲存、同一使用者帳號下的其他程式仍能讀。這些是我們主動告知、而非藏起來的。',
+    s6_tag:'變更與聯繫',s6_title:'這份政策什麼時候改',
+    sp4:'只在真的發生變化時改：新增了必須傳出的資料類型、更換了預設的模型提供商或 IM homeserver、沙盒結構發生調整。改動會在 GitHub release notes 中標注，不做靜默更新。',
+    contact_t:'有疑問？',contact_sub:'我們沒設置郵箱表單——因為一份好的隱私政策，應該像一份好的代碼，可以直接對著倉庫追問。',
+    l1:'桌面端 Issues',l2:'手機端 Issues',l3:'安全漏洞報告',contact_note:'安全問題請走 private vulnerability report，72 小時內回應。',
+    footer:'© 2026 Bit Jarvis · Made with care.',foot_github:'GitHub',foot_privacy:'隱私',foot_faq:'常見問題',foot_home:'首頁'
+  },
+  'en':{
+    title:'Bit Jarvis — Privacy',desc:'Your data, on your device only.',
+    nav_back:'Back to site',badge:'Privacy Policy · For everyone who opens Jarvis',
+    hero_t1:'Your data,',hero_t2:'on your device only.',
+    hero_sub:'This note is for everyone who opens Jarvis. It is not a compliance document. It is the line we can hold between you and your model provider — and what you can still decide on the other side of it.',
+    s1_tag:'Commitments',s1_title:'Three things we do not bend on',s1_desc:'If any of the three below breaks, this policy breaks with it.',
+    c1_t:'Local-first',c1_d:'Conversations, memory, files, screenshots, script output — all stay on your own machine. Pure local by default, no cloud dependency, and no «sign up» step.',
+    c2_t:'Built-in + BYOK',c2_d:'Works out of the box — our own model gateway ships several free models, no key required. You can also bring your own API key (Anthropic / OpenAI / Google / Ollama / any OpenAI-compatible endpoint); in BYOK mode, traffic goes straight to the provider, not through the gateway.',
+    c3_t:'Plain-Source Open',c3_d:'Desktop Apache 2.0, mobile GPLv3. You can read every line we write, what we read, what we send — the audit is yours to do.',
+    s2_tag:'Where data lives',s2_title:'Desktop · Mobile',s2_desc:'Data is not «in some corner of the cloud». It is in places you can name.',
+    d_t:'Desktop',d_k1:'Data dir',d_v1:'<code>~/.jarvis</code> (Windows: under the user profile by default)',d_k2:'Credential store',d_v2:'Plaintext files with Owner-only permissions (macOS / Linux; on Windows we rely on NTFS ACLs and do not modify them)',d_k3:'Sandbox',d_v3:'PathGuard four-level access + OS-level sandbox (Seatbelt / Bubblewrap / Restricted Token)',d_k4:'Backups',d_v4:'Only during data migrations; auto-cleaned after 90 days, verified against a readable live catalog first',d_k5:'Network egress',d_v5:'Built-in model gateway (includes free models) + your configured provider endpoints (BYOK mode) + optional IM homeserver',
+    m_t:'Mobile',m_k1:'Data dir',m_v1:'Inside the iOS / Android app sandbox; wiped on uninstall',m_k2:'CloudKit',m_v2:'Syncs «role» metadata only (name / avatar / voice); no conversations, no memory, no tool-call logs',m_k3:'Sandbox',m_v3:'Sandboxed Alpine Linux (iOS: iSH / Android: PRoot) — agents install packages and run scripts inside the container',m_k4:'Device integrations',m_v4:'Health, Calendar, Reminders, Contacts, HomeKit, Bluetooth — each permission granted and revoked through the OS',m_k5:'Credential store',m_v5:'iOS Keychain / Android Keystore, OS-level encryption',
+    s3_tag:'What we do not do',s3_title:'Five things we deliberately chose against',s3_desc:'Writing «what we do not» is harder than «what we do». Because the former means really doing nothing.',
+    n1:'No analytics, no usage collection, no log or crash uploads',n2:'No training on your conversations (each provider’s default still applies under its own terms)',n4:'No location, contacts, or photo tracking — unless you grant it at the OS',n5:'No ad SDKs, no data trading, no third-party sale',n6:'No forced sign-up, no email capture, no marketing push',
+    s4_tag:'Third parties',s4_title:'Third parties we cannot live without',s4_desc:'Each row says «what we send» and «why not more».',
+    tp0_n:'Jarvis Model Gateway (self-hosted)',tp0_w:'Prompt and conversations for free models',tp0_d:'The free models built in run on our self-hosted gateway. No key is required from you; the gateway holds the provider credentials on the server side and does the routing. In BYOK mode your prompt goes straight to the provider you configured, not through this gateway.',
+    tp1_n:'Model provider',tp1_w:'Your prompt and conversations',tp1_d:'The provider you configured (Anthropic / OpenAI / Google / Ollama / any OpenAI-compatible endpoint). Keys are yours, traffic is direct — we never touch it. Ollama routes through 127.0.0.1 loopback.',
+    tp2_n:'Jarvis IM (optional)',tp2_w:'IM messages',tp2_d:'Enabled only for cross-device handoff. Runs on our self-hosted Matrix homeserver (bitjarvis.chat). Protocol and code are fully open (AGPL-3.0). Off by default.',
+    tp3_n:'CloudKit',tp3_w:'Role metadata',tp3_d:'iOS only, for cross-device role sync (name / avatar / voice). No conversation content, no memory, no tool-call logs. Turn off iCloud sync to disable.',
+    tp4_n:'OS-native services',tp4_w:'Resources you explicitly grant',tp4_d:'Health, Calendar, Contacts, HomeKit, Bluetooth — each gated by the OS permission dialog. Revoke to revoke immediately.',
+    tp5_n:'GitHub / TestFlight',tp5_w:'Download / beta metadata',tp5_d:'Generated only when you clone or install. Not part of the runtime data flow.',
+    s5_tag:'Sandbox & security',s5_title:'Agents are tools, not gods',
+    sp1:'<em>Agents are tools, not gods.</em>So every sensitive operation is designed to «ask first» — writing files, running commands, network calls, private access. That «ask first» is what makes the promise actually enforceable.',
+    sp2:'Desktop has two layers: application-layer <code>PathGuard</code> four-level access + OS-level sandbox (macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token). Mobile has one: sandboxed Alpine Linux (iOS iSH / Android PRoot) — agents install packages and run scripts inside the container, never past the app boundary.',
+    sp3:'Known boundaries are written down in the desktop SECURITY.md — e.g. Windows cannot use POSIX permission bits, credentials are stored plaintext, other programs under the same user account can still read them. We tell you this; we do not hide it.',
+    s6_tag:'Changes & contact',s6_title:'When this policy changes',
+    sp4:'Only when something real changes: a new data type that must leave the device, a default provider or IM homeserver swap, a sandbox restructure. Changes are noted in GitHub release notes. No silent updates.',
+    contact_t:'Questions?',contact_sub:'We do not run an email form. A good privacy policy, like good code, should let you ask the repo directly.',
+    l1:'Desktop Issues',l2:'Mobile Issues',l3:'Security report',contact_note:'Security issues via private vulnerability report; response within 72 hours.',
+    footer:'© 2026 Bit Jarvis · Made with care.',foot_github:'GitHub',foot_privacy:'Privacy',foot_faq:'FAQ',foot_home:'Home'
+  },
+  'ja':{
+    title:'Bit Jarvis — プライバシー',desc:'あなたのデータはあなたのデバイス上のみ。',
+    nav_back:'サイトに戻る',badge:'プライバシーポリシー · Jarvis を開くすべての人へ',
+    hero_t1:'あなたのデータは、',hero_t2:'あなたのデバイス上のみ。',
+    hero_sub:'この文書は、Jarvis を開くすべての人に向けて書かれています。コンプライアンスのための公式文書ではありません。モデルプロバイダーとの間で、あなたが守られる那条線、そしてその外であなたがまだ自分で決められること、その両方を語ります。',
+    s1_tag:'約束',s1_title:'3つの譲れないこと',s1_desc:'これら3つのうち1つでも崩れれば、このポリシーも崩れます。',
+    c1_t:'ローカルファースト',c1_d:'会話、記憶、ファイル、スクリーンショット、スクリプト出力——すべてあなたの機器上に残ります。既定で完全ローカル、クラウド非依存、「アカウント登録」のステップもありません。',
+    c2_t:'内蔵 + BYOK',c2_d:'インストール後すぐに使用可能——自前のモデルゲートウェイに無料モデルをいくつか内蔵しています、キーは不要です。またご自身の API key（Anthropic / OpenAI / Google / Ollama / OpenAI 互換エンドポイント）も使用可能で、BYOK モードではトラフィックは直接プロバイダーに向かい、ゲートウェイを経由しません。',
+    c3_t:'完全オープンソース',c3_d:'デスクトップ Apache 2.0、モバイル GPLv3。1行ずつ、何を書いたか・何を読んだか・何を送ったかを、あなた自身で監査できます。',
+    s2_tag:'データはどこに',s2_title:'デスクトップ · モバイル',s2_desc:'データは「クラウドのどこかに」ではなく、あなたが明示的に知っている場所に置かれます。',
+    d_t:'デスクトップ',d_k1:'データディレクトリ',d_v1:'<code>~/.jarvis</code>（Windows はユーザープロファイル下の既定位置）',d_k2:'認証情報の保存',d_v2:'プレーンテキストファイル、Owner-only 権限（macOS / Linux 有効；Windows は NTFS ACL に依存、アプリは権限を変更しない）',d_k3:'サンドボックス',d_v3:'PathGuard 4 層アクセス制御 + OS 級サンドボックス（Seatbelt / Bubblewrap / Restricted Token）',d_k4:'バックアップ',d_v4:'データ移行時のみ生成、90 日で自動クリーンアップ、クリーンアップ前に主ディレクトリの読み取り可否を確認',d_k5:'ネットワーク出口',d_v5:'内蔵のモデルゲートウェイ（無料モデル含む）+ 設定したモデルプロバイダーエンドポイント（BYOK モード）+ オプションの IM homeserver',
+    m_t:'モバイル',m_k1:'データディレクトリ',m_v1:'iOS / Android それぞれの App サンドボックス内、アンインストールで消滅',m_k2:'CloudKit',m_v2:'「ロール」メタデータのみ同期（名前 / アバター / 話し方）；会話・記憶・ツール呼び出しログは含まず',m_k3:'サンドボックス',m_v3:'サンドボックス化された Alpine Linux（iOS: iSH / Android: PRoot）——Agent はコンテナ内でパッケージインストールやスクリプト実行',m_k4:'デバイス統合',m_v4:'ヘルス、カレンダー、リマインダー、連絡先、HomeKit、Bluetooth など。OS 経由で個別に許可・取り消し可能',m_k5:'認証情報の保存',m_v5:'iOS Keychain / Android Keystore、OS 級暗号化',
+    s3_tag:'しないこと',s3_title:'あえてやめた 5 つのこと',s3_desc:'「しないこと」を書くのは「する」より難しい。前者は本当に何もしないことを意味します。',
+    n1:'計測、利用データ収集、ログやクラッシュ報告のアップロードはしない',n2:'会話を学習データにしない（プロバイダーの既定ポリシーは各自の契約に従う）',n4:'位置、連絡先、アルバムを追跡しない——OS で明示的に許可した場合を除く',n5:'広告 SDK を繋がない、データ取引も第三者への販売もしない',n6:'強制登録、メールアドレスの請求、マーケティングプッシュもなし',
+    s4_tag:'サードパーティ',s4_title:'避けられないサードパーティ',s4_desc:'各項目は「送るもの」と「それ以上を送らない理由」を明記します。',
+    tp0_n:'Jarvis モデルゲートウェイ（自前）',tp0_w:'無料モデルの prompt と会話',tp0_d:'内蔵された無料モデルは自前ゲートウェイを通ります。キーの提供は不要；ゲートウェイはサーバー側でプロバイダーの認証情報を保持しルーティングを行います。BYOK モードではプロンプトは設定したプロバイダーに直接届き、このゲートウェイを経由しません。',
+    tp1_n:'モデルプロバイダー',tp1_w:'あなたの prompt と会話',tp1_d:'設定した provider（Anthropic / OpenAI / Google / Ollama / OpenAI 互換エンドポイント）。key はあなたのもの、トラフィックは直結、介在しません。Ollama は 127.0.0.1 ループバック。',
+    tp2_n:'Jarvis IM（任意）',tp2_w:'IM メッセージ',tp2_d:'端末間の引き継ぎ時にのみ有効。自前 Matrix homeserver（bitjarvis.chat）使用。プロトコルとコードは完全オープンソース（AGPL-3.0）。既定では無効。',
+    tp3_n:'CloudKit',tp3_w:'ロールメタデータ',tp3_d:'iOS において、端末間のロール同期（名前 / アバター / 話し方）に使用。会話内容・記憶・ツール呼び出しログは含まず。iCloud 同期を無効にすると停止。',
+    tp4_n:'OS ネイティブサービス',tp4_w:'明示的に許可したリソース',tp4_d:'ヘルス、カレンダー、連絡先、HomeKit、Bluetooth など。各アクセスは OS の許可ダイアログに従う。許可を取消すと即時無効。',
+    tp5_n:'GitHub / TestFlight',tp5_w:'ダウンロードと beta 配布のメタデータ',tp5_d:'clone / インストール時のみ生成、実行時データフローには参加しない。',
+    s5_tag:'サンドボックスとセキュリティ',s5_title:'Agent は道具、神ではない',
+    sp1:'<em>Agent は道具、神ではありません。</em>そのため、敏感な操作はすべて「先に聞く」設計——ファイル書き込み、コマンド実行、ネットワーク要求、プライベートアクセス、すべて確認を取る。この「先に聞く」が、プライバシーの約束を実際に実行可能にしています。',
+    sp2:'デスクトップは2層：アプリケーション層の <code>PathGuard</code> 4層アクセス制御 + OS 級サンドボックス（macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token）。モバイルは1層：サンドボックス化された Alpine Linux（iOS iSH / Android PRoot）。Agent はコンテナ内でパッケージをインストール・スクリプトを実行し、App の境界を超えない。',
+    sp3:'既知の境界はデスクトップの SECURITY.md に記載しています——例えば Windows では POSIX 権限位が使えず、認証情報はプレーンテキスト、同一ユーザーアカウント配下の他プログラムが依然として読める、など。これらは隠すのではなく、自ら開示しています。',
+    s6_tag:'変更と連絡先',s6_title:'このポリシーが変化するタイミング',
+    sp4:'本当に変更が発生したときのみ：送信が必要なデータ種の追加、既定のモデルプロバイダーや IM homeserver の変更、サンドボックス構造の調整。変更は GitHub の release notes に記載します。無断更新はしません。',
+    contact_t:'ご質問は？',contact_sub:'メールフォームは設けていません。良いプライバシーポリシーは、良いコードと同じで、リポジトリに直接質問できるべきだからです。',
+    l1:'デスクトップ Issues',l2:'モバイル Issues',l3:'脆弱性報告',contact_note:'セキュリティ問題は private vulnerability report を利用、72時間以内に回答。',
+    footer:'© 2026 Bit Jarvis · Made with care.',foot_github:'GitHub',foot_privacy:'プライバシー',foot_faq:'よくある質問',foot_home:'ホーム'
+  },
+  'ko':{
+    title:'Bit Jarvis — 개인정보',desc:'당신의 데이터는 당신의 기기 위에만.',
+    nav_back:'사이트로',badge:'개인정보 정책 · Jarvis를 여는 모든 사람을 위해',
+    hero_t1:'당신의 데이터는,',hero_t2:'당신의 기기 위에만.',
+    hero_sub:'이 문서는 Jarvis를 여는 모든 사람을 위해 쓴 것입니다. 규정 준수용 관용문이 아니라, 모델 제공업체와 당신 사이에서 우리가 지킬 수 있는 그 경계선, 그리고 그 경계 너머에서 당신이 여전히 스스로 결정할 수 있는 것들을 말합니다.',
+    s1_tag:'약속',s1_title:'타협하지 않을 세 가지',s1_desc:'아래 세 가지 중 하나라도 무너진다면 이 정책도 무너집니다.',
+    c1_t:'로컬 우선',c1_d:'대화, 기억, 파일, 스크린샷, 스크립트 출력—모두 당신의 기기 위에 남습니다. 기본값은 완전 로컬, 클라우드 의존 없음, 「계정 가입」 단계도 없습니다.',
+    c2_t:'내장 + BYOK',c2_d:'설치 후 바로 사용 가능——자체 구축한 모델 게이트웨이에 무료 모델을 몇 개 내장했으며, 키는 필요 없습니다. 또한 본인의 API key(Anthropic / OpenAI / Google / Ollama / OpenAI 호환 엔드포인트)도 사용할 수 있으며, BYOK 모드에서는 트래픽이 게이트웨이를 거치지 않고 프로바이더로 직접 갑니다.',
+    c3_t:'완전 오픈소스',c3_d:'데스크톱 Apache 2.0, 모바일 GPLv3. 우리가 무엇을 썼는지, 무엇을 읽었는지, 무엇을 보냈는지를 한 줄 한 줄 직접 감사할 수 있습니다.',
+    s2_tag:'데이터는 어디에',s2_title:'데스크톱 · 모바일',s2_desc:'데이터는 「클라우드 어딘가에」 있는 것이 아니라, 당신이 명시적으로 아는 위치에 존재합니다.',
+    d_t:'데스크톱',d_k1:'데이터 디렉터리',d_v1:'<code>~/.jarvis</code> (Windows는 사용자 프로필 하위의 기본 위치)',d_k2:'자격 증명 저장',d_v2:'평문 파일, Owner-only 권한 (macOS / Linux; Windows는 NTFS ACL에 의존, 앱은 권한을 변경하지 않음)',d_k3:'샌드박스',d_v3:'PathGuard 4단계 접근 제어 + OS 수준 샌드박스 (Seatbelt / Bubblewrap / Restricted Token)',d_k4:'백업',d_v4:'데이터 마이그레이션 중만 생성, 90일 후 자동 정리, 정리 전 주 디렉터리 읽기 가능 여부를 검증',d_k5:'네트워크 출력',d_v5:'내장된 모델 게이트웨이(무료 모델 포함) + 설정된 모델 제공업체 엔드포인트(BYOK 모드) + 선택적 IM homeserver',
+    m_t:'모바일',m_k1:'데이터 디렉터리',m_v1:'iOS / Android各自的 App 샌드박스 내, 삭제 시 소멸',m_k2:'CloudKit',m_v2:'「역할」 메타데이터만 동기화 (이름 / 아바타 / 말투); 대화·기억·도구 호출 로그는 제외',m_k3:'샌드박스',m_v3:'샌드박스된 Alpine Linux (iOS: iSH / Android: PRoot) — Agent가 컨테이너 안에서 패키지 설치, 스크립트 실행',m_k4:'기기 통합',m_v4:'건강, 캘린더, 알림, 연락처, HomeKit, Bluetooth 등. OS에서 개별적으로 허용·취소 가능',m_k5:'자격 증명 저장',m_v5:'iOS Keychain / Android Keystore, OS 수준 암호화',
+    s3_tag:'안 하는 것',s3_title:'자발적으로 포기한 다섯 가지',s3_desc:'「안 하는 것」을 쓰는 일은 「하는 것」보다 어렵습니다. 전자에는 정말 아무것도 안 하라는 뜻이 담겨 있으니까요.',
+    n1:'추적, 사용 데이터 수집, 로그나 크래시 보고서 업로드 없음',n2:'대화를 학습 데이터로 사용하지 않음 (모델 제공업체의 기본 정책은 각각의 약관에 따름)',n4:'위치, 연락처, 앨범 추적 없음 — OS에서 명시적으로 권한을 부여한 경우를 제외',n5:'광고 SDK 미연동, 데이터 거래 없음, 제3자 판매 없음',n6:'강제 가입, 이메일 수집, 마케팅 푸시 없음',
+    s4_tag:'제3자',s4_title:'피할 수 없는 제3자',s4_desc:'각 항목마다 「무엇을 보내는지」와 「그 이상을 보내지 않는 이유」를 명시합니다.',
+    tp0_n:'Jarvis 모델 게이트웨이(자체)',tp0_w:'무료 모델의 prompt와 대화',tp0_d:'내장된 무료 모델은 자체 게이트웨이를 통해 작동합니다. 키 제공은 필요 없고, 게이트웨이가 서버 측에서 프로바이더 자격 증명을 보유하며 라우팅을 담당합니다. BYOK 모드에서는 프롬프트가 설정한 프로바이더로 직접 전달되며 이 게이트웨이를 거치지 않습니다.',
+    tp1_n:'모델 제공업체',tp1_w:'당신의 prompt와 대화',tp1_d:'설정된 provider (Anthropic / OpenAI / Google / Ollama / OpenAI 호환 엔드포인트). key는 당신의 것, 트래픽은 직결, 우리 개입 없음. Ollama는 127.0.0.1 루프백.',
+    tp2_n:'Jarvis IM (선택)',tp2_w:'IM 메시지',tp2_d:'기기 간 인계 시에만 활성화. 자체 호스팅된 Matrix homeserver (bitjarvis.chat) 사용. 프로토콜과 코드는 완전 오픈소스 (AGPL-3.0). 기본값은 비활성.',
+    tp3_n:'CloudKit',tp3_w:'역할 메타데이터',tp3_d:'iOS에서만 기기 간 역할 동기화에 사용 (이름 / 아바타 / 말투). 대화 내용·기억·도구 호출 로그는 제외. iCloud 동기화를 끄면 비활성화.',
+    tp4_n:'OS 네이티브 서비스',tp4_w:'명시적으로 허용한 자원',tp4_d:'건강, 캘린더, 연락처, HomeKit, Bluetooth 등. 각 접근은 OS 권한 다이얼로그를 따릅니다. 권한을 취소하면 즉시 무효.',
+    tp5_n:'GitHub / TestFlight',tp5_w:'다운로드와 베타 배포 메타데이터',tp5_d:'clone / 설치 시에만 생성, 런타임 데이터 흐름에 참여하지 않음.',
+    s5_tag:'샌드박스와 보안',s5_title:'Agent는 도구이지 신이 아닙니다',
+    sp1:'<em>Agent는 도구이지 신이 아닙니다.</em>그러므로 모든 민감한 조작은 「먼저 묻는다」로 설계되었습니다 — 파일 쓰기, 명령 실행, 네트워크 요청, 개인 영역 접근, 모두 당신의 확인을 받습니다. 이 「먼저 묻기」가 개인정보 약속을 실제로 이행 가능하게 만듭니다.',
+    sp2:'데스크톱은 2겹: 응용 프로그램 계층의 <code>PathGuard</code> 4단계 접근 제어 + OS 수준 샌드박스 (macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token). 모바일은 1겹: 샌드박스된 Alpine Linux (iOS iSH / Android PRoot) — Agent는 컨테이너 안에서 패키지 설치, 스크립트 실행하며 App 경계를 넘지 않습니다.',
+    sp3:'알려진 경계는 데스크톱 SECURITY.md에 적어두었습니다 — 예를 들어 Windows에서는 POSIX 권한 비트를 쓸 수 없고, 자격 증명은 평문으로 저장되며, 동일 사용자 계정 내 다른 프로그램이 여전히 읽을 수 있습니다. 우리는 이것들을 숨기지 않고 스스로 알려줍니다.',
+    s6_tag:'변경과 연락',s6_title:'이 정책이 바뀌는 시점',
+    sp4:'실제로 변화가 일어날 때만 바꿉니다: 기기 밖으로 보낼 데이터 종류의 추가, 기본 모델 제공업체나 IM homeserver 변경, 샌드박스 구조 조정. 변경 사항은 GitHub 릴리스 노트에 명시합니다. 조용한 업데이트는 하지 않습니다.',
+    contact_t:'질문이 있으신가요?',contact_sub:'이메일 양식은 없었습니다. 좋은 개인정보 정책은 좋은 코드와 마찬가지로, 저장소에 직접 물을 수 있어야 한다고 믿기 때문입니다.',
+    l1:'데스크톱 Issues',l2:'모바일 Issues',l3:'취약성 보고',contact_note:'보안 이슈는 private vulnerability report로, 72시간 내 응답.',
+    footer:'© 2026 Bit Jarvis · Made with care.',foot_github:'GitHub',foot_privacy:'개인정보',foot_faq:'자주 묻는 질문',foot_home:'홈'
+  }
+};
+try{var savedLang=localStorage.getItem('bitjarvis_lang')||'zh-CN';if(I18N[savedLang]){document.documentElement.setAttribute('data-lang',savedLang);document.documentElement.setAttribute('lang',savedLang==='zh-TW'?'zh-TW':savedLang);}else{savedLang='zh-CN';document.documentElement.setAttribute('data-lang','zh-CN');}}catch(e){document.documentElement.setAttribute('data-lang','zh-CN');}
+</script>
+</head>
+<body>
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-in">
+    <a href="/" class="nav-brand"><img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</a>
+    <div class="nav-actions">
+      <div class="lang-wrap">
+        <button class="lang-btn" id="langBtn" aria-label="Select language">
+          <span id="langLabel">中</span>
+          <span class="lb-arrow">▼</span>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <div class="lang-option active" data-code="zh-CN"><span>简体中文</span><span class="lo-check">✓</span></div>
+          <div class="lang-option" data-code="zh-TW"><span>繁體中文</span><span class="lo-check"></span></div>
+          <div class="lang-option" data-code="en"><span>English</span><span class="lo-check"></span></div>
+          <div class="lang-option" data-code="ja"><span>日本語</span><span class="lo-check"></span></div>
+          <div class="lang-option" data-code="ko"><span>한국어</span><span class="lo-check"></span></div>
+        </div>
+      </div>
+      <div class="theme-toggle" id="themeToggle" aria-label="切换明暗模式">
+        <div class="tt-knob"></div>
+      </div>
+      <a href="/" class="nav-back" data-i18n="nav_back">返回官网</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-c">
+    <div class="hero-badge"><span class="dot"></span><span data-i18n="badge">隐私政策 · 写给每一个把 Jarvis 打开的人</span></div>
+    <img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis" class="hero-logo">
+    <h1><span data-i18n="hero_t1">你的数据，</span><span class="accent" data-i18n="hero_t2">只在你设备上。</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">这份说明写给每一个把 Jarvis 打开的人。它不是一份为合规写就的官样文章——它是我们和模型提供商之间，能替你守住的那条线，以及这条线之外你还能自己决定什么。</p>
+  </div>
+</section>
+<!-- 承诺 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-tag" data-i18n="s1_tag">承诺</div>
+    <h2 class="sec-title" data-i18n="s1_title">三条我们不会动摇的事</h2>
+    <p class="sec-desc" data-i18n="s1_desc">如果下面这三条任何一条不成立，这份政策就不成立。</p>
+  </div>
+  <div class="commit-grid">
+    <div class="commit rv">
+      <div class="commit-num">01</div>
+      <div class="commit-ic">🏠</div>
+      <h3 data-i18n="c1_t">本地优先</h3>
+      <p data-i18n="c1_d">对话、记忆、文件、截图、脚本输出——都留在你自己的机器上。默认纯本地运行，不依赖任何云服务，也没有「注册账号」这步。</p>
+    </div>
+    <div class="commit rv">
+      <div class="commit-num">02</div>
+      <div class="commit-ic">🔑</div>
+      <h3 data-i18n="c2_t">自带 + BYOK</h3>
+      <p data-i18n="c2_d">装完就能用——我们自建的模型网关内置了几组免费模型，不需要你提供任何 key。也支持你自己的 API key（Anthropic / OpenAI / Google / Ollama / 任何 OpenAI 兼容端点），走 BYOK 时流量直达 provider，不经网关。</p>
+    </div>
+    <div class="commit rv">
+      <div class="commit-num">03</div>
+      <div class="commit-ic">🔓</div>
+      <h3 data-i18n="c3_t">明文开源</h3>
+      <p data-i18n="c3_d">桌面端 Apache 2.0，移动端 GPLv3。你可以一行一行看我们写了什么、读了什么、传了什么——审计的权利在你手上。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 数据在哪里 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-tag" data-i18n="s2_tag">数据在哪里</div>
+    <h2 class="sec-title" data-i18n="s2_title">桌面 · 手机</h2>
+    <p class="sec-desc" data-i18n="s2_desc">数据不是「存在云端某个角落」，是落在你明确知道的位置。</p>
+  </div>
+  <div class="dev-grid">
+    <div class="dev-panel rv">
+      <div class="dev-head">
+        <div class="dev-ic">💻</div>
+        <div class="dev-title" data-i18n="d_t">桌面端</div>
+      </div>
+      <div class="info-row"><span class="info-k" data-i18n="d_k1">数据目录</span><span class="info-v" data-i18n-html="d_v1"><code>~/.jarvis</code>（Windows 上为用户目录下的默认位置）</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="d_k2">凭据存储</span><span class="info-v" data-i18n="d_v2">明文文件，Owner-only 权限（macOS / Linux 生效；Windows 依赖 NTFS ACL，应用不做权限修改）</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="d_k3">沙盒</span><span class="info-v" data-i18n="d_v3">PathGuard 四级访问控制 + 操作系统级沙盒（Seatbelt / Bubblewrap / Restricted Token）</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="d_k4">备份</span><span class="info-v" data-i18n="d_v4">仅在数据迁移期间生成，超过 90 天自动清理，清理前校验主目录可读</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="d_k5">网络出口</span><span class="info-v" data-i18n="d_v5">内置的模型网关（含免费模型）+ 你配置的模型提供商端点（BYOK 模式）+ 可选的 IM homeserver</span></div>
+    </div>
+    <div class="dev-panel rv">
+      <div class="dev-head">
+        <div class="dev-ic">📱</div>
+        <div class="dev-title" data-i18n="m_t">手机端</div>
+      </div>
+      <div class="info-row"><span class="info-k" data-i18n="m_k1">数据目录</span><span class="info-v" data-i18n="m_v1">iOS / Android 各自的 App 沙盒内，卸载即消失</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="m_k2">CloudKit</span><span class="info-v" data-i18n="m_v2">仅同步「角色」元数据（名字 / 头像 / 说话风格）；不含会话、不含记忆、不含工具调用记录</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="m_k3">沙盒</span><span class="info-v" data-i18n="m_v3">沙盒化 Alpine Linux（iOS: iSH / Android: PRoot）——Agent 能装包、跑脚本、操作真实文件，都在容器里</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="m_k4">设备集成</span><span class="info-v" data-i18n="m_v4">健康、日历、提醒、联系人、HomeKit、蓝牙等；权限由操作系统逐条授权，随时可收回</span></div>
+      <div class="info-row"><span class="info-k" data-i18n="m_k5">凭据存储</span><span class="info-v" data-i18n="m_v5">iOS Keychain / Android Keystore，OS 级加密</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 不做的事 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-tag" data-i18n="s3_tag">不做的事</div>
+    <h2 class="sec-title" data-i18n="s3_title">五条我们主动放弃的事</h2>
+    <p class="sec-desc" data-i18n="s3_desc">写「我们不做」比写「我们做」更难。因为前者意味着真的什么都不做。</p>
+  </div>
+  <ul class="neg-list">
+    <li class="rv" data-i18n="n1">不埋点、不采集使用数据、不上传任何日志或崩溃报告</li>
+    <li class="rv" data-i18n="n2">不把对话内容作为训练数据（模型提供商的默认政策仍以其自身条款为准）</li>
+    <li class="rv" data-i18n="n4">不追踪位置、通讯录、相册——除非你在操作系统里主动给了权限</li>
+    <li class="rv" data-i18n="n5">不接广告 SDK、不做数据交易、不卖给任何第三方</li>
+    <li class="rv" data-i18n="n6">不设置强制注册、不索要邮箱、不发送推送营销邮件</li>
+  </ul>
+</section>
+
+<!-- 第三方 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-tag" data-i18n="s4_tag">第三方</div>
+    <h2 class="sec-title" data-i18n="s4_title">我们不得不依赖的第三方</h2>
+    <p class="sec-desc" data-i18n="s4_desc">每一项都标了「传什么」和「为什么不传更多」。</p>
+  </div>
+  <div class="tp-list">
+    <div class="tp rv"><span class="tp-name" data-i18n="tp0_n">Jarvis 模型网关（自建）</span><span class="tp-what" data-i18n="tp0_w">免费模型的 prompt 与对话</span><span class="tp-why" data-i18n="tp0_d">内置的免费模型走自建网关。你无需提供任何 key；网关在服务器端持有对应供应商的凭据并做路由。BYOK 模式下你的 prompt 直达你配置的 provider，不经过这个网关。</span></div>
+    <div class="tp rv"><span class="tp-name" data-i18n="tp1_n">模型提供商</span><span class="tp-what" data-i18n="tp1_w">你的 prompt 与对话</span><span class="tp-why" data-i18n="tp1_d">你配置的 provider（Anthropic / OpenAI / Google / Ollama / 其他 OpenAI 兼容端点）。key 是你自己的，流量直达，我们不经手；Ollama 走 127.0.0.1 本机回环。</span></div>
+    <div class="tp rv"><span class="tp-name" data-i18n="tp2_n">Jarvis IM（可选）</span><span class="tp-what" data-i18n="tp2_w">IM 消息</span><span class="tp-why" data-i18n="tp2_d">跨端接力时启用，走自建 Matrix homeserver（bitjarvis.chat）。协议与代码完全开源（AGPL-3.0）。不启用即不启用。</span></div>
+    <div class="tp rv"><span class="tp-name" data-i18n="tp3_n">CloudKit</span><span class="tp-what" data-i18n="tp3_w">角色元数据</span><span class="tp-why" data-i18n="tp3_d">仅在 iOS 上，用于跨设备同步角色（名字 / 头像 / 说话风格）。不含会话内容、不含记忆、不含工具调用记录。关闭 iCloud 同步即停用。</span></div>
+    <div class="tp rv"><span class="tp-name" data-i18n="tp4_n">操作系统原生服务</span><span class="tp-what" data-i18n="tp4_w">你显式授权的资源</span><span class="tp-why" data-i18n="tp4_d">健康、日历、联系人、HomeKit、蓝牙等。每一项访问都遵循操作系统的授权弹窗；权限收回即刻失效。</span></div>
+    <div class="tp rv"><span class="tp-name" data-i18n="tp5_n">GitHub / TestFlight</span><span class="tp-what" data-i18n="tp5_w">下载与 beta 分发的元数据</span><span class="tp-why" data-i18n="tp5_d">仅在你主动 clone / 下载安装包时产生，不参与运行时数据流。</span></div>
+  </div>
+</section>
+
+<!-- 沙盒与安全 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-tag" data-i18n="s5_tag">沙盒与安全</div>
+    <h2 class="sec-title" data-i18n="s5_title">Agent 是工具，不是神</h2>
+  </div>
+  <div class="security-card rv" style="margin-top:32px">
+    <div class="security-body">
+      <p data-i18n-html="sp1"><em>Agent 是工具，不是神。</em>所以每一步敏感操作都设计成「先问你」——写文件、执行命令、网络请求、访问私域，都要你点头。这个「先问」的机制，是隐私承诺能被真正执行的前提。</p>
+      <p data-i18n-html="sp2">桌面端有两层：应用层的 <code>PathGuard</code> 四级访问控制 + 操作系统级沙盒（macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token）。移动端有一层：沙盒化的 Alpine Linux（iOS iSH / Android PRoot），Agent 装包跑脚本都在容器里，不越出 App 边界。</p>
+      <p data-i18n="sp3">已知边界写在桌面端 SECURITY.md 里——比如 Windows 上无法用 POSIX 权限位、凭据以明文存储、同一用户账号下的其他程序仍能读。这些是我们主动告知、而非藏起来的。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 变更与联系 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-tag" data-i18n="s6_tag">变更与联系</div>
+    <h2 class="sec-title" data-i18n="s6_title">这份政策什么时候改</h2>
+    <p class="sec-desc" data-i18n="sp4">只在真的发生变化时改：新增了必须传出的数据类型、更换了默认的模型提供商或 IM homeserver、沙盒结构发生调整。改动会在 GitHub release notes 中标注，不做静默更新。</p>
+  </div>
+  <div class="contact-card rv" style="margin-top:32px">
+    <div class="contact-body">
+      <h3 style="font-size:20px;font-weight:700;margin-bottom:12px" data-i18n="contact_t">有疑问？</h3>
+      <p data-i18n="contact_sub">我们没设置邮箱表单——因为一份好的隐私政策，应该像一份好的代码，可以直接对着仓库追问。</p>
+      <div class="contact-links">
+        <a href="https://github.com/mengtian999/Bitjarvis/issues" target="_blank" rel="noopener noreferrer">⚡ <span data-i18n="l1">桌面端 Issues</span></a>
+        <a href="https://github.com/mengtian999/jarvis/issues" target="_blank" rel="noopener noreferrer">📱 <span data-i18n="l2">移动端 Issues</span></a>
+        <a href="https://github.com/mengtian999/Bitjarvis/security" target="_blank" rel="noopener noreferrer">🔒 <span data-i18n="l3">安全漏洞报告</span></a>
+      </div>
+      <p style="font-size:12px;color:var(--text-faint);margin-bottom:0" data-i18n="contact_note">安全问题请走 private vulnerability report，72 小时内响应。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-brand"><img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</div>
+      <div class="foot-links">
+        <a href="/" data-i18n="foot_home">首页</a>
+        <a href="https://github.com/mengtian999/Bitjarvis" target="_blank" rel="noopener noreferrer" data-i18n="foot_github">GitHub</a>
+        <a href="/faq" data-i18n="foot_faq">常见问题</a>
+      </div>
+    </div>
+    <div class="foot-copy" data-i18n="footer">© 2026 Bit Jarvis · Made with care.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var lang=document.documentElement.getAttribute('data-lang')||'zh-CN';
+  var LANGS=['zh-CN','zh-TW','en','ja','ko'];
+  var LANG_SHORT={'zh-CN':'中','zh-TW':'繁','en':'EN','ja':'日','ko':'한'};
+
+  function applyI18n(l){
+    var dict=I18N[l];
+    if(!dict) return;
+    document.documentElement.setAttribute('data-lang',l);
+    document.documentElement.setAttribute('lang',l==='zh-TW'?'zh-TW':l);
+    try{localStorage.setItem('bitjarvis_lang',l);}catch(e){}
+    var nodes=document.querySelectorAll('[data-i18n]');
+    for(var i=0;i<nodes.length;i++){
+      var k=nodes[i].getAttribute('data-i18n');
+      if(dict[k]!==undefined) nodes[i].textContent=dict[k];
+    }
+    var nodesHtml=document.querySelectorAll('[data-i18n-html]');
+    for(var j=0;j<nodesHtml.length;j++){
+      var kh=nodesHtml[j].getAttribute('data-i18n-html');
+      if(dict[kh]!==undefined) nodesHtml[j].innerHTML=dict[kh];
+    }
+    var descKey=document.querySelector('[data-i18n-desc="desc"]');
+    if(descKey&&dict.desc!==undefined) descKey.setAttribute('content',dict.desc);
+    var titleEl=document.querySelector('[data-i18n="title"]');
+    if(titleEl&&dict.title!==undefined){
+      document.title=dict.title;
+      // don't overwrite h1 — title is meta only
+    }
+    document.getElementById('langLabel').textContent=LANG_SHORT[l]||'中';
+    var opts=document.querySelectorAll('.lang-option');
+    for(var m=0;m<opts.length;m++){
+      opts[m].classList.toggle('active',opts[m].getAttribute('data-code')===l);
+      var ck=opts[m].querySelector('.lo-check');
+      if(ck) ck.textContent=opts[m].getAttribute('data-code')===l?'✓':'';
+    }
+  }
+
+  function setTheme(t){
+    document.documentElement.setAttribute('data-theme',t);
+    try{localStorage.setItem('bitjarvis_theme',t);}catch(e){}
+  }
+
+  // Init theme from html attribute
+  setTheme(document.documentElement.getAttribute('data-theme')||'dark');
+  // Apply language
+  applyI18n(lang);
+
+  // Theme toggle
+  document.getElementById('themeToggle').addEventListener('click',function(){
+    setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
+  });
+
+  // Language dropdown
+  document.getElementById('langBtn').addEventListener('click',function(e){
+    e.stopPropagation();
+    document.getElementById('langMenu').classList.toggle('open');
+  });
+  document.addEventListener('click',function(){document.getElementById('langMenu').classList.remove('open');});
+  var opts=document.querySelectorAll('.lang-option');
+  for(var i=0;i<opts.length;i++){
+    (function(el){
+      el.addEventListener('click',function(){
+        applyI18n(el.getAttribute('data-code'));
+        document.getElementById('langMenu').classList.remove('open');
+      });
+    })(opts[i]);
+  }
+
+  // Reveal on scroll
+  function initReveal(){
+    if(!('IntersectionObserver' in window)){
+      var els=document.querySelectorAll('.rv');
+      for(var k=0;k<els.length;k++) els[k].classList.add('in');
+      return;
+    }
+    var obs=new IntersectionObserver(function(entries){
+      for(var i=0;i<entries.length;i++){
+        if(entries[i].isIntersecting){
+          entries[i].target.classList.add('in');
+          obs.unobserve(entries[i].target);
+        }
+      }
+    },{threshold:0.08});
+    var els=document.querySelectorAll('.rv');
+    for(var k=0;k<els.length;k++) obs.observe(els[k]);
+  }
+  initReveal();
+})();
+</script>
+</body>
+</html>
