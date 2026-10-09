@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Bit Jarvis — 隐私政策</title>
+<meta name="description" content="Bit Jarvis 隐私政策 · 你的数据，只在你设备上。Microsoft Store 分发的 Windows 版同样适用这一页。">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://www.bitjarvis.chat/privacy-policy.html">
+<link rel="icon" href="https://www.bitjarvis.chat/bitjarvis.png" type="image/png">
+<script>
+(function(){try{var t=localStorage.getItem('bitjarvis_theme');if(!t||t!=='light'&&t!=='dark'){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg-soft:#111118;--bg-card:#161620;--bg-elev:#1c1c2a;--bg-elev2:#222233;--text:#e8e8f0;--text-dim:#8e8ea0;--text-faint:#4a4a5c;--accent:#6c5ce7;--accent-soft:#a29bfe;--accent-glow:rgba(108,92,231,.12);--warm:#fd79a8;--warm-soft:#fab1a0;--green:#00b894;--green-soft:#55efc4;--blue:#0984e3;--blue-soft:#74b9ff;--amber:#e17055;--amber-soft:#fab1a0;--coral:#ff7675;--coral-soft:#ffa502;--border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.14);--nav-bg:rgba(10,10,15,.72);--r:16px;--r-lg:24px;--max:1180px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+html[data-theme="light"]{--bg:#fafbfc;--bg-soft:#ffffff;--bg-card:#ffffff;--bg-elev:#f4f5f7;--bg-elev2:#ececee;--text:#1a1a1e;--text-dim:#55555f;--text-faint:#8e8ea0;--border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.16);--accent-glow:rgba(108,92,231,.18);--nav-bg:rgba(255,255,255,.72)}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+/* ── 语言切换（本页仅有 zh-CN / en）───────────────────
+   只写「隐藏」规则，不写「显示」规则：
+   若给可见语言设 display，会盖掉组件自己的 display（例：.pol-list 的 flex），
+   选择器特异性 (0,2,1) 高于任何组件类，因此无需求助 !important。 */
+html[data-lang="zh-CN"] .t-en,
+html:not([data-lang]) .t-en{display:none}
+html[data-lang="en"] .t-zh{display:none}
+
+/* ── Nav ─────────────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-in{max-width:var(--max);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.nav-brand img{width:30px;height:30px;border-radius:8px;object-fit:cover}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.theme-toggle{position:relative;width:44px;height:24px;background:var(--bg-elev2);border:1px solid var(--border-h);border-radius:100px;cursor:pointer;transition:background .2s}
+.theme-toggle .tt-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .2s;color:#fff}
+.theme-toggle .tt-knob::before{content:'🌙'}
+html[data-theme="light"] .theme-toggle .tt-knob{transform:translateX(20px);background:#fdcb6e;color:#5a4000}
+html[data-theme="light"] .theme-toggle .tt-knob::before{content:'☀️'}
+html[data-theme="dark"] .theme-toggle .tt-knob{background:var(--accent-soft);color:#fff}
+.lang-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.lang-btn:hover{border-color:var(--border-h);color:var(--text)}
+.lang-btn .lb-arrow{font-size:8px;transition:transform .2s}
+.lang-menu{opacity:0;visibility:hidden;transform:translateY(-4px);transition:all .2s;position:absolute;top:calc(100% + 6px);right:0;min-width:150px;background:var(--bg-card);border:1px solid var(--border-h);border-radius:10px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.lang-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;font-size:13px;color:var(--text-dim);border-radius:8px;cursor:pointer;transition:all .15s}
+.lang-option:hover{background:var(--bg-elev);color:var(--text)}
+.lang-option.active{color:var(--accent-soft);font-weight:600}
+.lang-option .lo-check{font-size:11px}
+.lang-wrap{position:relative}
+.nav-back{padding:6px 14px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text-dim);transition:all .2s}
+.nav-back:hover{border-color:var(--border-h);color:var(--text)}
+
+/* ── Hero ────────────────────────────────────────────── */
+.hero{padding:140px 0 48px;position:relative;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 70%);top:10%;left:50%;transform:translateX(-50%);filter:blur(80px)}
+.hero-bg::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(253,121,168,.06),transparent 70%);bottom:0;right:15%;filter:blur(100px)}
+.hero-c{position:relative;z-index:1;padding:0 24px;max-width:820px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;font-size:13px;color:var(--text-dim);margin-bottom:28px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-logo{width:64px;height:64px;border-radius:18px;margin:0 auto 24px;box-shadow:0 0 60px var(--accent-glow);object-fit:cover}
+.hero h1{font-size:clamp(32px,5.5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.15;margin-bottom:20px;text-wrap:balance}
+.hero h1 .accent{background:linear-gradient(135deg,var(--accent-soft),var(--warm-soft));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.hero-sub{font-size:clamp(15px,2vw,17px);color:var(--text-dim);max-width:640px;margin:0 auto;line-height:1.75}
+.hero-meta{font-family:var(--mono);font-size:12px;color:var(--text-faint);margin-top:22px;letter-spacing:.04em;line-height:1.9}
+
+/* ── Section ─────────────────────────────────────────── */
+.sec{padding:48px 0}
+.sec-tag{font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px;text-align:center}
+.sec-title{font-size:clamp(24px,3.6vw,32px);font-weight:700;letter-spacing:-.5px;text-align:center;margin-bottom:12px}
+.sec-desc{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 36px;text-align:center;line-height:1.7}
+
+/* ── Policy ──────────────────────────────────────────── */
+.pol{max-width:900px;margin:0 auto;padding:0 24px}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 26px;margin-bottom:24px}
+.toc-t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:14px}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}
+.toc a{display:flex;gap:10px;align-items:baseline;font-size:13.5px;color:var(--text-dim);padding:3px 0;transition:color .2s}
+.toc a:hover{color:var(--accent-soft)}
+.toc-num{font-family:var(--mono);font-size:11px;color:var(--accent-soft);flex:none}
+.pol-sec{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 30px;margin-bottom:16px;transition:border-color .25s}
+.pol-sec:hover{border-color:var(--border-h)}
+.pol-h{display:flex;align-items:baseline;gap:14px;margin-bottom:16px}
+.pol-k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--accent-soft);flex:none}
+.pol-h h2{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.pol-sec p{font-size:14.5px;color:var(--text-dim);line-height:1.85;margin-bottom:12px}
+.pol-sec p:last-child{margin-bottom:0}
+.pol-sec strong{color:var(--text);font-weight:600}
+.pol-sec em{color:var(--text);font-style:normal;font-weight:600}
+.pol-sec code{font-family:var(--mono);font-size:12.5px;background:var(--bg-elev);padding:1px 6px;border-radius:4px;color:var(--text);word-break:break-all}
+.pol-sec a{color:var(--accent-soft);border-bottom:1px solid rgba(162,155,254,.35);transition:border-color .2s}
+.pol-sec a:hover{border-bottom-color:var(--accent-soft)}
+.pol-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.pol-list:last-child{margin-bottom:0}
+.pol-list li{position:relative;padding-left:20px;font-size:14.5px;color:var(--text-dim);line-height:1.8}
+.pol-list li::before{content:'';position:absolute;left:3px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--accent-soft)}
+.pol-list li strong{color:var(--text)}
+.pol-list.neg li::before{content:'✕';background:none;left:0;top:0;width:auto;height:auto;color:var(--coral);font-family:var(--mono);font-size:13px;font-weight:700;line-height:1.8}
+.pol-list.neg li{padding-left:22px}
+.tp{display:grid;grid-template-columns:230px 1fr;gap:18px;padding:15px 0;border-bottom:1px dashed var(--border);align-items:baseline}
+.tp:last-child{border-bottom:0;padding-bottom:0}
+.tp:first-child{padding-top:0}
+.tp-name{font-size:14.5px;font-weight:600;color:var(--text);line-height:1.6}
+.tp-name span{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--accent-soft);text-transform:uppercase;letter-spacing:.08em;margin-top:5px}
+.tp-d{font-size:14px;color:var(--text-dim);line-height:1.8}
+.tp-d em{color:var(--text);font-style:normal;font-weight:600}
+.note{border-left:2px solid var(--accent-soft);padding:2px 0 2px 16px;margin:16px 0 0;font-size:14px;color:var(--text-dim);line-height:1.8}
+.note strong{color:var(--text)}
+.pol-foot-note{max-width:900px;margin:24px auto 0;padding:0 24px;text-align:center;font-size:13px;color:var(--text-faint);line-height:1.9}
+
+/* ── Footer ──────────────────────────────────────────── */
+.foot{border-top:1px solid var(--border);padding:40px 0;margin-top:72px}
+.foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.foot-brand img{width:24px;height:24px;border-radius:6px;object-fit:cover}
+.foot-links{display:flex;gap:20px;flex-wrap:wrap}
+.foot-links a{font-size:13px;color:var(--text-dim);transition:color .2s}
+.foot-links a:hover{color:var(--text)}
+.foot-copy{font-size:12px;color:var(--text-faint);text-align:center;margin-top:20px;line-height:1.7}
+
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:760px){.toc-grid{grid-template-columns:1fr}.tp{grid-template-columns:1fr;gap:6px}.pol-sec{padding:24px 22px}.pol-h{flex-direction:column;gap:6px}}
+@media(max-width:560px){.nav-in{padding:0 12px}.nav-back{display:none}.hero{padding:120px 0 36px}.hero h1{font-size:32px}.sec{padding:36px 0}.foot-in{flex-direction:column;align-items:center;text-align:center}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="/" class="nav-brand"><img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</a>
+    <div class="nav-actions">
+      <div class="lang-wrap">
+        <button class="lang-btn" id="langBtn" aria-label="Select language">
+          <span id="langLabel">中</span>
+          <span class="lb-arrow">▼</span>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <div class="lang-option active" data-code="zh-CN"><span>简体中文</span><span class="lo-check">✓</span></div>
+          <div class="lang-option" data-code="en"><span>English</span><span class="lo-check"></span></div>
+        </div>
+      </div>
+      <div class="theme-toggle" id="themeToggle" aria-label="切换明暗模式">
+        <div class="tt-knob"></div>
+      </div>
+      <a href="/" class="nav-back"><span class="t-zh t-inline">返回官网</span><span class="t-en t-inline">Back to site</span></a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-c">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span class="t-zh t-inline">隐私政策 · Microsoft Store 分发的版本同样适用这一页</span>
+      <span class="t-en t-inline">Privacy Policy · applies to the Microsoft Store build as well</span>
+    </div>
+    <img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis" class="hero-logo">
+    <h1>
+      <span class="t-zh t-inline">你的数据，</span><span class="accent t-zh t-inline">只在你设备上。</span>
+      <span class="t-en t-inline">Your data,</span><span class="accent t-en t-inline">on your device only.</span>
+    </h1>
+    <p class="hero-sub t-zh">这是一份正式的隐私政策，也是一份说明书：数据放在哪、什么会离开你的设备、什么时候离开、你怎样把它收回来。没有账号，没有埋点，没有一处是你读不懂的。</p>
+    <p class="hero-sub t-en">This is a formal privacy policy written as a manual instead: where your data lives, what leaves your device, when it leaves, and how you take it back. No account, no analytics, nothing you have to re-read twice.</p>
+    <p class="hero-meta">
+      <span class="t-zh t-inline">生效日期 2026 年 10 月 9 日 · 最后更新 2026 年 10 月 9 日 · 版本 1.0</span>
+      <span class="t-en t-inline">Effective 9 October 2026 · Last updated 9 October 2026 · v1.0</span>
+    </p>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:24px">
+  <div class="pol">
+    <div class="toc rv">
+      <div class="toc-t t-zh">目录</div>
+      <div class="toc-t t-en">Contents</div>
+      <div class="toc-grid">
+        <a href="#s01"><span class="toc-num">01</span><span class="t-zh t-inline">适用范围</span><span class="t-en t-inline">Scope</span></a>
+        <a href="#s02"><span class="toc-num">02</span><span class="t-zh t-inline">数据放在哪里</span><span class="t-en t-inline">Where your data lives</span></a>
+        <a href="#s03"><span class="toc-num">03</span><span class="t-zh t-inline">我们不收集什么</span><span class="t-en t-inline">What we do not collect</span></a>
+        <a href="#s04"><span class="toc-num">04</span><span class="t-zh t-inline">会离开设备的数据</span><span class="t-en t-inline">Data that leaves the device</span></a>
+        <a href="#s05"><span class="toc-num">05</span><span class="t-zh t-inline">商店版的额外说明</span><span class="t-en t-inline">Notes on the Store build</span></a>
+        <a href="#s06"><span class="toc-num">06</span><span class="t-zh t-inline">保留与删除</span><span class="t-en t-inline">Retention and deletion</span></a>
+        <a href="#s07"><span class="toc-num">07</span><span class="t-zh t-inline">儿童</span><span class="t-en t-inline">Children</span></a>
+        <a href="#s08"><span class="toc-num">08</span><span class="t-zh t-inline">安全与已知边界</span><span class="t-en t-inline">Security and known limits</span></a>
+        <a href="#s09"><span class="toc-num">09</span><span class="t-zh t-inline">你的权利</span><span class="t-en t-inline">Your rights</span></a>
+        <a href="#s10"><span class="toc-num">10</span><span class="t-zh t-inline">政策变更</span><span class="t-en t-inline">Changes to this policy</span></a>
+        <a href="#s11"><span class="toc-num">11</span><span class="t-zh t-inline">联系我们</span><span class="t-en t-inline">Contact</span></a>
+        <a href="#s12"><span class="toc-num">12</span><span class="t-zh t-inline">生效与版本历史</span><span class="t-en t-inline">Effective date and history</span></a>
+      </div>
+    </div>
+
+    <!-- 01 -->
+    <div class="pol-sec rv" id="s01">
+      <div class="pol-h"><span class="pol-k">01</span>
+        <h2 class="t-zh">适用范围</h2><h2 class="t-en">Scope</h2></div>
+      <p class="t-zh">Bit Jarvis 包含桌面端（Windows / macOS / Linux）与移动端（iOS / Android），由个人开发者独立开发与维护，联系主体见第 11 节。本政策适用于所有发行渠道的版本，<strong>包括通过 Microsoft Store 分发的 Windows 版</strong>。桌面端以 Apache 2.0、移动端以 GPLv3 开源，你可以把这一页的每一句话拿去和代码逐行对照。</p>
+      <p class="t-en">Bit Jarvis ships as a desktop app (Windows / macOS / Linux) and a mobile app (iOS / Android), built and maintained by an individual developer (see section 11). This policy covers every distribution channel, <strong>including the Windows build distributed through the Microsoft Store</strong>. The desktop app is Apache 2.0 and the mobile app is GPLv3: every sentence on this page can be checked against the source.</p>
+    </div>
+
+    <!-- 02 -->
+    <div class="pol-sec rv" id="s02">
+      <div class="pol-h"><span class="pol-k">02</span>
+        <h2 class="t-zh">数据放在哪里</h2><h2 class="t-en">Where your data lives</h2></div>
+      <p class="t-zh"><strong>留在你设备上的</strong>：对话与记忆、你打开或编辑的文件、你主动截取的屏幕内容、脚本与命令的输出、运行日志、以及你填写的模型凭据。这些默认不离开你的机器。</p>
+      <p class="t-en"><strong>Stays on your device</strong>: conversations and memory, the files you open or edit, screenshots you take deliberately, script and command output, runtime logs, and the model credentials you enter. By default none of it leaves your machine.</p>
+      <p class="t-zh"><strong>会离开你设备的</strong>：只有两类。一是你发出的 prompt 与对话，当所用模型运行在云端时；二是你显式启用的跨端接力消息。除此之外我们不接收任何东西。应用没有账号体系，我们手上也没有用户表；服务器侧唯一留下的，是免费模型网关为额度核算登记的一个设备身份，细节见第 04 节。</p>
+      <p class="t-en"><strong>Leaves your device</strong>: only two things. The prompts and conversations you send, when the model you are using runs in the cloud; and the handoff messages you explicitly enable. Nothing else reaches us. There is no account system and no user table; the only thing left on our side is the device identity the free-model gateway registers for quota accounting, detailed in section 04.</p>
+      <div class="note t-zh"><strong>数据目录</strong>：Windows 为 <code>%USERPROFILE%\.jarvis</code>，macOS / Linux 为 <code>~/.jarvis</code>。它不用系统隐藏目录，就是为了让你随时能打开看一眼。</div>
+      <div class="note t-en"><strong>Data directory</strong>: <code>%USERPROFILE%\.jarvis</code> on Windows, <code>~/.jarvis</code> on macOS / Linux. It is deliberately not buried in a hidden system folder, so you can open it and look whenever you want.</div>
+    </div>
+
+    <!-- 03 -->
+    <div class="pol-sec rv" id="s03">
+      <div class="pol-h"><span class="pol-k">03</span>
+        <h2 class="t-zh">我们不收集什么</h2><h2 class="t-en">What we do not collect</h2></div>
+      <ul class="pol-list neg t-zh">
+        <li>不做行为埋点，不上传运行日志或崩溃报告；免费模型的额度核算只记调用用量，不含对话内容</li>
+        <li>不把你的对话用于训练；内置免费模型的调用同样不进入训练流程</li>
+        <li>不建立应用账号，不收集邮箱、手机号、通讯录或广告标识；设备侧唯一的标识是网关用于额度核算的 <code>install_id</code>（见第 04 节）</li>
+        <li>不追踪位置、通讯录、相册；除非你在系统设置里显式授权</li>
+        <li>不接广告 SDK，不做数据交易，不向第三方出售任何数据</li>
+      </ul>
+      <ul class="pol-list neg t-en">
+        <li>No behavioural tracking, no log or crash upload; free-model quotas count usage only, never conversation content</li>
+        <li>No training on your conversations; calls to the built-in free models are not routed into training either</li>
+        <li>No app accounts, no email, no phone number, no contacts, no advertising identifiers; the one device-side identifier is the <code>install_id</code> the gateway uses for quotas (see section 04)</li>
+        <li>No location, contacts or photo tracking, unless you grant it in the OS</li>
+        <li>No ad SDKs, no data brokering, no selling data to third parties</li>
+      </ul>
+    </div>
+
+    <!-- 04 -->
+    <div class="pol-sec rv" id="s04">
+      <div class="pol-h"><span class="pol-k">04</span>
+        <h2 class="t-zh">会离开设备的数据与去向</h2><h2 class="t-en">Data that leaves the device, and where it goes</h2></div>
+
+      <div class="t-zh">
+        <div class="tp">
+          <div class="tp-name">内置免费模型网关<span>自建服务</span></div>
+          <div class="tp-d">送出你的 prompt 与对话，经我们自建的网关转发给上游模型。<em>仅在你选用内置免费模型时发生</em>。网关持有上游模型的凭据并负责路由，你不需要提供任何 key。首次使用会登记一个设备身份（<code>install_id</code>、平台、应用版本、设备信息哈希），换回的 <code>device_id</code> 与令牌只用于额度核算；额度用量留在网关侧，本机内保存的那一份随数据目录一起删除。</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">你配置的模型提供方<span>BYOK</span></div>
+          <div class="tp-d">送出你的 prompt 与对话，<em>直达提供方，不经我们的服务器</em>。对方如何处理与保留，取决于该提供方的条款，我们无权也无能力删除。用 Ollama 时流量不出本机回环地址。</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">Jarvis IM<span>默认关闭</span></div>
+          <div class="tp-d">送出跨端接力的消息。走我们自建的 Matrix homeserver（<code>bitjarvis.chat</code>），协议与代码开源（AGPL-3.0）。<em>不启用即不发生</em>。</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">GitHub Releases<span>非商店版</span></div>
+          <div class="tp-d">送出一次版本查询请求，用于检查更新。不携带你的对话、文件或标识信息。商店版由商店负责更新，不发起这类请求。</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">Microsoft Store<span>商店版</span></div>
+          <div class="tp-d">安装与更新过程中的信息由 Microsoft 处理，适用 <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener noreferrer">Microsoft 隐私声明</a>。我们不接触这些数据，也无从获取。</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">系统原生服务<span>按需授权</span></div>
+          <div class="tp-d">文件、通知、麦克风、摄像头等能力，访问前都要经过系统权限弹窗或应用内的确认，撤回授权即刻失效。</div>
+        </div>
+      </div>
+
+      <div class="t-en">
+        <div class="tp">
+          <div class="tp-name">Built-in free-model gateway<span>self-hosted</span></div>
+          <div class="tp-d">Sends your prompt and conversation through our own gateway to the upstream model. <em>Only when you pick a built-in free model.</em> The gateway holds the upstream credentials and handles routing; you supply no key. First use registers a device identity (<code>install_id</code>, platform, app version, a device-info hash); the <code>device_id</code> and token it returns serve quota accounting only. Quota usage stays on the gateway side, and the local copy disappears with the data directory.</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">The model provider you configure<span>BYOK</span></div>
+          <div class="tp-d">Sends your prompt and conversation <em>straight to the provider, never through our servers</em>. How it is retained and used is governed by that provider's terms; we cannot see or delete it. With Ollama, traffic stays on the loopback interface.</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">Jarvis IM<span>off by default</span></div>
+          <div class="tp-d">Sends cross-device handoff messages through our self-hosted Matrix homeserver (<code>bitjarvis.chat</code>); protocol and code are open (AGPL-3.0). <em>Does not happen unless you turn it on.</em></div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">GitHub Releases<span>non-Store builds</span></div>
+          <div class="tp-d">Sends one version query to check for updates. It carries no conversation, file or identifier. Store builds are updated by the Store and make no such request.</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">Microsoft Store<span>Store build</span></div>
+          <div class="tp-d">Install and update information is handled by Microsoft under the <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener noreferrer">Microsoft Privacy Statement</a>. We neither touch nor receive it.</div>
+        </div>
+        <div class="tp">
+          <div class="tp-name">OS-native services<span>granted per use</span></div>
+          <div class="tp-d">Files, notifications, microphone, camera: every access goes through an OS permission dialog or an in-app confirmation, and revoking it takes effect immediately.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="pol-sec rv" id="s05">
+      <div class="pol-h"><span class="pol-k">05</span>
+        <h2 class="t-zh">商店版的额外说明</h2><h2 class="t-en">Notes on the Microsoft Store build</h2></div>
+      <ul class="pol-list t-zh">
+        <li><strong>完全信任应用</strong>：商店包声明 <code>runFullTrust</code>，以你的用户身份运行，不受 AppContainer 隔离。这是它能替你操作本地文件、运行本地脚本的前提，也意味着它的权限与你自己登录的账户一致。</li>
+        <li><strong>更新由商店交付</strong>：商店版不使用应用内自更新通道。任何代码变更都必须重新提交、由 Microsoft 重新签名后经商店下发，我们无法静默替换你机器上的代码。</li>
+        <li><strong>签名</strong>：商店版的安装包由 Microsoft 签名，第三方无法伪造一个看起来相同的安装来源。</li>
+        <li><strong>与直装版的关系</strong>：从官网或 GitHub 下载的安装包与商店版是同一套程序，数据目录与数据流向一致，本政策对两者同等适用。</li>
+      </ul>
+      <ul class="pol-list t-en">
+        <li><strong>Full-trust app</strong>: the Store package declares <code>runFullTrust</code> and runs as your user, outside AppContainer isolation. That is what lets it work on your local files and run local scripts, and it also means its privileges match your own signed-in account.</li>
+        <li><strong>Updates come from the Store</strong>: the Store build does not use an in-app self-update channel. Any code change requires a fresh submission, re-signed by Microsoft and delivered by the Store. We cannot silently replace code on your machine.</li>
+        <li><strong>Signing</strong>: the Store package is signed by Microsoft, so no third party can forge an install source that looks the same.</li>
+        <li><strong>Relative to the direct download</strong>: the installer from our site or GitHub is the same program as the Store build, with the same data directory and the same data flows. This policy applies to both.</li>
+      </ul>
+    </div>
+
+    <!-- 06 -->
+    <div class="pol-sec rv" id="s06">
+      <div class="pol-h"><span class="pol-k">06</span>
+        <h2 class="t-zh">保留与删除</h2><h2 class="t-en">Retention and deletion</h2></div>
+      <ul class="pol-list t-zh">
+        <li><strong>桌面端</strong>：数据一直留在数据目录里，直到你删掉它。卸载应用<em>不会</em>删除这个目录。彻底清除的步骤：退出应用 → 删除 <code>%USERPROFILE%\.jarvis</code>（Windows）或 <code>~/.jarvis</code>（macOS / Linux）。</li>
+        <li><strong>移动端</strong>：数据在应用沙盒内，卸载即清除。</li>
+        <li><strong>凭据</strong>：你自己填写的 API key 保存在上述数据目录中，删除目录即删除凭据。</li>
+        <li><strong>迁移备份</strong>：应用在改写 provider catalog 之前会留一份副本，用于回滚，副本里含同样的凭据。这类副本 90 天后自动清理，且仅在确认在用的目录仍完好可读时才清理（若不可读则一律保留），每次保留或清理都有日志可查。</li>
+        <li><strong>跨端接力</strong>：若你启用了 Jarvis IM，消息会经过自建 homeserver。关闭该功能会停止后续同步；如需清除服务端已有内容，按第 11 节联系我们。</li>
+        <li><strong>BYOK 直连</strong>：你的 prompt 到达模型提供方之后的保留策略由对方决定，我们无权删除。</li>
+      </ul>
+      <ul class="pol-list t-en">
+        <li><strong>Desktop</strong>: data stays in the data directory until you delete it. Uninstalling the app does <em>not</em> remove it. To erase everything: quit the app, then delete <code>%USERPROFILE%\.jarvis</code> (Windows) or <code>~/.jarvis</code> (macOS / Linux).</li>
+        <li><strong>Mobile</strong>: data lives inside the app sandbox and is wiped on uninstall.</li>
+        <li><strong>Credentials</strong>: API keys you enter are stored in that same data directory; deleting it deletes them.</li>
+        <li><strong>Migration backups</strong>: before rewriting the provider catalog the app keeps a copy so a rollback is possible, and those copies hold the same credentials. They are auto-removed after 90 days, and only once the live directory is confirmed readable and populated; if it is not, every copy is kept regardless of age. Each keep-or-remove decision is logged.</li>
+        <li><strong>Handoff</strong>: if you enabled Jarvis IM, messages pass through our self-hosted homeserver. Turning the feature off stops further sync; to clear what is already on the server, contact us via section 11.</li>
+        <li><strong>BYOK direct</strong>: once your prompt reaches the model provider, retention is governed by that provider. We cannot delete it.</li>
+      </ul>
+    </div>
+
+    <!-- 07 -->
+    <div class="pol-sec rv" id="s07">
+      <div class="pol-h"><span class="pol-k">07</span>
+        <h2 class="t-zh">儿童</h2><h2 class="t-en">Children</h2></div>
+      <p class="t-zh">本应用不面向 13 周岁以下儿童，我们不会有意收集儿童的个人信息。应用不设账号体系，也不收集可用于识别年龄或身份的信息；如果监护人认为有儿童信息被留存，可以按第 11 节联系我们，我们会协助清除本地与服务器上的相关数据。</p>
+      <p class="t-en">The app is not directed to children under 13, and we do not knowingly collect personal information from children. There is no account system and no age- or identity-identifying data is collected. If a guardian believes a child's information has been retained, contact us via section 11 and we will help remove it from local and server storage.</p>
+    </div>
+
+    <!-- 08 -->
+    <div class="pol-sec rv" id="s08">
+      <div class="pol-h"><span class="pol-k">08</span>
+        <h2 class="t-zh">安全与已知边界</h2><h2 class="t-en">Security and known limits</h2></div>
+      <ul class="pol-list t-zh">
+        <li><strong>先问再做</strong>：写文件、执行命令、发起网络请求、访问私人目录，每一步敏感操作都要你确认。这是隐私承诺能被真正执行的前提。</li>
+        <li><strong>两层防护</strong>：应用层的 <code>PathGuard</code> 四级访问控制，加上系统级沙盒（macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token）。</li>
+        <li><strong>已知边界写在明面上</strong>：Windows 上无法使用 POSIX 权限位，凭据以明文文件保存在数据目录中，同一账户下的其他程序仍可能读取。这些写进了仓库的 <code>SECURITY.md</code>，我们选择公开而非隐瞒。</li>
+        <li><strong>商店版是完全信任应用</strong>，其运行权限与你登录的账户一致，请像对待任何本地开发工具一样对待它。</li>
+      </ul>
+      <ul class="pol-list t-en">
+        <li><strong>Ask first</strong>: writing files, running commands, making network calls, reaching into private folders. Every sensitive step asks for your confirmation. That is what makes the promise enforceable.</li>
+        <li><strong>Two layers</strong>: application-level <code>PathGuard</code> four-tier access control, plus an OS-level sandbox (macOS Seatbelt / Linux Bubblewrap / Windows Restricted Token).</li>
+        <li><strong>Known limits, stated openly</strong>: POSIX permission bits are unavailable on Windows, credentials are stored as plaintext files in the data directory, and other programs under the same account may still read them. This is documented in <code>SECURITY.md</code> in the repository rather than left unsaid.</li>
+        <li><strong>The Store build is a full-trust app</strong> running with your account's privileges. Treat it the way you would treat any local developer tool.</li>
+      </ul>
+    </div>
+
+    <!-- 09 -->
+    <div class="pol-sec rv" id="s09">
+      <div class="pol-h"><span class="pol-k">09</span>
+        <h2 class="t-zh">你的权利</h2><h2 class="t-en">Your rights</h2></div>
+      <p class="t-zh">访问、更正、导出、删除、撤回同意。因为绝大多数数据只存在你的设备上，这些权利你可以在自己的机器上直接行使：打开数据目录就是访问，复制它就是导出，删掉它就是删除，不需要向我们申请，也不必等待审批。</p>
+      <p class="t-en">Access, correction, export, deletion, withdrawal of consent. Because almost all of your data lives on your own device, you exercise these directly: opening the data directory is access, copying it is export, deleting it is erasure. No request to us, no waiting for approval.</p>
+      <p class="t-zh">想停止数据离开设备，只需切换到本地模型（Ollama），或关闭跨端接力。想撤回某项系统权限，在系统设置里关掉对应授权即可立即生效。若你认为我们持有你的某些数据并希望处理，按第 11 节联系我们。</p>
+      <p class="t-en">To stop data leaving the device, switch to a local model (Ollama) or turn off handoff. To withdraw an OS permission, revoke it in system settings and it stops immediately. If you believe we hold data of yours and want it handled, use section 11.</p>
+    </div>
+
+    <!-- 10 -->
+    <div class="pol-sec rv" id="s10">
+      <div class="pol-h"><span class="pol-k">10</span>
+        <h2 class="t-zh">政策变更</h2><h2 class="t-en">Changes to this policy</h2></div>
+      <p class="t-zh">只在真正变化时更新这一页。判断标准很具体：新增了必须离开设备的数据类型、更换了默认模型提供方或 IM homeserver、沙盒结构发生调整。每次变更都会更新顶部的日期，并在 GitHub release notes 里写明改了什么，不做静默修改。条款的重大变更会提前告知，不会追溯适用于你已经产生的数据。</p>
+      <p class="t-en">This page changes only when something real changes: a new data type that must leave the device, a change of default model provider or IM homeserver, a restructuring of the sandbox. Every change updates the date at the top and is spelled out in the GitHub release notes. No silent edits, and material changes are announced in advance rather than applied retroactively to data you already produced.</p>
+    </div>
+
+    <!-- 11 -->
+    <div class="pol-sec rv" id="s11">
+      <div class="pol-h"><span class="pol-k">11</span>
+        <h2 class="t-zh">联系我们</h2><h2 class="t-en">Contact</h2></div>
+      <p class="t-zh">这一页没有设邮箱表单，原因很简单：一份好的隐私政策应该像一份好的代码，可以直接对着仓库追问，而且问过的话所有人都看得到。</p>
+      <p class="t-en">There is no email form here, for a simple reason: a good privacy policy should work like good code, answerable right at the repository, with the answer visible to everyone who asks next.</p>
+      <ul class="pol-list t-zh">
+        <li><strong>隐私与数据相关</strong>：在桌面端仓库开一个 Issue，标题里带上 <code>[privacy]</code>，我们会优先处理。</li>
+        <li><strong>安全漏洞</strong>：请使用仓库的 private vulnerability report，72 小时内回应。</li>
+        <li><strong>开发与联系主体</strong>：Bit Jarvis 由个人开发者梦天（GitHub <a href="https://github.com/mengtian999" target="_blank" rel="noopener noreferrer">@mengtian999</a>）独立开发与维护。</li>
+      </ul>
+      <ul class="pol-list t-en">
+        <li><strong>Privacy and data</strong>: open an issue in the desktop repository with <code>[privacy]</code> in the title; we treat those first.</li>
+        <li><strong>Security</strong>: use the repository's private vulnerability report; response within 72 hours.</li>
+        <li><strong>Developer and data controller</strong>: Bit Jarvis is developed and maintained by an individual developer, mengtian (GitHub <a href="https://github.com/mengtian999" target="_blank" rel="noopener noreferrer">@mengtian999</a>).</li>
+      </ul>
+      <div class="note t-zh">
+        <strong>相关链接</strong>：<a href="https://github.com/mengtian999/Bitjarvis/issues" target="_blank" rel="noopener noreferrer">桌面端 Issues</a> · <a href="https://github.com/mengtian999/jarvis/issues" target="_blank" rel="noopener noreferrer">移动端 Issues</a> · <a href="https://github.com/mengtian999/Bitjarvis/security" target="_blank" rel="noopener noreferrer">安全漏洞报告</a> · <a href="/privacy.html">产品向隐私说明</a>
+      </div>
+      <div class="note t-en">
+        <strong>Links</strong>: <a href="https://github.com/mengtian999/Bitjarvis/issues" target="_blank" rel="noopener noreferrer">Desktop issues</a> · <a href="https://github.com/mengtian999/jarvis/issues" target="_blank" rel="noopener noreferrer">Mobile issues</a> · <a href="https://github.com/mengtian999/Bitjarvis/security" target="_blank" rel="noopener noreferrer">Security report</a> · <a href="/privacy.html">Product privacy note</a>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="pol-sec rv" id="s12">
+      <div class="pol-h"><span class="pol-k">12</span>
+        <h2 class="t-zh">生效与版本历史</h2><h2 class="t-en">Effective date and history</h2></div>
+      <ul class="pol-list t-zh">
+        <li><strong>1.0 · 2026-10-09</strong>：首版发布，配合 Windows 版上架 Microsoft Store。</li>
+      </ul>
+      <ul class="pol-list t-en">
+        <li><strong>1.0 · 2026-10-09</strong>: first release, alongside the Windows build coming to the Microsoft Store.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="pol-foot-note">
+    <span class="t-zh t-inline">这一页是商店提交所用的隐私政策地址。产品向的、更口语的那一份在 <a href="/privacy.html" style="color:var(--accent-soft)">这里</a>。</span>
+    <span class="t-en t-inline">This page is the privacy policy URL used for the Store submission. The friendlier, product-facing note lives <a href="/privacy.html" style="color:var(--accent-soft)">here</a>.</span>
+  </p>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-brand"><img src="https://www.bitjarvis.chat/bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</div>
+      <div class="foot-links">
+        <a href="https://github.com/mengtian999/Bitjarvis" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="/privacy.html"><span class="t-zh t-inline">隐私</span><span class="t-en t-inline">Privacy</span></a>
+        <a href="/download.html"><span class="t-zh t-inline">下载</span><span class="t-en t-inline">Download</span></a>
+        <a href="/"><span class="t-zh t-inline">首页</span><span class="t-en t-inline">Home</span></a>
+      </div>
+    </div>
+    <div class="foot-copy">© 2026 Bit Jarvis · Made with care.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var TITLES={'zh-CN':'Bit Jarvis — 隐私政策','en':'Bit Jarvis — Privacy Policy'};
+  var SHORT={'zh-CN':'中','en':'EN'};
+
+  function setLang(l){
+    if(!TITLES[l]) l='zh-CN';
+    document.documentElement.setAttribute('data-lang',l);
+    document.documentElement.setAttribute('lang',l==='en'?'en':'zh-CN');
+    try{localStorage.setItem('bitjarvis_lang',l);}catch(e){}
+    document.title=TITLES[l];
+    document.getElementById('langLabel').textContent=SHORT[l];
+    var opts=document.querySelectorAll('.lang-option');
+    for(var i=0;i<opts.length;i++){
+      var on=opts[i].getAttribute('data-code')===l;
+      opts[i].classList.toggle('active',on);
+      var ck=opts[i].querySelector('.lo-check');
+      if(ck) ck.textContent=on?'✓':'';
+    }
+  }
+
+  function setTheme(t){
+    document.documentElement.setAttribute('data-theme',t);
+    try{localStorage.setItem('bitjarvis_theme',t);}catch(e){}
+  }
+
+  var saved='zh-CN';
+  try{var s=localStorage.getItem('bitjarvis_lang');if(TITLES[s]) saved=s;}catch(e){}
+  setLang(saved);
+  setTheme(document.documentElement.getAttribute('data-theme')||'dark');
+
+  document.getElementById('themeToggle').addEventListener('click',function(){
+    setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
+  });
+  document.getElementById('langBtn').addEventListener('click',function(e){
+    e.stopPropagation();
+    document.getElementById('langMenu').classList.toggle('open');
+  });
+  document.addEventListener('click',function(){document.getElementById('langMenu').classList.remove('open');});
+  var opts=document.querySelectorAll('.lang-option');
+  for(var i=0;i<opts.length;i++){
+    (function(el){
+      el.addEventListener('click',function(){
+        setLang(el.getAttribute('data-code'));
+        document.getElementById('langMenu').classList.remove('open');
+      });
+    })(opts[i]);
+  }
+
+  function initReveal(){
+    var els=document.querySelectorAll('.rv');
+    if(!('IntersectionObserver' in window)){
+      for(var k=0;k<els.length;k++) els[k].classList.add('in');
+      return;
+    }
+    var obs=new IntersectionObserver(function(entries){
+      for(var i=0;i<entries.length;i++){
+        if(entries[i].isIntersecting){entries[i].target.classList.add('in');obs.unobserve(entries[i].target);}
+      }
+    },{threshold:0.06});
+    for(var k=0;k<els.length;k++) obs.observe(els[k]);
+  }
+  initReveal();
+})();
+</script>
+</body>
+</html>
