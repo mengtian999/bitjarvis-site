@@ -223,7 +223,8 @@ html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
             <p class="dl-desc" data-i18n="dl.winDesc">支持 Windows 10 及以上，64 位。</p>
             <p class="dl-req" data-i18n="dl.winReq">系统要求：Windows 10 / 11 · 64 位 · 4GB+ 内存</p>
             <div class="dl-actions">
-              <a href="https://github.com/mengtian999/bitjarvis/releases/download/BitJarvis/Bit.Jarvis-0.0.1-Windows-x64.exe" class="dl-btn dl-btn-p" data-i18n="dl.dlBtn">下载 →</a>
+              <a href="https://apps.microsoft.com/detail/9NDTH1XFP2JM" class="dl-btn dl-btn-p" id="storeBtn" data-i18n="dl.storeBtn">从 Microsoft Store 获取 →</a>
+              <a href="https://github.com/mengtian999/bitjarvis/releases/download/BitJarvis/Bit.Jarvis-0.0.1-Windows-x64.exe" class="dl-btn dl-btn-g" data-i18n="dl.exeBtn">直接下载 (.exe) →</a>
             </div>
           </div>
         </div>
@@ -352,6 +353,12 @@ html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
     }catch(e){}
     return 'dark';
   }
+  var STORE_HL={'zh-CN':'zh-CN','zh-TW':'zh-TW','en':'en-US','ja':'ja-JP','ko':'ko-KR'};
+  function syncStoreBtn(lang){
+    var b=document.getElementById('storeBtn');
+    if(!b) return;
+    b.href='https://apps.microsoft.com/detail/9NDTH1XFP2JM?hl='+(STORE_HL[lang]||'en-US');
+  }
   function applyLang(lang){
     var dict=translations[lang]||translations['zh-CN']||{};
     document.documentElement.lang=lang;
@@ -375,6 +382,7 @@ html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
       if(code===lang){opts[j].classList.add('active');if(chk)chk.textContent='✓';}
       else{opts[j].classList.remove('active');if(chk)chk.textContent='';}
     }
+    syncStoreBtn(lang);
     try{localStorage.setItem('bitjarvis_lang',lang);}catch(e){}
   }
   function setTheme(theme){
