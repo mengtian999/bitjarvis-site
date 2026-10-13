@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>点火计划 · 你有想法，我们点火</title>
+<meta name="description" content="你有想法，我们点火。出完整技术栈 + 全球上架 + 软著，你出点子 + 运营。80/20 分成，累计到手 1 万随时带走。">
+<style>
+  :root {
+    --bg: #FAF6EF;
+    --ink: #0F2A4A;
+    --accent: #E85D2A;
+    --muted: #6B7280;
+    --line: #E5DFD3;
+    --card: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", serif;
+    line-height: 1.7;
+    font-size: 17px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+
+  /* NAV */
+  header {
+    position: sticky; top: 0;
+    background: rgba(250, 246, 239, 0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    z-index: 100;
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+  .brand { font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-weight: 700; letter-spacing: 0.05em; font-size: 16px; }
+  .brand span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 14px; }
+  .nav-links a { color: var(--ink); text-decoration: none; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero { padding: 112px 0 96px; text-align: center; position: relative; overflow: hidden; }
+  .hero .slogan {
+    font-size: clamp(42px, 7vw, 78px);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .hero .slogan em {
+    font-style: normal;
+    color: var(--accent);
+    position: relative;
+    display: inline-block;
+  }
+  .hero .slogan em::before {
+    content: "⚡";
+    font-size: 0.5em;
+    position: absolute;
+    top: -0.1em;
+    left: -0.7em;
+  }
+  .hero .subtitle {
+    font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    color: var(--muted);
+    font-size: clamp(16px, 2vw, 20px);
+    max-width: 620px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+  .hero .cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .hero .cta a {
+    display: inline-block;
+    padding: 14px 34px;
+    text-decoration: none;
+    font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 15px;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #d64f20; }
+  .btn-secondary { border: 1.5px solid var(--ink); color: var(--ink); }
+  .btn-secondary:hover { background: var(--ink); color: var(--bg); }
+
+  /* SECTION */
+  section { padding: 88px 0; }
+  .section-header { margin-bottom: 48px; }
+  .section-header h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+  }
+  .section-header .lead { color: var(--muted); font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 17px; max-width: 700px; }
+  .section-header::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--accent);
+    margin-bottom: 22px;
+  }
+
+  /* MODEL */
+  .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+  .model-card {
+    background: var(--card);
+    padding: 36px 32px;
+    border: 1px solid var(--line);
+  }
+  .model-card .label { font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 13px; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 14px; font-weight: 600; }
+  .model-card h3 { font-size: 22px; margin-bottom: 16px; }
+  .model-card ul { list-style: none; }
+  .model-card li { padding: 8px 0; color: var(--muted); font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 15px; }
+  .model-card li::before { content: "·"; color: var(--accent); margin-right: 10px; font-weight: 700; }
+
+  .rules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .rule {
+    text-align: center;
+    padding: 28px 16px;
+    background: var(--card);
+    border-top: 3px solid var(--accent);
+  }
+  .rule .num {
+    font-family: "Space Grotesk", "Inter", "Source Han Sans SC", sans-serif;
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .rule .num small { font-size: 22px; }
+  .rule .desc { font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; color: var(--muted); font-size: 14px; }
+
+  /* FAQ */
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item summary {
+    padding: 22px 0;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+";
+    font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    font-size: 24px;
+    color: var(--accent);
+    transition: transform 0.2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item p { padding: 0 0 22px; color: var(--muted); line-height: 1.85; font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 15px; max-width: 780px; }
+
+  /* CONTACT */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+    background: var(--card);
+    padding: 48px;
+    border: 1px solid var(--line);
+    align-items: center;
+  }
+  .contact-info h3 { font-size: 24px; margin-bottom: 14px; }
+  .contact-info p { color: var(--muted); margin-bottom: 20px; font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; }
+  .contact-info .q-text { font-size: 14px; color: var(--muted); margin-bottom: 10px; font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; }
+  .contact-info ol { padding-left: 20px; font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 15px; }
+  .contact-info ol li { margin: 6px 0; }
+  .contact-card { text-align: center; }
+  .contact-card .qr-slot {
+    padding: 24px;
+    background: var(--bg);
+    border: 2px dashed var(--line);
+    margin-bottom: 16px;
+  }
+  .contact-card .qr-slot img { max-width: 100%; max-height: 380px; display: block; margin: 0 auto; }
+  .contact-card .caption { font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 14px; color: var(--muted); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--line); padding: 32px 0; text-align: center; color: var(--muted); font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 13px; }
+
+  @media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    .hero { padding: 72px 0 56px; }
+    section { padding: 60px 0; }
+    .model-grid { grid-template-columns: 1fr; }
+    .rules { grid-template-columns: 1fr; }
+    .contact-wrap { grid-template-columns: 1fr; padding: 32px 24px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="brand">点火<span>计划</span></div>
+    <nav class="nav-links">
+      <a href="#model">模式</a>
+      <a href="#rules">规则</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">申请</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1 class="slogan">你有想法，我们<em>点火</em>。</h1>
+    <p class="subtitle">出完整技术栈 + 全球上架 + 软著。你出点子 + 运营。<br>项目到账 1 万，随时带走。</p>
+    <div class="cta">
+      <a href="#contact" class="btn-primary">申请合作 →</a>
+      <a href="#faq" class="btn-secondary">先看规则</a>
+    </div>
+  </div>
+</section>
+
+<section id="model">
+  <div class="container">
+    <div class="section-header">
+      <h2>模式</h2>
+      <p class="lead">不是我们帮你，是我们合伙。你把点子跑起来，我们把产品做出来。</p>
+    </div>
+    <div class="model-grid">
+      <div class="model-card">
+        <div class="label">你出</div>
+        <h3>点子 + 运营</h3>
+        <ul>
+          <li>一个能讲清楚的产品想法</li>
+          <li>目标用户的具体认知</li>
+          <li>可触达的第一批用户渠道</li>
+          <li>持续投入的时间和执行</li>
+        </ul>
+      </div>
+      <div class="model-card">
+        <div class="label">我们出</div>
+        <h3>技术 + 上架</h3>
+        <ul>
+          <li>完整技术栈 + 快速落地</li>
+          <li>App Store / Google Play / Windows 商店</li>
+          <li>国内各安卓应用市场上架</li>
+          <li>软件著作权代办（公司主体）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rules" style="background:#F5F0E4;">
+  <div class="container">
+    <div class="section-header">
+      <h2>规则</h2>
+      <p class="lead">四条钉死，白纸黑字进协议，不靠信用不靠情面。</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="num">80 / 20</div>
+        <div class="desc">你拿 80%，我们拿 20%。按平台结算后到账金额算，不含 App Store / Google 抽成。</div>
+      </div>
+      <div class="rule">
+        <div class="num">1<small>万</small></div>
+        <div class="desc">项目到账 1 万，随时买断带走。代码、数据、上架权全部归你，我们 20% 到此为止。</div>
+      </div>
+      <div class="rule">
+        <div class="num">5<small>%</small></div>
+        <div class="desc">不想买断？5% 起，我们继续代维护迭代，长期陪你跑。</div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:36px; color:var(--muted); font-size:14px; font-family:'Source Han Sans SC','Noto Sans SC',sans-serif;">
+      买断前置条件：对方需先自备开发者账号（苹果有官方 App Transfer 机制），软著变更由我们代办。
+    </p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-header">
+      <h2>常见问题</h2>
+      <p class="lead">这几条看清楚，决定要不要来聊。</p>
+    </div>
+    <details class="faq-item">
+      <summary>这是什么？</summary>
+      <p>一个合伙模式：你出点子 + 运营，我们出技术 + 上架。你负责把产品推向用户，我们负责把产品做出来。80/20 分成，按平台实际到账金额结算。</p>
+    </details>
+    <details class="faq-item">
+      <summary>我出个点子，值多少？</summary>
+      <p>项目收益的 80%。分成口径是平台结算后实际到账金额——不含 App Store（30%）或 Google（15-30%）的抽成，那部分平台抽走的钱跟我们之间的分成无关。</p>
+    </details>
+    <details class="faq-item">
+      <summary>点子归谁？软著归谁？</summary>
+      <p>买断前，代码 + 数据 + 上架权挂在项目上，双方共有。买断后（项目到账 1 万），代码、数据、上架权全部归你，我们 20% 分成到此终止——你的项目纯粹是你的项目。软著挂我们公司主体的，买断时我们代办变更登记。</p>
+    </details>
+    <details class="faq-item">
+      <summary>买断啥条件？</summary>
+      <p>项目到账 1 万（对应我们到手 2000）时，你可以提出转移。前置条件：你自己先备好开发者账号（苹果有官方 App Transfer 机制，接收方必须先有账号）。软著挂公司主体的我们代办变更，周期和官费写进协议。对方无公司主体时，国内安卓市场只能转代码 + 素材，上架权维持原状，后续走 5% 陪跑。</p>
+    </details>
+    <details class="faq-item">
+      <summary>不买断呢？</summary>
+      <p>不买断也行。5% 起，我们继续代维护迭代，长期陪你跑。这条线适合不想自己开账号、或想让我们长期兜底的人。</p>
+    </details>
+    <details class="faq-item">
+      <summary>项目一直没起来怎么办？</summary>
+      <p><b>上架日起算，每年一考核。</b>看两件事：项目到账金额、MAU。<br>
+      <b>总闸门 3 年</b>——3 年内所有未达标分支共用硬顶，超了不再看数据一律下架。
+      <br><br>
+      <b>项目到账 1 万</b>：随时可申请买断，归你自己（上面那条）。
+      <br><br>
+      <b>一年下来没到 1 万，但 MAU ≥ 1000</b>：项目还在跑，续 1 年再考核。
+      <br><br>
+      <b>一年下来没到 1 万，MAU &lt; 1000</b>：直接下架。
+      <br><br>
+      <b>你觉得项目还有希望</b>：可申请续期，我们评估，最长 3 年。
+      <br><br>
+      <b>下架后怎么办</b>：下架 = 代码留在原仓库（谁仓库就留哪）+ 我们停止维护 + 不再提供任何支持。软著归属不变（挂你主体的保留你，挂我们主体的保留我们）。你拿它自己重新上架还是拿去重新做，我们不管。
+      <br><br>
+      <b>注：申请不等于决定。</b>想续不等于能续，具体看项目数据和你的评估。</p>
+    </details>
+    <details class="faq-item">
+      <summary>国内和海外都一样吗？</summary>
+      <p>国内海外按不同渠道打法做，不共用一套文案。国内用户看确定性数字（1 万/5%），海外用户看零风险 + 长期归属。海外版本单独立项，规则草案筹备中，暂不单独立项承诺。</p>
+    </details>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="section-header">
+      <h2>申请合作</h2>
+      <p class="lead">聊聊前，想清楚这三个。想不清楚也不急，直接聊也行。</p>
+    </div>
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <h3>聊聊前，想清楚这三个</h3>
+        <p>不用一口气答完，想好了我们聊也行。</p>
+        <ol>
+          <li>你的用户是谁，用一句话说清楚</li>
+          <li>第一批人从哪来，你现在手上有没有渠道</li>
+          <li>你的项目解决什么问题</li>
+        </ol>
+        <div style="margin-top:22px;">
+          <p class="q-text" style="margin-top:0;">先聊聊，想清楚再写。加个微信，三题在聊里答也行，不着急。</p>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="qr-slot">
+          <img src="../wxrwm.jpg" alt="微信名片">
+        </div>
+        <p class="caption">有问题先聊 · 扫码加我</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>点火计划 · 你有想法，我们点火 · 80 / 20 分成，项目到账 1 万随时带走</p>
+  </div>
+</footer>
+
+</body>
+</html>
