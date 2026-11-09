@@ -187,7 +187,61 @@
     border: 2px dashed var(--line);
     margin-bottom: 16px;
   }
-  .contact-card .qr-slot img { max-width: 100%; max-height: 380px; display: block; margin: 0 auto; }
+  .contact-card .qr-slot img {
+    max-width: 100%;
+    max-height: 380px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    -webkit-touch-callout: default;
+    -webkit-user-select: auto;
+    touch-action: auto;
+  }
+  .contact-card .qr-hint {
+    display: none;
+    margin-top: 8px;
+    font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* 二维码全屏预览层：点击二维码弹出干净的大图，长按识别更可靠 */
+  .qr-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background: rgba(15, 42, 74, 0.94);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 32px;
+  }
+  .qr-preview.open { display: flex; }
+  .qr-preview img {
+    max-width: 82vw;
+    max-height: 68vh;
+    display: block;
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    -webkit-touch-callout: default;
+    -webkit-user-select: auto;
+    touch-action: auto;
+  }
+  .qr-preview p {
+    margin-top: 18px;
+    color: #fff;
+    font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    font-size: 14px;
+    line-height: 1.9;
+    text-align: center;
+  }
   .contact-card .caption { font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif; font-size: 14px; color: var(--muted); }
 
   /* FOOTER */
@@ -223,7 +277,7 @@
     <h1 class="slogan">你有想法，我们<em>点火</em>。</h1>
     <p class="subtitle">出完整技术栈 + 全球上架 + 软著。你出点子 + 运营。<br>项目到账 1 万，随时带走。</p>
     <div class="cta">
-      <a href="#contact" class="btn-primary">申请合作 →</a>
+      <a href="#contact" class="btn-primary">来聊聊 →</a>
       <a href="#faq" class="btn-secondary">先看规则</a>
     </div>
   </div>
@@ -330,8 +384,8 @@
       <b>注：申请不等于决定。</b>想续不等于能续，具体看项目数据和你的评估。</p>
     </details>
     <details class="faq-item">
-      <summary>国内和海外都一样吗？</summary>
-      <p>国内海外按不同渠道打法做，不共用一套文案。国内用户看确定性数字（1 万/5%），海外用户看零风险 + 长期归属。海外版本单独立项，规则草案筹备中，暂不单独立项承诺。</p>
+      <summary>为什么选择我们？</summary>
+      <p>0 成本先试想法，跑通了就是你的。<br><br>人力、算力、经验、技术栈、账号、主体都齐。开发和上架的坑替你趟，繁琐的事替你兜。</p>
     </details>
   </div>
 </section>
@@ -357,9 +411,14 @@
       </div>
       <div class="contact-card">
         <div class="qr-slot">
-          <img src="../wxrwm.jpg" alt="微信名片">
+          <img src="wxrwm.jpg" alt="微信名片二维码" width="820" height="1217">
         </div>
-        <p class="caption">有问题先聊 · 扫码加我</p>
+        <p class="caption">有问题先聊 · 扫码加我（点二维码可放大）</p>
+        <p class="qr-hint" id="qrHint">当前在微信外打开：长按上方二维码可保存图片，再打开微信「扫一扫」识别。</p>
+        <div class="qr-preview" id="qrPreview" role="dialog" aria-modal="true" aria-label="二维码放大预览">
+          <img src="wxrwm.jpg" alt="微信名片二维码">
+          <p>在微信内：长按上方二维码 → 识别图中二维码<br>在微信外：长按保存图片，再打开微信「扫一扫」</p>
+        </div>
       </div>
     </div>
   </div>
@@ -370,6 +429,30 @@
     <p>点火计划 · 你有想法，我们点火 · 80 / 20 分成，项目到账 1 万随时带走</p>
   </div>
 </footer>
+
+<script>
+(function () {
+  var preview = document.getElementById('qrPreview');
+  var hint = document.getElementById('qrHint');
+  var qrImg = document.querySelector('.qr-slot img');
+
+  // 非微信环境（UA 不带 MicroMessenger）时显示保存图片的提示
+  if (!/MicroMessenger/i.test(navigator.userAgent) && hint) {
+    hint.style.display = 'block';
+  }
+
+  function openPreview() { preview.classList.add('open'); }
+  function closePreview() { preview.classList.remove('open'); }
+
+  // 只监听 click（快速点击），不拦截 touch 事件，
+  // 否则会破坏浏览器/微信原生「长按识别二维码」能力
+  if (qrImg) qrImg.addEventListener('click', openPreview);
+  if (preview) preview.addEventListener('click', closePreview);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closePreview();
+  });
+})();
+</script>
 
 </body>
 </html>
