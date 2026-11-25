@@ -224,7 +224,7 @@ html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
             <p class="dl-req" data-i18n="dl.winReq">系统要求：Windows 10 / 11 · 64 位 · 4GB+ 内存</p>
             <div class="dl-actions">
               <a href="https://apps.microsoft.com/detail/9NDTH1XFP2JM" class="dl-btn dl-btn-p" id="storeBtn" data-i18n="dl.storeBtn">从 Microsoft Store 获取 →</a>
-              <a href="https://github.com/mengtian999/bitjarvis/releases/download/BitJarvis/Bit.Jarvis-0.0.1-Windows-x64.exe" class="dl-btn dl-btn-g" data-i18n="dl.exeBtn">直接下载 (.exe) →</a>
+              <a href="https://github.com/mengtian999/bitjarvis/releases/latest" class="dl-btn dl-btn-g" data-dl="win" data-i18n="dl.exeBtn">直接下载 (.exe) →</a>
             </div>
           </div>
         </div>
@@ -281,7 +281,7 @@ html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
             <div class="dl-desc" data-i18n="dl.andDesc">支持 Android 8.0 及以上。</div>
             <div class="dl-req" data-i18n="dl.andReq">系统要求：Android 8.0+ · 4GB+ 内存</div>
             <div class="dl-actions">
-              <a href="https://gitee.com/dreamsky111333/jarvis/releases/download/Jarvis-v0.01/Jarvis.apk" class="dl-btn dl-btn-p" data-i18n="dl.mobBtn">获取 →</a>
+              <a href="https://github.com/mengtian999/jarvis/releases/latest" class="dl-btn dl-btn-p" data-dl="android" data-i18n="dl.mobBtn">获取 →</a>
             </div>
           </div>
         </div>
@@ -443,6 +443,44 @@ html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
     if(cur==='dark') nav.style.background=sc?'rgba(10,10,15,.88)':'rgba(10,10,15,.72)';
     else nav.style.background=sc?'rgba(255,255,255,.92)':'rgba(255,255,255,.72)';
   });
+})();
+</script>
+<script>
+(function(){
+  'use strict';
+  // 下载源：国内 AtomGit / 国外 GitHub，取最新 release 直链
+  var DL={
+    win:{
+      cn:{api:'https://api.gitcode.com/api/v5/repos/gcw_KxmcQJPr/bitjarvis/releases/latest',page:'https://atomgit.com/gcw_KxmcQJPr/bitjarvis/releases/latest',re:/Windows-x64\.exe$/i},
+      intl:{api:'https://api.github.com/repos/mengtian999/bitjarvis/releases/latest',page:'https://github.com/mengtian999/bitjarvis/releases/latest',re:/Windows-x64\.exe$/i}
+    },
+    android:{
+      cn:{api:'https://api.gitcode.com/api/v5/repos/gcw_KxmcQJPr/jarvis/releases/latest',page:'https://atomgit.com/gcw_KxmcQJPr/jarvis/releases/latest',re:/\.apk$/i},
+      intl:{api:'https://api.github.com/repos/mengtian999/jarvis/releases/latest',page:'https://github.com/mengtian999/jarvis/releases/latest',re:/\.apk$/i}
+    }
+  };
+  var inCN=false;
+  try{inCN=/^Asia\/(Shanghai|Chongqing|Urumqi|Harbin)$/i.test(Intl.DateTimeFormat().resolvedOptions().timeZone||'');}catch(err){}
+
+  function latest(kind){
+    var s=DL[kind][inCN?'cn':'intl'];
+    var nodes=document.querySelectorAll('[data-dl="'+kind+'"]');
+    if(!nodes.length) return;
+    Array.prototype.forEach.call(nodes,function(a){a.href=s.page;});
+    var ctr=window.AbortController?new AbortController():null;
+    var timer=setTimeout(function(){if(ctr)ctr.abort();},4000);
+    function stop(){clearTimeout(timer);}
+    fetch(s.api,{mode:'cors',cache:'no-store',signal:ctr?ctr.signal:undefined})
+      .then(function(r){stop();return r.ok?r.json():null;})
+      .then(function(j){
+        var hit=j&&(j.assets||[]).filter(function(a){return s.re.test(a.name||'');})[0];
+        if(!hit||!hit.browser_download_url) return;
+        Array.prototype.forEach.call(nodes,function(a){a.href=hit.browser_download_url;});
+      })
+      .catch(stop);
+  }
+  latest('win');
+  latest('android');
 })();
 </script>
 </body>
