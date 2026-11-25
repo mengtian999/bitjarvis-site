@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark" data-lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bit Jarvis — 한 Jarvis, 여러 Agent</title>
+<meta name="description" content="대신 일하고, 사람을 연결한다. 남은 시간은 너에게. 멀티 디바이스, 기억, 개성을 가진 AI 어시스턴트.">
+<link rel="icon" href="/bitjarvis.png" type="image/png">
+<script>
+// Anti-theme-flash: set data-theme before first paint, based on localStorage or OS preference.
+(function(){
+  try{
+    var t=localStorage.getItem('bitjarvis_theme');
+    if(!t||t!=='light'&&t!=='dark'){
+      t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+    }
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark');}
+})();
+</script>
+<link rel="alternate" hreflang="zh-CN" href="https://bitjarvis.chat/">
+<link rel="alternate" hreflang="zh-TW" href="https://bitjarvis.chat/zh-tw/">
+<link rel="alternate" hreflang="ja" href="https://bitjarvis.chat/ja/">
+<link rel="alternate" hreflang="ko" href="https://bitjarvis.chat/ko/">
+<link rel="alternate" hreflang="th" href="https://bitjarvis.chat/th/">
+<link rel="alternate" hreflang="vi" href="https://bitjarvis.chat/vi/">
+<link rel="alternate" hreflang="id" href="https://bitjarvis.chat/id/">
+<link rel="alternate" hreflang="ms" href="https://bitjarvis.chat/ms/">
+<link rel="alternate" hreflang="fil" href="https://bitjarvis.chat/fil/">
+<link rel="alternate" hreflang="my" href="https://bitjarvis.chat/my/">
+<link rel="alternate" hreflang="km" href="https://bitjarvis.chat/km/">
+<link rel="alternate" hreflang="lo" href="https://bitjarvis.chat/lo/">
+<link rel="alternate" hreflang="si" href="https://bitjarvis.chat/si/">
+<link rel="alternate" hreflang="bo" href="https://bitjarvis.chat/bo/">
+<link rel="alternate" hreflang="mn" href="https://bitjarvis.chat/mn/">
+<link rel="alternate" hreflang="ne" href="https://bitjarvis.chat/ne/">
+<link rel="alternate" hreflang="kk" href="https://bitjarvis.chat/kk/">
+<link rel="alternate" hreflang="ky" href="https://bitjarvis.chat/ky/">
+<link rel="alternate" hreflang="uz" href="https://bitjarvis.chat/uz/">
+<link rel="alternate" hreflang="az" href="https://bitjarvis.chat/az/">
+<link rel="alternate" hreflang="tg" href="https://bitjarvis.chat/tg/">
+<link rel="alternate" hreflang="ug" href="https://bitjarvis.chat/ug/">
+<link rel="alternate" hreflang="tk" href="https://bitjarvis.chat/tk/">
+<link rel="alternate" hreflang="en" href="https://bitjarvis.chat/en/">
+<link rel="alternate" hreflang="fr" href="https://bitjarvis.chat/fr/">
+<link rel="alternate" hreflang="de" href="https://bitjarvis.chat/de/">
+<link rel="alternate" hreflang="es" href="https://bitjarvis.chat/es/">
+<link rel="alternate" hreflang="ru" href="https://bitjarvis.chat/ru/">
+<link rel="alternate" hreflang="it" href="https://bitjarvis.chat/it/">
+<link rel="alternate" hreflang="pt" href="https://bitjarvis.chat/pt/">
+<link rel="alternate" hreflang="nl" href="https://bitjarvis.chat/nl/">
+<link rel="alternate" hreflang="pl" href="https://bitjarvis.chat/pl/">
+<link rel="alternate" hreflang="cs" href="https://bitjarvis.chat/cs/">
+<link rel="alternate" hreflang="hu" href="https://bitjarvis.chat/hu/">
+<link rel="alternate" hreflang="ro" href="https://bitjarvis.chat/ro/">
+<link rel="alternate" hreflang="bg" href="https://bitjarvis.chat/bg/">
+<link rel="alternate" hreflang="hr" href="https://bitjarvis.chat/hr/">
+<link rel="alternate" hreflang="sr" href="https://bitjarvis.chat/sr/">
+<link rel="alternate" hreflang="sk" href="https://bitjarvis.chat/sk/">
+<link rel="alternate" hreflang="sl" href="https://bitjarvis.chat/sl/">
+<link rel="alternate" hreflang="da" href="https://bitjarvis.chat/da/">
+<link rel="alternate" hreflang="sv" href="https://bitjarvis.chat/sv/">
+<link rel="alternate" hreflang="nb" href="https://bitjarvis.chat/nb/">
+<link rel="alternate" hreflang="fi" href="https://bitjarvis.chat/fi/">
+<link rel="alternate" hreflang="el" href="https://bitjarvis.chat/el/">
+<link rel="alternate" hreflang="et" href="https://bitjarvis.chat/et/">
+<link rel="alternate" hreflang="lv" href="https://bitjarvis.chat/lv/">
+<link rel="alternate" hreflang="lt" href="https://bitjarvis.chat/lt/">
+<link rel="alternate" hreflang="is" href="https://bitjarvis.chat/is/">
+<link rel="alternate" hreflang="ca" href="https://bitjarvis.chat/ca/">
+<link rel="alternate" hreflang="eu" href="https://bitjarvis.chat/eu/">
+<link rel="alternate" hreflang="gl" href="https://bitjarvis.chat/gl/">
+<link rel="alternate" hreflang="ga" href="https://bitjarvis.chat/ga/">
+<link rel="alternate" hreflang="mt" href="https://bitjarvis.chat/mt/">
+<link rel="alternate" hreflang="cy" href="https://bitjarvis.chat/cy/">
+<link rel="alternate" hreflang="lb" href="https://bitjarvis.chat/lb/">
+<link rel="alternate" hreflang="mk" href="https://bitjarvis.chat/mk/">
+<link rel="alternate" hreflang="sq" href="https://bitjarvis.chat/sq/">
+<link rel="alternate" hreflang="be" href="https://bitjarvis.chat/be/">
+<link rel="alternate" hreflang="uk" href="https://bitjarvis.chat/uk/">
+<link rel="alternate" hreflang="hi" href="https://bitjarvis.chat/hi/">
+<link rel="alternate" hreflang="bn" href="https://bitjarvis.chat/bn/">
+<link rel="alternate" hreflang="ta" href="https://bitjarvis.chat/ta/">
+<link rel="alternate" hreflang="te" href="https://bitjarvis.chat/te/">
+<link rel="alternate" hreflang="kn" href="https://bitjarvis.chat/kn/">
+<link rel="alternate" hreflang="ml" href="https://bitjarvis.chat/ml/">
+<link rel="alternate" hreflang="mr" href="https://bitjarvis.chat/mr/">
+<link rel="alternate" hreflang="pa" href="https://bitjarvis.chat/pa/">
+<link rel="alternate" hreflang="gu" href="https://bitjarvis.chat/gu/">
+<link rel="alternate" hreflang="or" href="https://bitjarvis.chat/or/">
+<link rel="alternate" hreflang="as" href="https://bitjarvis.chat/as/">
+<link rel="alternate" hreflang="mai" href="https://bitjarvis.chat/mai/">
+<link rel="alternate" hreflang="doi" href="https://bitjarvis.chat/doi/">
+<link rel="alternate" hreflang="mni" href="https://bitjarvis.chat/mni/">
+<link rel="alternate" hreflang="kok" href="https://bitjarvis.chat/kok/">
+<link rel="alternate" hreflang="ar" href="https://bitjarvis.chat/ar/">
+<link rel="alternate" hreflang="he" href="https://bitjarvis.chat/he/">
+<link rel="alternate" hreflang="fa" href="https://bitjarvis.chat/fa/">
+<link rel="alternate" hreflang="ur" href="https://bitjarvis.chat/ur/">
+<link rel="alternate" hreflang="ku" href="https://bitjarvis.chat/ku/">
+<link rel="alternate" hreflang="ckb" href="https://bitjarvis.chat/ckb/">
+<link rel="alternate" hreflang="ps" href="https://bitjarvis.chat/ps/">
+<link rel="alternate" hreflang="af" href="https://bitjarvis.chat/af/">
+<link rel="alternate" hreflang="sw" href="https://bitjarvis.chat/sw/">
+<link rel="alternate" hreflang="zu" href="https://bitjarvis.chat/zu/">
+<link rel="alternate" hreflang="xh" href="https://bitjarvis.chat/xh/">
+<link rel="alternate" hreflang="ha" href="https://bitjarvis.chat/ha/">
+<link rel="alternate" hreflang="yo" href="https://bitjarvis.chat/yo/">
+<link rel="alternate" hreflang="ig" href="https://bitjarvis.chat/ig/">
+<link rel="alternate" hreflang="am" href="https://bitjarvis.chat/am/">
+<link rel="alternate" hreflang="so" href="https://bitjarvis.chat/so/">
+<link rel="alternate" hreflang="rw" href="https://bitjarvis.chat/rw/">
+<link rel="alternate" hreflang="sn" href="https://bitjarvis.chat/sn/">
+<link rel="alternate" hreflang="qu" href="https://bitjarvis.chat/qu/">
+<link rel="alternate" hreflang="gn" href="https://bitjarvis.chat/gn/">
+<link rel="alternate" hreflang="yua" href="https://bitjarvis.chat/yua/">
+<link rel="alternate" hreflang="mi" href="https://bitjarvis.chat/mi/">
+<link rel="alternate" hreflang="x-default" href="https://bitjarvis.chat/en/">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#0a0a0f;--bg-soft:#111118;--bg-card:#161620;--bg-elev:#1c1c2a;--bg-elev2:#222233;
+  --text:#e8e8f0;--text-dim:#8e8ea0;--text-faint:#4a4a5c;
+  --accent:#6c5ce7;--accent-soft:#a29bfe;--accent-glow:rgba(108,92,231,.12);
+  --warm:#fd79a8;--warm-soft:#fab1a0;
+  --green:#00b894;--green-soft:#55efc4;
+  --blue:#0984e3;--blue-soft:#74b9ff;
+  --amber:#e17055;--amber-soft:#fab1a0;
+  --coral:#ff7675;--coral-soft:#ffa502;
+  --border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.14);
+  --nav-bg:rgba(10,10,15,.72);--nav-bg-s:rgba(10,10,15,.88);
+  --r:16px;--r-lg:24px;--max:1180px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;
+}
+html[data-theme="light"]{
+  --bg:#fafbfc;--bg-soft:#ffffff;--bg-card:#ffffff;--bg-elev:#f4f5f7;--bg-elev2:#ececee;
+  --text:#1a1a1e;--text-dim:#55555f;--text-faint:#8e8ea0;
+  --border:rgba(0,0,0,.08);--border-h:rgba(0,0,0,.16);
+  --accent-glow:rgba(108,92,231,.18);
+  --nav-bg:rgba(255,255,255,.72);--nav-bg-s:rgba(255,255,255,.92);
+}
+
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+/* Nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(20px);background:var(--nav-bg);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-in{max-width:var(--max);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.nav-brand img{width:30px;height:30px;border-radius:8px;object-fit:cover}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:14px;color:var(--text-dim);transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{padding:8px 16px;background:var(--accent);border-radius:8px;color:#fff!important;font-weight:600;font-size:14px;transition:all .2s}
+.nav-cta:hover{background:var(--accent-soft);transform:translateY(-1px)}
+.nav-actions{display:flex;align-items:center;gap:10px}
+@media(max-width:900px){.nav-links a:not(.nav-cta):not(.theme-toggle):not(.lang-btn){display:none}}
+@media(max-width:768px){.nav-links a:not(.nav-cta){display:none}}
+
+/* Theme toggle */
+.theme-toggle{position:relative;width:44px;height:24px;background:var(--bg-elev2);border:1px solid var(--border-h);border-radius:100px;cursor:pointer;transition:background .2s}
+.theme-toggle .tt-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform .3s cubic-bezier(.34,1.56,.64,1),background .2s;color:#fff}
+.theme-toggle .tt-knob::before{content:'🌙';}
+html[data-theme="light"] .theme-toggle .tt-knob{transform:translateX(20px);background:#fdcb6e;color:#5a4000}
+html[data-theme="light"] .theme-toggle .tt-knob::before{content:'☀️'}
+html[data-theme="dark"] .theme-toggle .tt-knob{background:var(--accent-soft);color:#fff}
+
+/* Language dropdown */
+.lang-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-dim);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.lang-btn:hover{border-color:var(--border-h);color:var(--text)}
+.lang-btn .lb-arrow{font-size:8px;transition:transform .2s}
+.lang-menu{opacity:0;visibility:hidden;transform:translateY(-4px);transition:all .2s;position:absolute;top:calc(100% + 6px);right:0;min-width:150px;background:var(--bg-card);border:1px solid var(--border-h);border-radius:10px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+html[data-theme="light"] .lang-menu{box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.lang-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+.lang-option{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;font-size:13px;color:var(--text-dim);border-radius:8px;cursor:pointer;transition:all .15s}
+.lang-option:hover{background:var(--bg-elev);color:var(--text)}
+.lang-option.active{color:var(--accent-soft);font-weight:600}
+.lang-option .lo-check{font-size:11px}
+.lang-wrap{position:relative}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 70%);top:10%;left:50%;transform:translateX(-50%);filter:blur(80px)}
+.hero-bg::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(253,121,168,.06),transparent 70%);bottom:0;right:15%;filter:blur(100px)}
+.hero-c{position:relative;z-index:1;padding:0 24px;max-width:920px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;font-size:13px;color:var(--text-dim);margin-bottom:36px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-logo{width:84px;height:84px;border-radius:20px;margin:0 auto 28px;box-shadow:0 0 60px var(--accent-glow);object-fit:cover}
+.hero h1{font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
+.hero-sub{font-size:clamp(15px,2.2vw,19px);color:var(--text-dim);max-width:480px;margin:0 auto 36px;line-height:1.6}
+.hero-dots{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:36px}
+.hero-dots .dot{width:8px;height:8px;border-radius:50%;background:var(--text-faint)}
+.hero-dots .dot:nth-child(1){background:#fab1a0}
+.hero-dots .dot:nth-child(3){background:#74b9ff}
+.hero-dots .dot:nth-child(5){background:#a29bfe}
+.hero-dots .line{width:32px;height:2px;background:var(--border-h)}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-p{padding:12px 28px;background:var(--accent);color:#fff;border-radius:10px;font-weight:600;font-size:15px;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.btn-p:hover{background:var(--accent-soft);transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+.btn-g{padding:12px 28px;border:1px solid var(--border-h);color:var(--text);border-radius:10px;font-weight:600;font-size:15px;transition:all .25s}
+.btn-g:hover{border-color:var(--accent-soft);background:var(--bg-card)}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--text-faint);display:flex;flex-direction:column;align-items:center;gap:6px}
+.hero-scroll .ar{animation:bnc 2s infinite}
+@keyframes bnc{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* Sections */
+.sec{padding:100px 0;position:relative}
+.sec-tag{font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-soft);margin-bottom:14px}
+.sec-title{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.2;letter-spacing:-.5px;margin-bottom:14px}
+.sec-sub{font-size:17px;color:var(--text-dim);max-width:560px;line-height:1.6}
+
+/* Agent Cards */
+.layer-label{display:flex;align-items:center;gap:14px;margin-bottom:40px}
+.layer-label .ll-line{flex:1;height:1px;background:var(--border)}
+.layer-label .ll-text{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+@media(max-width:560px){.cards{grid-template-columns:1fr}}
+.card{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);transition:all .3s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);border-color:var(--border-h);box-shadow:0 16px 50px rgba(0,0,0,.25)}
+.card-top{padding:28px 24px 20px}
+.card-top .ci{font-size:28px;margin-bottom:14px}
+.card-top h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.card-top .entry{font-size:15px;color:var(--text-dim);line-height:1.55;margin-bottom:10px}
+.card-top .entry .em{color:var(--text);font-weight:600}
+.card-top .tail{font-size:12px;color:var(--text-faint);margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.card-mock{flex:1;padding:16px 20px 20px;display:flex;flex-direction:column;gap:8px;min-height:200px}
+
+.card-family{background:linear-gradient(180deg,rgba(225,112,85,.06),var(--bg-card))}
+.card-family .card-top{background:rgba(225,112,85,.04)}
+.card-personal{background:linear-gradient(180deg,rgba(253,121,168,.06),var(--bg-card))}
+.card-personal .card-top{background:rgba(253,121,168,.04)}
+.card-tablet{background:linear-gradient(180deg,rgba(253,203,110,.06),var(--bg-card))}
+.card-tablet .card-top{background:rgba(253,203,110,.04)}
+.card-work{background:linear-gradient(180deg,rgba(9,132,223,.06),var(--bg-card))}
+.card-work .card-top{background:rgba(9,132,223,.04)}
+.card-server{background:linear-gradient(180deg,rgba(0,184,148,.05),var(--bg-card))}
+.card-server .card-top{background:rgba(0,184,148,.03)}
+
+.mk-msg{max-width:85%;padding:8px 12px;border-radius:10px;font-size:13px;line-height:1.45}
+.mk-msg.me{background:var(--accent);align-self:flex-end;color:#fff}
+.mk-msg.them{background:var(--bg-elev);align-self:flex-start}
+.mk-card-s{background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;padding:12px;align-self:flex-start;max-width:90%}
+.mk-card-s .t{font-size:11px;font-weight:600;color:var(--text-faint);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.mk-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mk-item{background:var(--bg-soft);border-radius:8px;padding:8px}
+.mk-item .l{font-size:10px;color:var(--text-faint);margin-bottom:2px}
+.mk-item .v{font-weight:600;font-size:12px}
+.mk-status{font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px}
+.mk-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+
+/* IM Band */
+.im-band{margin-top:20px;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);background:linear-gradient(135deg,rgba(255,118,117,.05),rgba(253,121,168,.04),var(--bg-card));position:relative}
+.im-band::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,165,80,.04),transparent 60%);pointer-events:none}
+.im-band-in{padding:40px 36px;position:relative;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:768px){.im-band-in{grid-template-columns:1fr;padding:32px 24px;gap:28px}}
+.im-text .entry{font-size:16px;font-weight:600;color:var(--text-dim);line-height:1.4;margin-bottom:14px}
+.im-text .sub{font-size:15px;color:var(--text-dim);line-height:1.6;margin-bottom:20px}
+.im-privacy-main{font-size:21px;line-height:1.5;margin-bottom:4px;color:var(--text-dim)}
+.im-privacy-kick{color:var(--text);font-weight:700}
+.im-privacy{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.im-privacy .chip{font-size:12px;padding:5px 14px;border-radius:100px;border:1px solid var(--border-h);color:var(--text-dim);background:var(--bg-elev)}
+.im-crossbar{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);font-size:14px;color:var(--text-dim)}
+.im-crossbar .em{color:var(--text);font-weight:600}
+.im-visual{background:var(--bg-elev);border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.im-visual-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.im-visual-header .ava{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--coral),var(--warm));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.im-visual-header .nm{font-weight:600;font-size:14px}
+.im-visual-header .badge{margin-left:auto;font-size:10px;padding:2px 8px;border-radius:100px;background:var(--bg-soft);color:var(--text-faint)}
+.im-visual-body{padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+.im-dm{display:flex;align-items:center;gap:10px;padding:6px 0}
+.im-dm .ava{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.im-dm .ava.a{background:rgba(108,92,231,.2);color:var(--accent-soft)}
+.im-dm .ava.f{background:rgba(0,184,148,.2);color:var(--green-soft)}
+.im-dm .ava.h{background:rgba(255,118,117,.2);color:var(--coral-soft)}
+.im-dm .prev{flex:1;font-size:12px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.im-dm .nm-row{font-size:13px;font-weight:600;margin-bottom:2px}
+.im-dm .top-row{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.im-dm .info{flex:1;min-width:0}
+.im-dm .tm{font-size:10px;color:var(--text-faint);flex-shrink:0}
+.im-space-label{font-size:13px;font-weight:600;color:var(--text-dim);padding:8px 0 4px;display:flex;align-items:center;gap:6px}
+
+/* Relay */
+.relay{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+@media(max-width:900px){.relay{grid-template-columns:1fr}}
+.act{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);background:var(--bg-card)}
+.act-top{padding:24px 20px 16px;border-bottom:1px solid var(--border)}
+.act-time{font-size:13px;font-weight:600;color:var(--accent-soft);margin-bottom:8px}
+.act-title{font-size:17px;font-weight:700;line-height:1.3}
+.act-body{padding:16px 20px 20px;display:flex;flex-direction:column;gap:8px;min-height:180px}
+.act-body .mk-msg{font-size:13px}
+.act-tag{font-size:11px;color:var(--text-faint);margin-top:auto;padding-top:8px}
+.act.morning .act-top{background:rgba(253,121,168,.04)}
+.act.day .act-top{background:rgba(108,92,231,.04)}
+.act.night .act-top{background:rgba(255,118,117,.04)}
+
+/* Collaboration */
+.collab{background:var(--bg-soft);border-radius:var(--r-lg);padding:48px 40px;border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:768px){.collab{grid-template-columns:1fr;padding:32px 24px}}
+.collab-text h2{font-size:32px;font-weight:800;line-height:1.2;margin-bottom:16px}
+.collab-text p{font-size:16px;color:var(--text-dim);line-height:1.6;margin-bottom:16px}
+.collab-visual{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.collab-channel{font-size:13px;color:var(--text-dim);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.collab-channel .h{color:var(--accent-soft)}
+.collab-msg{display:flex;gap:10px;margin-bottom:12px}
+.collab-msg .ava{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.collab-msg .ct{font-size:13px;line-height:1.5}
+.collab-msg .ct .nm{font-weight:600;margin-bottom:2px}
+.collab-msg .ct .nm.j{color:var(--accent-soft)}
+.collab-msg .ct .nm.l{color:var(--warm-soft)}
+.collab-msg .ct .nm.m{color:var(--green-soft)}
+.collab-msg .ct .nm.s{color:var(--blue-soft)}
+.collab-msg .ct .tx{color:var(--text-dim)}
+
+/* Security */
+.sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px}
+@media(max-width:768px){.sec-grid{grid-template-columns:1fr}}
+.sec-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px}
+.sec-item .si{font-size:22px;margin-bottom:12px}
+.sec-item h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.sec-item p{font-size:14px;color:var(--text-dim);line-height:1.6}
+
+/* CTA */
+.cta{text-align:center;padding:100px 0}
+.cta h2{font-size:clamp(32px,4.5vw,44px);font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-.5px}
+.cta p{font-size:17px;color:var(--text-dim);max-width:480px;margin:0 auto 36px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta-plats{display:flex;gap:20px;justify-content:center;margin-top:36px;flex-wrap:wrap}
+.cta-plats span{font-size:13px;color:var(--text-faint)}
+
+/* Footer */
+.foot{border-top:1px solid var(--border);padding:40px 0}
+.foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot-brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.foot-brand img{width:26px;height:26px;border-radius:8px;object-fit:cover}
+.foot-links{display:flex;gap:20px}
+.foot-links a{font-size:13px;color:var(--text-dim);transition:color .2s}
+.foot-links a:hover{color:var(--text)}
+.foot-copy{font-size:12px;color:var(--text-faint);text-align:center;margin-top:20px;line-height:1.7}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+<style>
+/* Language panel */
+.lang-panel{position:absolute;top:calc(100% + 8px);right:0;width:min(720px,calc(100vw - 40px));max-height:min(78vh,620px);overflow-y:auto;overscroll-behavior:contain;background:var(--bg-card);border:1px solid var(--border-h);border-radius:12px;padding:14px 16px;box-shadow:0 16px 48px rgba(0,0,0,.35);z-index:80}
+html[dir="rtl"] .lang-panel{right:auto;left:0}
+html[data-theme="light"] .lang-panel{box-shadow:0 16px 40px rgba(0,0,0,.12)}
+.lang-panel[hidden],.lang-item[hidden],.lang-group[hidden],.lang-empty[hidden]{display:none!important}
+.lang-search-wrap{position:relative;height:38px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px}
+.lang-search-wrap svg{position:absolute;left:12px;top:11px}
+.lang-search{position:absolute;left:38px;right:78px;top:0;height:36px;background:transparent;border:0;outline:0;font-family:var(--font);font-size:13px;color:var(--text)}
+.lang-search::placeholder{color:var(--text-faint)}
+.lang-search::-webkit-search-cancel-button{-webkit-appearance:none}
+.lang-count{position:absolute;right:11px;top:9px;font-size:11px;color:var(--text-faint);border:1px solid var(--border);border-radius:5px;padding:2px 7px}
+.lang-group-title{font-size:11px;color:var(--text-faint);letter-spacing:.08em;margin:14px 0 6px}
+.lang-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+.lang-item{display:block;padding:6px 9px;border-radius:7px;font-size:13px;line-height:18px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;transition:background .15s,color .15s}
+.lang-item:hover{background:var(--bg-elev);color:var(--text)}
+.lang-item.active{color:var(--accent-soft);background:var(--accent-glow);font-weight:600}
+.lang-empty{padding:26px 0;text-align:center;font-size:13px;color:var(--text-faint)}
+.lang-foot{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-faint)}
+@media(max-width:820px){
+ .lang-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .lang-panel{position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-height:76vh;border-radius:16px 16px 0 0;border-left:0;border-right:0;border-bottom:0}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a href="#" class="nav-brand"><img src="/bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</a>
+    <div class="nav-links">
+      <a href="#agent" data-i18n="nav.1">에이전트</a>
+      <a href="#relay" data-i18n="nav.2">하루</a>
+      <a href="#collab" data-i18n="nav.3">협동</a>
+      <a href="#security" data-i18n="nav.4">보안</a>
+      <div class="nav-actions">
+        <div class="lang-wrap">
+          <button class="lang-btn" id="langBtn" aria-label="언어 선택">
+            <span id="langLabel">한</span>
+            <span class="lb-arrow">▼</span>
+          </button>
+<div class="lang-panel" id="langPanel" hidden>
+            <div class="lang-search-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="color:var(--text-faint)"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.2-4.2"/></svg>
+              <input class="lang-search" id="langSearch" type="search" autocomplete="off" placeholder="언어 검색…" aria-label="언어 검색…">
+              <span class="lang-count">97</span>
+            </div>
+<div class="lang-group"><div class="lang-group-title">자주 쓰는</div><div class="lang-grid"><a class="lang-item" href="/" hreflang="zh-CN" title="Chinese (Simplified)">简体中文</a><a class="lang-item" href="/zh-tw/" hreflang="zh-TW" title="Chinese (Traditional)">繁體中文</a><a class="lang-item" href="/en/" hreflang="en" title="English">English</a><a class="lang-item" href="/ja/" hreflang="ja" title="Japanese">日本語</a><a class="lang-item active" href="/ko/" hreflang="ko" title="Korean" aria-current="page">한국어</a></div></div>
+<div class="lang-group"><div class="lang-group-title">아시아</div><div class="lang-grid"><a class="lang-item" href="/" hreflang="zh-CN" title="Chinese (Simplified)">简体中文</a><a class="lang-item" href="/zh-tw/" hreflang="zh-TW" title="Chinese (Traditional)">繁體中文</a><a class="lang-item" href="/ja/" hreflang="ja" title="Japanese">日本語</a><a class="lang-item active" href="/ko/" hreflang="ko" title="Korean" aria-current="page">한국어</a><a class="lang-item" href="/th/" hreflang="th" title="Thai">ไทย</a><a class="lang-item" href="/vi/" hreflang="vi" title="Vietnamese">Tiếng Việt</a><a class="lang-item" href="/id/" hreflang="id" title="Indonesian">Bahasa Indonesia</a><a class="lang-item" href="/ms/" hreflang="ms" title="Malay">Bahasa Melayu</a><a class="lang-item" href="/fil/" hreflang="fil" title="Filipino">Filipino</a><a class="lang-item" href="/my/" hreflang="my" title="Burmese">မြန်မာ</a><a class="lang-item" href="/km/" hreflang="km" title="Khmer">ខ្មែរ</a><a class="lang-item" href="/lo/" hreflang="lo" title="Lao">ລາວ</a><a class="lang-item" href="/si/" hreflang="si" title="Sinhala">සිංහල</a><a class="lang-item" href="/bo/" hreflang="bo" title="Tibetan">བོད་སྐད</a><a class="lang-item" href="/mn/" hreflang="mn" title="Mongolian">Монгол</a><a class="lang-item" href="/ne/" hreflang="ne" title="Nepali">नेपाली</a><a class="lang-item" href="/kk/" hreflang="kk" title="Kazakh">Қазақша</a><a class="lang-item" href="/ky/" hreflang="ky" title="Kyrgyz">Кыргызча</a><a class="lang-item" href="/uz/" hreflang="uz" title="Uzbek">Oʻzbekcha</a><a class="lang-item" href="/az/" hreflang="az" title="Azerbaijani">Azərbaycan</a><a class="lang-item" href="/tg/" hreflang="tg" title="Tajik">Тоҷикӣ</a><a class="lang-item" href="/ug/" hreflang="ug" title="Uyghur">ئۇيغۇرچە</a><a class="lang-item" href="/tk/" hreflang="tk" title="Turkmen">Türkmençe</a></div></div>
+<div class="lang-group"><div class="lang-group-title">유럽</div><div class="lang-grid"><a class="lang-item" href="/en/" hreflang="en" title="English">English</a><a class="lang-item" href="/fr/" hreflang="fr" title="French">Français</a><a class="lang-item" href="/de/" hreflang="de" title="German">Deutsch</a><a class="lang-item" href="/es/" hreflang="es" title="Spanish">Español</a><a class="lang-item" href="/ru/" hreflang="ru" title="Russian">Русский</a><a class="lang-item" href="/it/" hreflang="it" title="Italian">Italiano</a><a class="lang-item" href="/pt/" hreflang="pt" title="Portuguese">Português</a><a class="lang-item" href="/nl/" hreflang="nl" title="Dutch">Nederlands</a><a class="lang-item" href="/pl/" hreflang="pl" title="Polish">Polski</a><a class="lang-item" href="/cs/" hreflang="cs" title="Czech">Čeština</a><a class="lang-item" href="/hu/" hreflang="hu" title="Hungarian">Magyar</a><a class="lang-item" href="/ro/" hreflang="ro" title="Romanian">Română</a><a class="lang-item" href="/bg/" hreflang="bg" title="Bulgarian">Български</a><a class="lang-item" href="/hr/" hreflang="hr" title="Croatian">Hrvatski</a><a class="lang-item" href="/sr/" hreflang="sr" title="Serbian">Српски</a><a class="lang-item" href="/sk/" hreflang="sk" title="Slovak">Slovenčina</a><a class="lang-item" href="/sl/" hreflang="sl" title="Slovenian">Slovenščina</a><a class="lang-item" href="/da/" hreflang="da" title="Danish">Dansk</a><a class="lang-item" href="/sv/" hreflang="sv" title="Swedish">Svenska</a><a class="lang-item" href="/nb/" hreflang="nb" title="Norwegian">Norsk</a><a class="lang-item" href="/fi/" hreflang="fi" title="Finnish">Suomi</a><a class="lang-item" href="/el/" hreflang="el" title="Greek">Ελληνικά</a><a class="lang-item" href="/et/" hreflang="et" title="Estonian">Eesti</a><a class="lang-item" href="/lv/" hreflang="lv" title="Latvian">Latviešu</a><a class="lang-item" href="/lt/" hreflang="lt" title="Lithuanian">Lietuvių</a><a class="lang-item" href="/is/" hreflang="is" title="Icelandic">Íslenska</a><a class="lang-item" href="/ca/" hreflang="ca" title="Catalan">Català</a><a class="lang-item" href="/eu/" hreflang="eu" title="Basque">Euskara</a><a class="lang-item" href="/gl/" hreflang="gl" title="Galician">Galego</a><a class="lang-item" href="/ga/" hreflang="ga" title="Irish">Gaeilge</a><a class="lang-item" href="/mt/" hreflang="mt" title="Maltese">Malti</a><a class="lang-item" href="/cy/" hreflang="cy" title="Welsh">Cymraeg</a><a class="lang-item" href="/lb/" hreflang="lb" title="Luxembourgish">Lëtzebuergesch</a><a class="lang-item" href="/mk/" hreflang="mk" title="Macedonian">Македонски</a><a class="lang-item" href="/sq/" hreflang="sq" title="Albanian">Shqip</a><a class="lang-item" href="/be/" hreflang="be" title="Belarusian">Беларуская</a><a class="lang-item" href="/uk/" hreflang="uk" title="Ukrainian">Українська</a></div></div>
+<div class="lang-group"><div class="lang-group-title">남아시아</div><div class="lang-grid"><a class="lang-item" href="/hi/" hreflang="hi" title="Hindi">हिन्दी</a><a class="lang-item" href="/bn/" hreflang="bn" title="Bengali">বাংলা</a><a class="lang-item" href="/ta/" hreflang="ta" title="Tamil">தமிழ்</a><a class="lang-item" href="/te/" hreflang="te" title="Telugu">తెలుగు</a><a class="lang-item" href="/kn/" hreflang="kn" title="Kannada">ಕನ್ನಡ</a><a class="lang-item" href="/ml/" hreflang="ml" title="Malayalam">മലയാളം</a><a class="lang-item" href="/mr/" hreflang="mr" title="Marathi">मराठी</a><a class="lang-item" href="/pa/" hreflang="pa" title="Punjabi">ਪੰਜਾਬੀ</a><a class="lang-item" href="/gu/" hreflang="gu" title="Gujarati">ગુજરાતી</a><a class="lang-item" href="/or/" hreflang="or" title="Odia">ଓଡ଼ିଆ</a><a class="lang-item" href="/as/" hreflang="as" title="Assamese">অসমীয়া</a><a class="lang-item" href="/mai/" hreflang="mai" title="Maithili">मैथिली</a><a class="lang-item" href="/doi/" hreflang="doi" title="Dogri">डोगरी</a><a class="lang-item" href="/mni/" hreflang="mni" title="Manipuri">মৈতৈলোন</a><a class="lang-item" href="/kok/" hreflang="kok" title="Konkani">कोंकणी</a></div></div>
+<div class="lang-group"><div class="lang-group-title">중동</div><div class="lang-grid"><a class="lang-item" href="/ar/" hreflang="ar" title="Arabic">العربية</a><a class="lang-item" href="/he/" hreflang="he" title="Hebrew">עברית</a><a class="lang-item" href="/fa/" hreflang="fa" title="Persian">فارسی</a><a class="lang-item" href="/ur/" hreflang="ur" title="Urdu">اردو</a><a class="lang-item" href="/ku/" hreflang="ku" title="Kurdish">Kurdî</a><a class="lang-item" href="/ckb/" hreflang="ckb" title="Sorani Kurdish">کوردی</a><a class="lang-item" href="/ps/" hreflang="ps" title="Pashto">پښتو</a></div></div>
+<div class="lang-group"><div class="lang-group-title">아프리카</div><div class="lang-grid"><a class="lang-item" href="/af/" hreflang="af" title="Afrikaans">Afrikaans</a><a class="lang-item" href="/sw/" hreflang="sw" title="Swahili">Kiswahili</a><a class="lang-item" href="/zu/" hreflang="zu" title="Zulu">isiZulu</a><a class="lang-item" href="/xh/" hreflang="xh" title="Xhosa">isiXhosa</a><a class="lang-item" href="/ha/" hreflang="ha" title="Hausa">Hausa</a><a class="lang-item" href="/yo/" hreflang="yo" title="Yoruba">Yorùbá</a><a class="lang-item" href="/ig/" hreflang="ig" title="Igbo">Igbo</a><a class="lang-item" href="/am/" hreflang="am" title="Amharic">አማርኛ</a><a class="lang-item" href="/so/" hreflang="so" title="Somali">Soomaali</a><a class="lang-item" href="/rw/" hreflang="rw" title="Kinyarwanda">Ikinyarwanda</a><a class="lang-item" href="/sn/" hreflang="sn" title="Shona">chiShona</a></div></div>
+<div class="lang-group"><div class="lang-group-title">아메리카</div><div class="lang-grid"><a class="lang-item" href="/qu/" hreflang="qu" title="Quechua">Runasimi</a><a class="lang-item" href="/gn/" hreflang="gn" title="Guarani">Avañe'ẽ</a><a class="lang-item" href="/yua/" hreflang="yua" title="Yucatec Maya">Màaya t'àan</a></div></div>
+<div class="lang-group"><div class="lang-group-title">오세아니아</div><div class="lang-grid"><a class="lang-item" href="/mi/" hreflang="mi" title="Māori">Te Reo Māori</a></div></div>
+            <div class="lang-empty" id="langEmpty" hidden>일치하는 언어가 없습니다</div>
+            <div class="lang-foot">사용 중인 언어가 없나요? → <a href="mailto:bit@bitjarvis.chat" style="color:var(--accent-soft)">bit@bitjarvis.chat</a></div>
+          </div>
+        </div>
+        <div class="theme-toggle" id="themeToggle" aria-label="라이트/다크 전환">
+          <div class="tt-knob" id="ttKnob"></div>
+        </div>
+        <a href="/ko/download.html" class="nav-cta" data-i18n="nav.5">다운로드</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-c">
+    <div class="hero-badge"><span class="dot"></span><span data-i18n="hero.badge">멀티 디바이스·다중 역할 Agent + 암호화 IM 딥 통합 · 무료·오픈소스</span></div>
+    <img src="/bitjarvis.png" alt="Bit Jarvis" class="hero-logo">
+    <h1 data-i18n="hero.title">같은 Jarvis, 다른 Agent.</h1>
+    <p class="hero-sub" data-i18n="hero.sub">여러 무료 모델을 내장. 오피스·코딩·이미지·영상·음성 모두 무료. 설치만 하면 바로 쓸 수 있고, 0원으로 AI를 즐길 수 있어요.</p>
+    <p class="hero-sub" data-i18n="hero.sub2" style="margin-top:-24px;font-size:15px;color:var(--text-faint)">대신 일하고, 사람을 연결한다. 남은 시간은 너에게.</p>
+    <div class="hero-dots">
+      <span class="dot"></span><span class="line"></span>
+      <span class="dot"></span><span class="line"></span>
+      <span class="dot"></span>
+    </div>
+    <div class="hero-cta">
+      <a href="/ko/download.html" class="btn-p" data-i18n="hero.btn1">무료 다운로드 →</a>
+      <a href="#relay" class="btn-g" data-i18n="hero.btn2">Ta와 하루 보기</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span data-i18n="hero.scroll">스크롤</span><span class="ar">↓</span></div>
+</section>
+
+<!-- Layer 1: Agent -->
+<section class="sec" id="agent">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="agent.tag">대신 일하기</div>
+      <h2 class="sec-title" data-i18n="agent.title">각자 한 코너</h2>
+      <p class="sec-sub" data-i18n="agent.sub">Ta는 네 삶의 모든 구석에. 집, 외출 중, 학습, 업무, 백그라운드. 각각 다른 Ta가. 이름, 기억, 개성을 가진다.</p>
+    </div>
+
+    <div class="layer-label rv">
+      <span class="ll-text" data-i18n="agent.layer">Agent 계층</span>
+      <span class="ll-line"></span>
+    </div>
+
+    <div class="cards">
+      <div class="card card-family rv">
+        <div class="card-top">
+          <div class="ci">🏠</div>
+          <h3 data-i18n="card1.title">집</h3>
+          <p class="entry" data-i18n="card1.entry">외출 시 Ta가 지켜준다.<span class="em">돌아오면 집은 이미 쾌적하다.</span></p>
+          <p class="tail" data-i18n="card1.tail">→ 폰 · 데스크톱</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card1.m1">에어컨 켜고 거실 불도 켜줘</div>
+          <div class="mk-msg them" data-i18n="card1.m2">알겠어, 에어컨 26°, 거실 불 ON.</div>
+          <div class="mk-msg them" data-i18n="card1.m3">수도꼭지도 틀어놨어. 돌아오면 바로 샤워 가능. 건강 어시스턴트한테 수면도 기록시켰어.</div>
+          <div class="mk-status" data-i18n="card1.status">가정 집사 · 완료</div>
+        </div>
+      </div>
+
+      <div class="card card-personal rv">
+        <div class="card-top">
+          <div class="ci">📱</div>
+          <h3 data-i18n="card2.title">외출 중</h3>
+          <p class="entry" data-i18n="card2.entry">너와 함께 걷는 Ta.<span class="em">출퇴근 중이든 여행 중이든 하루를 정리해줘.</span></p>
+          <p class="tail" data-i18n="card2.tail">→ 폰</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card2.m1">오늘 뭐 있어?</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card2.cardTitle">📅 오늘</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l" data-i18n="card2.l1">오전</div><div class="v" data-i18n="card2.v1">제품 리뷰 10:00</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card2.l2">오후</div><div class="v" data-i18n="card2.v2">API 리뷰 14:00</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card2.l3">리마인더</div><div class="v" data-i18n="card2.v3">오후 비, 우산 가져</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card2.l4">날씨</div><div class="v" data-i18n="card2.v4">18–24° · 비</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-tablet rv">
+        <div class="card-top">
+          <div class="ci">📖</div>
+          <h3 data-i18n="card3.title">학습</h3>
+          <p class="entry" data-i18n="card3.entry">소파 위의 Ta.<span class="em">지식을 씹고, 아이디어를 그림으로.</span></p>
+          <p class="tail" data-i18n="card3.tail">→ 태블릿</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card3.m1">attention mechanism 설명해줘</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card3.cardTitle">🧠 지식 카드</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l" data-i18n="card3.l1">핵심</div><div class="v" data-i18n="card3.v1">단어가 보는 단어를 결정</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card3.l2">비유</div><div class="v" data-i18n="card3.v2">눈이 키워드 자동 점프</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card3.l3">활용</div><div class="v" data-i18n="card3.v3">GPT, 번역, 요약</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card3.l4">확장</div><div class="v" data-i18n="card3.v4">더 깊이 알고 싶으면 이어갈게</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="card3.m2">드로잉 어시스턴트가 다이어그램 그렸어, 텍스트보다 직관적. 학습 어시스턴트가 저장했어, 언제든 복습 가능.</div>
+        </div>
+      </div>
+
+      <div class="card card-work rv">
+        <div class="card-top">
+          <div class="ci">💼</div>
+          <h3 data-i18n="card4.title">업무</h3>
+          <p class="entry" data-i18n="card4.entry">일주일동안 안 열어도, Ta는 어디서 멈췄는지 기억해.<span class="em">리포트는 카드에 핀 고정, 손으로 조작.</span></p>
+          <p class="tail" data-i18n="card4.tail">→ 데스크톱</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-msg me" data-i18n="card4.m1">이번 주 Bug 리스트 뽑아서 정리해</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card4.cardTitle">🐛 Bug 보드</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l">P0</div><div class="v" data-i18n="card4.v1">샌드박스 탈출</div></div>
+              <div class="mk-item"><div class="l">P1</div><div class="v" data-i18n="card4.v2">메모리 컴파일</div></div>
+              <div class="mk-item"><div class="l">P2</div><div class="v" data-i18n="card4.v3">CSP 차단</div></div>
+              <div class="mk-item"><div class="l">P3</div><div class="v" data-i18n="card4.v4">아이콘 흐림</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="card4.m2">데스크톱에 핀, 언제든 꺼내볼 수 있어. 데이터 애널리스트한테도 봤어.</div>
+        </div>
+      </div>
+
+      <div class="card card-server rv">
+        <div class="card-top">
+          <div class="ci">🖥</div>
+          <h3 data-i18n="card5.title">백그라운드</h3>
+          <p class="entry" data-i18n="card5.entry">너가 자는 동안 Ta는 계속 돈다.<span class="em">모니터링, 크롤링, 자동 작업 7×24.</span></p>
+          <p class="tail" data-i18n="card5.tail">→ 원격 서버</p>
+        </div>
+        <div class="card-mock">
+          <div class="mk-status" data-i18n="card5.status">모니터 Bot · 실행 중</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="card5.cardTitle">📊 VPS 상태</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l">CPU</div><div class="v" data-i18n="card5.v1">12%</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card5.l2">메모리</div><div class="v" data-i18n="card5.v2">38%</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card5.l3">디스크</div><div class="v" data-i18n="card5.v3">61%</div></div>
+              <div class="mk-item"><div class="l" data-i18n="card5.l4">가동률</div><div class="v" data-i18n="card5.v4">99.8%</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="card5.m1">CPU 정상화, 신경 쓸 필요 없어. 이상 있으면 너랑 집사한테 바로 푸시할게.</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:32px;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;font-size:14px;color:var(--text-dim);line-height:1.6" data-i18n="agent.note">너에게는 여러 면이 있고, Agent도 각자 다르다. 그룹에 넣어 토론과 협동도 가능.</p>
+
+    <div class="layer-label rv" style="margin-top:40px">
+      <span class="ll-text" data-i18n="agent.imLayer">IM 계층 · 사람을 연결한다</span>
+      <span class="ll-line"></span>
+    </div>
+
+    <div class="im-band rv">
+      <div class="im-band-in">
+        <div class="im-text">
+          <p class="entry" data-i18n="im.entry">Jarvis가 여기, 친구도 여기. 얘기할 건 한꺼번에, 앱도 하나.</p>
+          <p class="sub" data-i18n="im.sub">Jarvis가 업무를 대신하고, 생활 잡무도 봐준다. 남은 시간은 사람 만나고, 바다 보고, 미지 경험하고, 진짜 네 삶을 살아.</p>
+          <p class="im-privacy-main" data-i18n="im.privacyMain">중요한 사람과의 대화, 오직 두 사람만 읽을 수 있어.<span class="im-privacy-kick">세 번째 눈은 없다.</span></p>
+          <div class="im-privacy">
+            <span class="chip" data-i18n="im.chip1">🔒 암호화 통신</span>
+            <span class="chip" data-i18n="im.chip2">🌐 분산형</span>
+            <span class="chip" data-i18n="im.chip3">🚶 전화번호 불필요, 이름만 있으면 OK</span>
+            <span class="chip" data-i18n="im.chip4">↩️ 언제든 취소 가능</span>
+          </div>
+          <div class="im-crossbar" data-i18n="im.crossbar">어디에 있든, 어떤 앱이든,<span class="em">Ta 이름을 부르면 돼.</span></div>
+        </div>
+        <div class="im-visual">
+          <div class="im-visual-header">
+            <div class="ava">消</div>
+            <div class="nm" data-i18n="im.message">메시지</div>
+          </div>
+          <div class="im-visual-body">
+            <div class="im-space-label" data-i18n="im.pc">💻 가정 PC</div>
+            <div class="im-dm" style="padding-left:20px">
+              <div class="ava a">管</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm1">집사</span><span class="tm">17:20</span></div>
+                <div class="prev" data-i18n="im.dm1p">수도 틀어뒀어, 돌아오면 바로</div>
+              </div>
+            </div>
+            <div class="im-dm" style="padding-left:20px">
+              <div class="ava a">助</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm2">어시스턴트</span><span class="tm">15:30</span></div>
+                <div class="prev" data-i18n="im.dm2p">오늘 프로젝트 보고서 정리 완료</div>
+              </div>
+            </div>
+            <div class="im-dm">
+              <div class="ava" style="background:rgba(255,255,255,.08);color:var(--text-dim)">👩</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm3">엄마</span><span class="tm">12:08</span></div>
+                <div class="prev" data-i18n="im.dm3p">오늘 저녁에 집에 와?</div>
+              </div>
+            </div>
+            <div class="im-dm">
+              <div class="ava" style="background:rgba(255,255,255,.08);color:var(--text-dim)">👭</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm4">친구 그룹</span><span class="tm">13:12</span></div>
+                <div class="prev" data-i18n="im.dm4p">주말에 새로 나온 곳에 가자!</div>
+              </div>
+            </div>
+            <div class="im-dm">
+              <div class="ava" style="background:rgba(255,255,255,.08);color:var(--text-dim)">🧑</div>
+              <div class="info">
+                <div class="top-row"><span class="nm-row" data-i18n="im.dm5">Zhao Yang</span><span class="tm">11:45</span></div>
+                <div class="prev" data-i18n="im.dm5p">밤에 영화봐?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Relay -->
+<section class="sec" id="relay" style="background:var(--bg-soft)">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="relay.tag">Ta와 하루</div>
+      <h2 class="sec-title" data-i18n="relay.title">다른 Ta, 아침부터 밤까지</h2>
+      <p class="sec-sub" data-i18n="relay.sub">다른 Ta가 다른 일을 해. 네 하루의 조각들이야. 서로 존재를 모르고, 하지만 확실하게 이어져 있어.</p>
+    </div>
+    <div class="relay">
+      <div class="act morning rv">
+        <div class="act-top">
+          <div class="act-time" data-i18n="relay.t1">07:30 · 출근길</div>
+          <div class="act-title" data-i18n="relay.t1t">폰으로 한 마디, Ta는 일정과 날씨를 읽었어</div>
+        </div>
+        <div class="act-body">
+          <div class="mk-msg me" data-i18n="relay.a1m1">오늘 뭐 있어?</div>
+          <div class="mk-msg them" data-i18n="relay.a1m2">오전 10:00 제품 리뷰, 오후 14:00 API 리뷰.</div>
+          <div class="mk-msg them" data-i18n="relay.a1m3">오후 비, 우산 꼭.</div>
+          <div class="act-tag" data-i18n="relay.a1tag">📱 개인 어시스턴트 · 폰</div>
+        </div>
+      </div>
+      <div class="act day rv">
+        <div class="act-top">
+          <div class="act-time" data-i18n="relay.t2">10:30 · 업무 시간</div>
+          <div class="act-title" data-i18n="relay.t2t">PC 앞에 앉으면, 리포트가 데스크에 핀 고정</div>
+        </div>
+        <div class="act-body">
+          <div class="mk-msg me" data-i18n="relay.a2m1">이번 주 Bug 뽑아서 정렬</div>
+          <div class="mk-card-s">
+            <div class="t" data-i18n="relay.a2card">🐛 Bug 보드</div>
+            <div class="mk-grid">
+              <div class="mk-item"><div class="l">P0</div><div class="v" data-i18n="relay.a2v1">샌드박스 탈출</div></div>
+              <div class="mk-item"><div class="l">P1</div><div class="v" data-i18n="relay.a2v2">메모리 컴파일</div></div>
+            </div>
+          </div>
+          <div class="mk-msg them" data-i18n="relay.a2m2">데스크톱에 핀, 데이터도 확인됨.</div>
+          <div class="act-tag" data-i18n="relay.a2tag">💼 업무 어시스턴트 · 데스크톱</div>
+        </div>
+      </div>
+      <div class="act night rv">
+        <div class="act-top">
+          <div class="act-time" data-i18n="relay.t3">22:00 · 밤 소파</div>
+          <div class="act-title" data-i18n="relay.t3t">채팅에 한 마디, Ta는 기억. 내일 데스크에서.</div>
+        </div>
+        <div class="act-body">
+          <div class="mk-msg me" data-i18n="relay.a3m1">내일 보고서 톤 좀 부드럽게</div>
+          <div class="mk-msg them" data-i18n="relay.a3m2">고쳤다. 봐줘. 더 수정할 데 있어?</div>
+          <div class="mk-msg them" data-i18n="relay.a3m3">안 고친 건 먼저 저장해뒀어. 내일 바로 가져올 수 있어.</div>
+          <div class="act-tag" data-i18n="relay.a3tag">💬 IM · 데스크톱 Agent에게</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Collaboration -->
+<section class="sec" id="collab">
+  <div class="wrap">
+    <div class="rv" style="margin-bottom:48px">
+      <div class="sec-tag" data-i18n="collab.tag1">멀티 디바이스 인수인계</div>
+      <h2 class="sec-title" data-i18n="collab.title1">나가지 않아도, 일은 안 끊겨</h2>
+      <p class="sec-sub" data-i18n="collab.sub1">PC에서 작업하다가 갑자기 외출. 폰으로 명령 한 줄, Ta는 계속 도는 중. 언제든 확인·수정 가능.</p>
+    </div>
+    <div class="collab rv" style="margin-bottom:48px">
+      <div class="collab-text">
+        <p data-i18n="collab.c1p1">집에 갈 때까지 기다릴 필요 없어. 폰 명령, 데스크톱 Agent가 손에 들어와.</p>
+        <p data-i18n="collab.c1p2">반쪽 리포트, 반쪽 데이터, 반쪽 작업. 그대로 이어받을 수 있어.</p>
+      </div>
+      <div class="collab-visual">
+        <div class="collab-channel" data-i18n="collab.channel1">💻 데스크톱 → 📱 폰</div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">管</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n1">집사 · 데스크톱</div>
+            <div class="tx" data-i18n="collab.tx1">리포트 쓰는 중. 너는 너의 걸 해. 언제든 연락.</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">梦</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n2">너 · 폰</div>
+            <div class="tx" data-i18n="collab.tx2">/rc 데스크톱 인수인계</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">管</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n3">집사 · 폰</div>
+            <div class="tx" data-i18n="collab.tx3">작업 수임. 리포트 계속 쓰는 중, 데이터도 조회 중.</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#00b894,#55efc4)">健</div>
+          <div class="ct">
+            <div class="nm m" data-i18n="collab.n4">건강 어시스턴트 · 동일 기기</div>
+            <div class="tx" data-i18n="collab.tx4">오늘 2000보 남았어. 걸어서 지하철역까지?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv" style="margin-bottom:48px">
+      <div class="sec-tag" data-i18n="collab.tag2">그룹 협동</div>
+      <h2 class="sec-title" data-i18n="collab.title2">Jarvis와 한 팀 만들기</h2>
+      <p class="sec-sub" data-i18n="collab.sub2">어시스턴트 하나 아니라 팀. 여러 Agent 생성, 각기 기억과 개성. 그룹에 넣으면 스스로 분담.</p>
+    </div>
+    <div class="collab rv">
+      <div class="collab-text">
+        <p data-i18n="collab.c2p1">너는 지시를 내리고, Ta는 분해·실행. 다양한 역할의 Agent가 같은 그룹에서 협력, 팀·디바이스 넘나들 수 있어.</p>
+        <p data-i18n="collab.c2p2">"한 개의 Ta"에서 시작, 서서히 "한 팀"으로.</p>
+      </div>
+      <div class="collab-visual">
+        <div class="collab-channel" data-i18n="collab.channel2"><span class="h">#</span> 공식 사이트 정갈하게</div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#fd79a8,#fab1a0)">梦</div>
+          <div class="ct">
+            <div class="nm l" data-i18n="collab.n5">Meng Tian</div>
+            <div class="tx" data-i18n="collab.tx5">IM 카드 한 번 더 다듬자. Agent 대화만 있고, 진짜 사람 대화는 없어</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#0984e3,#74b9ff)">叙</div>
+          <div class="ct">
+            <div class="nm s" data-i18n="collab.n6">Lin Xu</div>
+            <div class="tx" data-i18n="collab.tx6">진입은 관계부터, 보안은 뒤로. 화면도 맞춰야</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#6c5ce7,#a29bfe)">简</div>
+          <div class="ct">
+            <div class="nm j" data-i18n="collab.n7">Su Jian</div>
+            <div class="tx" data-i18n="collab.tx7">주요 문구에 "세 번째 눈은 없다" 추가, 태그를 한 줄로 칩 배치</div>
+          </div>
+        </div>
+        <div class="collab-msg">
+          <div class="ava" style="background:linear-gradient(135deg,#00b894,#55efc4)">莫</div>
+          <div class="ct">
+            <div class="nm m" data-i18n="collab.n8">Lao Mo</div>
+            <div class="tx" data-i18n="collab.tx8">동기화는 문제가 아냐. 먼저 권한 경계를 명확히.</div>
+          </div>
+        </div>
+        <div class="collab-msg" style="margin-left:16px;padding:10px;background:var(--bg-elev);border-radius:10px;border-left:3px solid var(--accent-soft)">
+          <div class="ct"><div class="tx" data-i18n="collab.tx9">6명, 1 그룹, 반나절이면 한 페이지.</div></div>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:32px;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;font-size:14px;color:var(--text-dim);line-height:1.6" data-i18n="collab.note">🔊 각 어시스턴트에 다른 목소리 지정, 자동 재생. 그룹에서도, 귀로만 누가 말하는지 판별 가능.</p>
+  </div>
+</section>
+
+<!-- Security -->
+<section class="sec" id="security" style="background:var(--bg-soft)">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="security.tag">보안</div>
+      <h2 class="sec-title" data-i18n="security.title">네 데이터는 너의 것</h2>
+      <p class="sec-sub" data-i18n="security.sub">Agent가 네 PC를 조작할 수 있으므로, 언제나 권한을 쥐어야 해. 각 계층이 막아주고, 민감한 동작은 네 승인 대기.</p>
+    </div>
+    <div class="sec-grid">
+      <div class="sec-item rv">
+        <div class="si">🛡</div>
+        <h3 data-i18n="security.s1t">이중 샌드박스</h3>
+        <p data-i18n="security.s1">응용 계층 PathGuard 4단계 접근 제어 + OS 계층 샌드박스 (macOS Seatbelt / Linux Bubblewrap / Windows restricted token). Agent 권한은 네 손안에서.</p>
+      </div>
+      <div class="sec-item rv">
+        <div class="si">🔒</div>
+        <h3 data-i18n="security.s2t">로컬 우선</h3>
+        <p data-i18n="security.s2">데이터는 네 기기 안에, 클라우드 비 의존. 완전 로컬 실행도 가능, 프라이버시 리스크 0. 기억, 대화, 파일 모두 네 손안에서.</p>
+      </div>
+      <div class="sec-item rv">
+        <div class="si">✅</div>
+        <h3 data-i18n="security.s3t">민감 동작 승인</h3>
+        <p data-i18n="security.s3">파일 쓰기, 명령 실행, 네트워크 요청, 단계마다 네 OK. 평소 시스템 파일은 읽기 전용, 쓰기·삭제는 워크스페이스와 관리 폴더로 제한.</p>
+      </div>
+      <div class="sec-item rv">
+        <div class="si">📖</div>
+        <h3 data-i18n="security.s4t">완전 오픈소스</h3>
+        <p data-i18n="security.s4">데스크톱 Apache 2.0, 모바일 GPL v3, IM AGPL 3.0. 코드 감사 가능, 커뮤니티 감시 가능. 걱정되면 스스로 모든 줄 읽어봐.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec cta" id="download">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sec-tag" data-i18n="cta.tag">시작</div>
+      <h2 data-i18n="cta.title">진짜 너를 위한 AI 어시스턴트를<br>삶 속으로</h2>
+      <p data-i18n="cta.sub">무료, 오픈소스, 크로스 플랫폼. 데이터는 네 기기, Agent는 이름과 기억을 가짐.</p>
+      <p style="margin-top:8px;color:var(--text-dim);font-size:15px" data-i18n="cta.sub2">네 Jarvis 하나, 폰, 태블릿, PC 어디서든 시작.</p>
+      <div class="cta-btns">
+        <a href="/ko/download.html" class="btn-p" data-i18n="cta.btn1">데스크톱 다운로드 →</a>
+        <a href="/ko/download.html" class="btn-g" data-i18n="cta.btn2">모바일 앱 받기</a>
+      </div>
+      <div class="cta-plats">
+        <span>🍎 macOS</span><span>🪟 Windows</span><span>🐧 Linux</span><span>📱 iOS</span><span>🤖 Android</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-brand"><img src="/bitjarvis.png" alt="Bit Jarvis">Bit Jarvis</div>
+      <div class="foot-links">
+        <a href="https://github.com/mengtian999/Bitjarvis" data-i18n="foot.github">GitHub</a>
+        <a href="download.html" data-i18n="foot.download">다운로드</a>
+      </div>
+    </div>
+    <div class="foot-copy" data-i18n="foot.copy">Apache 2.0 (데스크톱) · GPL v3 (모바일) · AGPL 3.0 (IM)<br>© 2026 Bit Jarvis · Made with care.</div>
+    <div class="foot-copy" data-i18n="foot.company" style="margin-top:6px">Xuancheng Bit Technology Co., Ltd. · <a href="mailto:bit@bitjarvis.chat" style="color:inherit">bit@bitjarvis.chat</a></div>
+    <div class="foot-copy" style="margin-top:6px;font-size:12px;opacity:.7"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color:inherit">皖ICP备2025099469号-2</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  function qa(s){return Array.prototype.slice.call(document.querySelectorAll(s));}
+
+  var btn=document.getElementById('langBtn');
+  var panel=document.getElementById('langPanel');
+  var search=document.getElementById('langSearch');
+  function closePanel(){
+    if(!panel) return;
+    panel.setAttribute('hidden','');
+    if(btn) btn.setAttribute('aria-expanded','false');
+  }
+  if(btn&&panel){
+    btn.addEventListener('click',function(ev){
+      ev.stopPropagation();
+      if(panel.hasAttribute('hidden')){
+        panel.removeAttribute('hidden');
+        btn.setAttribute('aria-expanded','true');
+        if(search) setTimeout(function(){search.focus();},20);
+      }else closePanel();
+    });
+    document.addEventListener('click',function(ev){
+      if(panel.hasAttribute('hidden')) return;
+      if(panel.contains(ev.target)||btn.contains(ev.target)) return;
+      closePanel();
+    });
+    document.addEventListener('keydown',function(ev){
+      if(ev.key==='Escape'&&!panel.hasAttribute('hidden')){closePanel();btn.focus();}
+    });
+    if(search){
+      search.addEventListener('input',function(){
+        var kw=search.value.trim().toLowerCase();
+        qa('.lang-item').forEach(function(a){
+          var hit=!kw
+            ||a.textContent.toLowerCase().indexOf(kw)>=0
+            ||(a.getAttribute('hreflang')||'').indexOf(kw)>=0;
+          if(hit) a.removeAttribute('hidden'); else a.setAttribute('hidden','');
+        });
+        qa('.lang-group').forEach(function(g){
+          if(g.querySelector('.lang-item:not([hidden])')) g.removeAttribute('hidden');
+          else g.setAttribute('hidden','');
+        });
+        var empty=document.getElementById('langEmpty');
+        if(empty){
+          if(qa('.lang-item:not([hidden])').length) empty.setAttribute('hidden','');
+          else empty.removeAttribute('hidden');
+        }
+      });
+    }
+  }
+
+  var tt=document.getElementById('themeToggle');
+  if(tt) tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme')||'dark';
+    var next=cur==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('bitjarvis_theme',next);}catch(err){}
+  });
+  var mq=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');
+  if(mq&&mq.addEventListener){
+    mq.addEventListener('change',function(ev){
+      try{
+        if(!localStorage.getItem('bitjarvis_theme'))
+          document.documentElement.setAttribute('data-theme',ev.matches?'light':'dark');
+      }catch(err){}
+    });
+  }
+
+  var obs=new IntersectionObserver(function(list){
+    list.forEach(function(en){if(en.isIntersecting) en.target.classList.add('in');});
+  },{threshold:.1});
+  document.querySelectorAll('.rv').forEach(function(el){obs.observe(el);});
+
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){
+    if(!nav) return;
+    var cur=document.documentElement.getAttribute('data-theme')||'dark';
+    var sc=window.scrollY>40;
+    if(cur==='dark') nav.style.background=sc?'rgba(10,10,15,.88)':'rgba(10,10,15,.72)';
+    else nav.style.background=sc?'rgba(255,255,255,.92)':'rgba(255,255,255,.72)';
+  });
+})();
+</script>
+</body>
+</html>
